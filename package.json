@@ -1,9 +1,8 @@
 {
   "name": "survey",
-  "type": "commonjs",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
+  "description": "问卷",
+  "author": "ohohua",
   "license": "ISC",
   "homepage": "https://github.com/ohohua/survey#readme",
   "repository": {
@@ -14,7 +13,6 @@
     "url": "https://github.com/ohohua/survey/issues"
   },
   "keywords": [],
-  "main": "index.js",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "start:server": "pnpm run --filter server start:dev ",
@@ -31,7 +29,13 @@
     "eslint-plugin-format": "^1.0.1",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
+    "lint-staged": "^15.4.3",
+    "picocolors": "^1.1.1",
     "simple-git-hooks": "^2.11.1",
     "typescript": "^5.7.3"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged",
+    "commit-msg": "node ./scripts/verify-commit.js"
   }
 }
