@@ -14,7 +14,7 @@
   },
   "keywords": [],
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
+    "preinstall": "pnpm dlx only-allow pnpm",
     "start:server": "pnpm run --filter server start:dev ",
     "lint": "eslint --fix '{apps/server/src,apps/admin/src,apps/client/src,packages/schema/src,packages/db/src}/**/*.{js,jsx,ts,tsx}'"
   },
