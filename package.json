@@ -1,0 +1,38 @@
+{
+  "name": "survey",
+  "type": "commonjs",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/ohohua/survey#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohohua/survey.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ohohua/survey/issues"
+  },
+  "keywords": [],
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "start:server": "pnpm run --filter server start:dev ",
+    "lint": "eslint --fix '{apps/server/src,apps/admin/src,apps/client/src,packages/schema/src,packages/db/src}/**/*.{js,jsx,ts,tsx}'",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.13"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.3.0",
+    "@eslint-react/eslint-plugin": "^1.27.0",
+    "@types/node": "^22.13.4",
+    "eslint": "^9.20.1",
+    "eslint-plugin-format": "^1.0.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "husky": "^9.1.7",
+    "typescript": "^5.7.3"
+  }
+}

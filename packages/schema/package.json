@@ -1,0 +1,16 @@
+{
+  "name": "@survey/schema",
+  "type": "commonjs",
+  "version": "1.0.0",
+  "description": "",
+  "author": "ohohua",
+  "license": "ISC",
+  "keywords": [],
+  "main": "dist/index.js",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.39.3"
+  }
+}

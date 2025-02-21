@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: account
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - common-network
+  redis:
+    image: redis:5-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./docker/redis:/data
+    networks:
+      - common-network
+  minio:
+    image: bitnami/minio
+    ports:
+      - '9000:9000' # api端口
+      - '9001:9001' # 控制台端口
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password
+    volumes:
+      - ./docker/minio:/data
+    networks:
+      - common-network
+networks:
+  common-network:
+    driver: bridge
