@@ -1,2 +1,2 @@
-pnpm run lint
+npm run lint
 git add .
