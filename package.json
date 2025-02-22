@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "问卷",
   "author": "ohohua",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://github.com/ohohua/survey#readme",
   "repository": {
     "type": "git",
