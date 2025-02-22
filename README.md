@@ -9,3 +9,6 @@ monorepo 架构的问卷管理系统
 - nest
 - drizzle
 - mysql
+
+## node
+- v22.13.1

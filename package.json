@@ -15,7 +15,9 @@
   "keywords": [],
   "scripts": {
     "preinstall": "pnpm dlx only-allow pnpm",
+    "start:admin": "pnpm run --filter admin dev",
     "start:server": "pnpm run --filter server start:dev ",
+    "build:admin": "pnpm run --filter admin build",
     "lint": "eslint --fix '{apps/server/src,apps/admin/src,apps/client/src,packages/schema/src,packages/db/src}/**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
@@ -32,7 +34,8 @@
     "lint-staged": "^15.4.3",
     "picocolors": "^1.1.1",
     "simple-git-hooks": "^2.11.1",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "unplugin-auto-import": "^19.1.0"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec lint-staged",
