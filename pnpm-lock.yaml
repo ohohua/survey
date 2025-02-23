@@ -51,6 +51,9 @@ importers:
 
   apps/admin:
     dependencies:
+      '@ant-design/icons':
+        specifier: ^5.6.1
+        version: 5.6.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       ahooks:
         specifier: ^3.8.4
         version: 3.8.4(react@19.0.0)

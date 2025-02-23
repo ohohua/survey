@@ -1,6 +1,11 @@
+import List from '@/pages/list/List'
+
 function App() {
   return (
-    <div>survey</div>
+    <>
+      <div>survey</div>
+      <List></List>
+    </>
   )
 }
 
