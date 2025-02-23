@@ -1,10 +1,10 @@
-import List from '@/pages/list/List'
+import router from '@/router'
+import { RouterProvider } from 'react-router-dom'
 
 function App() {
   return (
     <>
-      <div>survey</div>
-      <List></List>
+      <RouterProvider router={router}></RouterProvider>
     </>
   )
 }
