@@ -14,6 +14,34 @@ const rowQuestionList = [{
   answerNumber: 20,
   createAt: '2021-09-02',
   isStar: false,
+}, {
+  id: 3,
+  title: 'Question 2',
+  isPublished: false,
+  answerNumber: 20,
+  createAt: '2021-09-02',
+  isStar: false,
+}, {
+  id: 4,
+  title: 'Question 2',
+  isPublished: false,
+  answerNumber: 20,
+  createAt: '2021-09-02',
+  isStar: false,
+}, {
+  id: 5,
+  title: 'Question 2',
+  isPublished: false,
+  answerNumber: 20,
+  createAt: '2021-09-02',
+  isStar: false,
+}, {
+  id: 6,
+  title: 'Question 2',
+  isPublished: false,
+  answerNumber: 20,
+  createAt: '2021-09-02',
+  isStar: false,
 }]
 function List() {
   const [questionList, _setQuestionList] = useState(rowQuestionList)

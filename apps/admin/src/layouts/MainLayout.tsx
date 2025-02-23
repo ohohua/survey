@@ -1,14 +1,21 @@
+import logo from '@/assets/star.png'
+import { Layout } from 'antd'
+import { Content, Footer, Header } from 'antd/es/layout/layout'
 import { Outlet } from 'react-router-dom'
+import s from './MainLayout.module.scss'
 
 function MainLayout() {
   return (
-    <>
-      <div> header </div>
-      <div>
+    <Layout style={{ backgroundColor: '#fff' }}>
+      <Header className={s.header}>
+        <img src={logo} alt="logo" />
+        <h3>survey</h3>
+      </Header>
+      <Content className={s.content}>
         <Outlet></Outlet>
-      </div>
-      <div>footer</div>
-    </>
+      </Content>
+      <Footer className={s.footer}>Footer</Footer>
+    </Layout>
   )
 }
 

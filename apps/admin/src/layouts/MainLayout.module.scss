@@ -1,0 +1,26 @@
+.header {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: initial;
+  backdrop-filter: saturate(50%) blur(4px);
+  -webkit-backdrop-filter: saturate(50%) blur(4px);
+  background-image: radial-gradient(transparent 1px, #fff 1px);
+  background-size: 4px 4px;
+  border-bottom: 1px solid #ccc;
+
+}
+
+.content {
+  min-height: calc(100vh - 64px - 65px);
+  overflow: auto;
+}
+
+.footer {
+  text-align: center;
+  background-color: #fff;
+}

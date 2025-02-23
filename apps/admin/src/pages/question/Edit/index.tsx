@@ -1,4 +1,13 @@
+import { useParams } from 'react-router-dom'
+
 function Edit() {
-  return <>edit</>
+  const { id = '' } = useParams()
+
+  return (
+    <>
+      edit
+      {id}
+    </>
+  )
 }
 export default Edit

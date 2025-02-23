@@ -15,16 +15,39 @@ html {
 body {
   margin: 0;
   font-family: sans-serif; // 设置默认字体族
+
+  body {
+    margin: 0;
+    width: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    line-height: 1.4;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    direction: ltr;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 // 重置标题样式
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-size: inherit;
   font-weight: normal;
 }
 
 // 列表样式重置
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -56,6 +79,7 @@ button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
+  appearance: button;
   -webkit-appearance: button;
 }
 
@@ -82,7 +106,8 @@ table {
 }
 
 // 引用样式重置
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 
