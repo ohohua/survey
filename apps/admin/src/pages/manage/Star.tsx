@@ -1,5 +1,9 @@
 function Star() {
-  return <>star</>
+  return (
+    <>
+      star
+    </>
+  )
 }
 
 export default Star
