@@ -1,5 +1,6 @@
 import AnswerSheet from '@/components/AnswerSheet'
-import { Typography } from 'antd'
+import ListSearch from '@/components/ListSearch'
+import { Flex, Typography } from 'antd'
 
 const rowQuestionList = [{
   id: 1,
@@ -51,7 +52,12 @@ function List() {
 
   return (
     <div>
-      <Title level={3}>我的问卷</Title>
+      <Title level={3}>
+        <Flex justify="space-between">
+          <span>我的问卷</span>
+          <ListSearch></ListSearch>
+        </Flex>
+      </Title>
       {questionList.map((answer) => {
         return <AnswerSheet key={answer.id} {...answer} />
       })}

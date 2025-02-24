@@ -1,4 +1,5 @@
 import type { TableRowSelection } from 'antd/es/table/interface'
+import ListSearch from '@/components/ListSearch'
 import { Button, Flex, Modal, Table, Tag, Typography } from 'antd'
 import Column from 'antd/es/table/Column'
 // import { useAntdTable } from 'ahooks'
@@ -100,7 +101,12 @@ function Trash() {
   }
   return (
     <>
-      <Title level={3}>回收站</Title>
+      <Title level={3}>
+        <Flex justify="space-between">
+          <span>回收站</span>
+          <ListSearch></ListSearch>
+        </Flex>
+      </Title>
       <Flex align="center" gap="middle">
         <Button type="primary" onClick={start} disabled={!hasSelected} loading={loading}>
           批量恢复
