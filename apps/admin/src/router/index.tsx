@@ -13,21 +13,26 @@ import Stat from '@/pages/question/Stat'
 import Register from '@/pages/Register'
 import { createBrowserRouter } from 'react-router-dom'
 
+export const HOME_PATHNAME = '/'
+export const LOGIN_PATHNAME = 'login'
+export const REGISTER_PATHNAME = 'register'
+export const MANAGE_INDEX_PATHNAME = 'manage/list'
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
     children: [
       {
-        path: '/',
+        path: HOME_PATHNAME,
         element: <Home />,
       },
       {
-        path: 'login',
+        path: LOGIN_PATHNAME,
         element: <Login />,
       },
       {
-        path: 'register',
+        path: REGISTER_PATHNAME,
         element: <Register />,
       },
       {

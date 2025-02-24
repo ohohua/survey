@@ -1,7 +1,11 @@
+import { Typography } from 'antd'
+
+const { Title } = Typography
+
 function Star() {
   return (
     <>
-      star
+      <Title level={3}>星标问卷</Title>
     </>
   )
 }
