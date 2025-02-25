@@ -17,9 +17,5 @@
   },
   "exclude": [
     "**/dist/**",
-    "**/examples/**",
-    "**/docs/**",
-    "**/playground/**",
-    "**/test/**"
   ]
 }
