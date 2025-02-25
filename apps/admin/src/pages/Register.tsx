@@ -32,7 +32,11 @@ const Register: React.FC = () => (
       <Form.Item<FieldType>
         label="账号"
         name="username"
-        rules={[{ required: true, message: '请输入账号' }]}
+        rules={[
+          { required: true, message: '请输入账号' },
+          { type: 'string', min: 5, max: 20, message: '长度应在5-20范围内' },
+          { pattern: /^\w+$/, message: '只能包含字母、数字、下划线' },
+        ]}
       >
         <Input />
       </Form.Item>
@@ -48,7 +52,21 @@ const Register: React.FC = () => (
       <Form.Item<FieldType>
         label="确认密码"
         name="rePassword"
-        rules={[{ required: true, message: '请再次输入密码' }]}
+        dependencies={['password']}
+        rules={[
+          { required: true, message: '请再次输入密码' },
+          ({ getFieldValue }) => {
+            const password = getFieldValue('password')
+            return {
+              validator(_rule, value) {
+                if (!value || value === password) {
+                  return Promise.resolve()
+                }
+                return Promise.reject(new Error('两次密码不一致'))
+              },
+            }
+          },
+        ]}
       >
         <Input.Password />
       </Form.Item>

@@ -31,7 +31,11 @@ const Login: React.FC = () => {
         <Form.Item<FieldType>
           label="账号"
           name="username"
-          rules={[{ required: true, message: '请输入账号' }]}
+          rules={[
+            { required: true, message: '请输入账号' },
+            { type: 'string', min: 5, max: 20, message: '长度应在5-20范围内' },
+            { pattern: /^\w+$/, message: '只能包含字母、数字、下划线' },
+          ]}
         >
           <Input />
         </Form.Item>
