@@ -24,7 +24,7 @@ function ListSearch() {
   }
   return (
     <>
-      <Search style={{ width: '200px' }} value={keyword} onChange={onChange} onSearch={onSearch}></Search>
+      <Search style={{ width: '200px' }} allowClear value={keyword} onChange={onChange} onSearch={onSearch}></Search>
     </>
   )
 }
