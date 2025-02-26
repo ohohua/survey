@@ -1,15 +1,8 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import type { Result } from './types.d.ts'
-import * as path from 'node:path'
+import type { Result } from './types'
 import axios from 'axios'
-import * as dotenv from 'dotenv'
 
 // 数据返回的接口
-
-dotenv.config({ path: path.resolve(__dirname, '../../../apps/admin/.env') })
-// const URL: string = import.meta.env.VITE_SERVICE_BASE_URL
-const URL = ''
-// console.log(process.env)
 
 enum RequestEnums {
   TIMEOUT = 20000,
@@ -17,14 +10,6 @@ enum RequestEnums {
   FAIL = 999, // 请求失败
   SUCCESS = 200, // 请求成功
   SUCCESS_OTHER = 1000, // 请求成功
-}
-const config = {
-  // 默认地址
-  baseURL: URL as string,
-  // 设置超时时间
-  timeout: RequestEnums.TIMEOUT as number,
-  // 跨域时候允许携带凭证
-  // withCredentials: true,
 }
 
 class Request {
@@ -117,5 +102,4 @@ class Request {
   }
 }
 
-// 导出一个实例对象
-export default new Request(config)
+export { Request, RequestEnums }
