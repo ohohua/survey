@@ -7,8 +7,8 @@ services:
     volumes:
       - ./docker/mysql:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: account
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: survey
+      MYSQL_ROOT_PASSWORD: 123456
     networks:
       - common-network
   redis:
@@ -26,7 +26,7 @@ services:
       - '9001:9001' # 控制台端口
     environment:
       MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: password
+      MINIO_ROOT_PASSWORD: 123456more8
     volumes:
       - ./docker/minio:/data
     networks:

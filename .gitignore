@@ -135,6 +135,7 @@ dist
 **/.DS_Store
 
 # docker volumes for dev
+docker
 .volumes
 cache
 course-db

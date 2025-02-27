@@ -15,8 +15,14 @@
   "keywords": [],
   "scripts": {
     "preinstall": "pnpm dlx only-allow pnpm",
-    "start:admin": "pnpm run --filter admin dev",
-    "start:server": "pnpm run --filter server start:dev ",
+    "db:init": "pnpm --filter @survey/db run init",
+    "db:studio": "pnpm --filter @survey/db db:studio",
+    "docker:start": "docker-compose up -d",
+    "docker:stop": "docker compose stop",
+    "docker:delete": "docker compose down",
+    "docker:down": "docker compose down --volumes",
+    "dev:admin": "pnpm run --filter admin dev",
+    "dev:server": "pnpm run --filter server start:dev ",
     "build:admin": "pnpm run --filter admin build",
     "lint": "eslint --fix '{apps/**/src,packages/**/src}/**/*.{js,jsx,ts,tsx}'"
   },
@@ -38,6 +44,7 @@
     "picocolors": "^1.1.1",
     "simple-git-hooks": "^2.11.1",
     "tsup": "^8.3.6",
+    "tsx": "^4.19.3",
     "typescript": "^5.7.3",
     "unplugin-auto-import": "^19.1.0"
   },

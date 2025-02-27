@@ -1,0 +1,22 @@
+{
+  "name": "@survey/db",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "init": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate"
+  },
+  "keywords": [],
+  "author": "ohohua",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "drizzle-orm": "^0.39.3",
+    "mysql2": "^3.12.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.30.5"
+  }
+}
