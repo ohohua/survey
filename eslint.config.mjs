@@ -12,4 +12,9 @@ export default antfu({
   rules: {
     'node/prefer-global/process': 'off',
   },
+}, {
+  files: ['apps/server/src/**/*.ts'],
+  rules: {
+    'ts/consistent-type-imports': 'off',
+  },
 })

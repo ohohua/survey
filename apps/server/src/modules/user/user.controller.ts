@@ -1,8 +1,8 @@
-import type { UserService } from './user.service'
 import { Body, Controller, HttpStatus, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { LoginDto } from './model/user.dto'
 import { LoginVo } from './model/user.vo'
+import { UserService } from './user.service'
 
 @ApiTags('用户')
 @Controller('user')

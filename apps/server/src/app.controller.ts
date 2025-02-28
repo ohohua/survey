@@ -1,6 +1,6 @@
-import type { AppService } from './app.service'
 import { Controller, Get, HttpStatus, Param, ParseIntPipe, Query } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { AppService } from './app.service'
 
 @ApiTags('测试')
 @Controller()
