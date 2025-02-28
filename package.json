@@ -22,7 +22,7 @@
     "docker:delete": "docker compose down",
     "docker:down": "docker compose down --volumes",
     "dev:admin": "pnpm run --filter admin dev",
-    "dev:server": "pnpm run --filter server start:dev ",
+    "dev:server": "pnpm run --filter server start:debug",
     "build:admin": "pnpm run --filter admin build",
     "lint": "eslint --fix '{apps/**/src,packages/**/src}/**/*.{js,jsx,ts,tsx}'"
   },

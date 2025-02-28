@@ -7,11 +7,6 @@
   "license": "MIT",
   "scripts": {
     "build": "dotenv -e .env.prod -- nest build",
-    "prisma:studio": "dotenv -e .env.dev -- npx prisma studio",
-    "prisma:migrate": "dotenv -e .env.dev -- npx prisma migrate dev --name account",
-    "prisma:push": "dotenv -e .env.dev -- npx prisma db push",
-    "prisma:pull": "dotenv -e .env.dev -- npx prisma db pull",
-    "prisma:generate": "npx prisma generate",
     "start": "nest start",
     "start:dev": "dotenv -e .env.dev -- nest start --watch",
     "start:debug": "dotenv -e .env.dev -- nest start --debug --watch",
@@ -21,7 +16,6 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
-
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -56,10 +50,12 @@
     "eslint-plugin-prettier": "^5.2.2",
     "globals": "^15.14.0",
     "jest": "^29.7.0",
+    "nest-knife4j": "^1.0.1",
     "prettier": "^3.4.2",
     "prisma": "^6.4.1",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
+    "swagger-ui-express": "^5.0.1",
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",

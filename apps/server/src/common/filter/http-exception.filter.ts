@@ -21,10 +21,12 @@ export class HttpExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>()
     // 获取状态码
     const statusCode = exception.getStatus()
-
+    // 获取 class-validator 校验的错误信息
+    const getResponse = exception.getResponse() as { message: string[] }
+    const msg = getResponse.message ? getResponse.message.toString() : exception.message
     // 自定义异常返回体
     response
       .status(statusCode)
-      .json(responseMessage(null, exception.message, statusCode))
+      .json(responseMessage(null, msg, statusCode))
   }
 }

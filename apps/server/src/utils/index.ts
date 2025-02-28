@@ -1,9 +1,9 @@
 import type { Response } from '../typings'
-import * as crypto from 'node:crypto'
+import { createHash } from 'node:crypto'
 import { RESPONSE_CODE, RESPONSE_MSG } from '../enums'
 
 export function md5(str) {
-  const hash = crypto.createHash('md5')
+  const hash = createHash('md5')
   hash.update(str)
   return hash.digest('hex')
 }
