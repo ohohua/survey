@@ -9,7 +9,7 @@ export default antfu({
     quotes: 'single', // or 'double'
   },
 }, {
-  files: ['apps/**/src/**/*.{js,ts,tsx}', 'packages/**/src/**/*.{ts,js}'],
+  files: ['apps/**/src/**/*.{js,ts,tsx}', 'packages/**/src/**/*.{ts,js}', 'scripts/*.{js,ts}'],
   rules: {
     'node/prefer-global/process': 'off',
   },
