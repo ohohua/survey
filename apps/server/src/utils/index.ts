@@ -1,4 +1,4 @@
-import type { Response } from '../typings'
+import type { Response } from '../types'
 import { createHash } from 'node:crypto'
 import { RESPONSE_CODE, RESPONSE_MSG } from '../enums'
 

@@ -10,8 +10,8 @@ export class AppController {
   @ApiParam({ name: 'type', type: Number, description: '返回类型: 1, 2', required: false })
   @ApiQuery({ name: 'content', type: String, description: '返回内容', required: false })
   @ApiOperation({ summary: '测试接口', description: '接口描述' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: '' })
-  @Get(':type')
+  @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
+  @Get('test:type')
   getHello(@Param('type', ParseIntPipe) type: number, @Query('content') content: string): string {
     return this.appService.getHello(type, content)
   }

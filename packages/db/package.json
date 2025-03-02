@@ -1,6 +1,11 @@
 {
   "name": "@survey/db",
+  "type": "module",
   "version": "1.0.0",
+  "description": "",
+  "author": "ohohua",
+  "license": "MIT",
+  "keywords": [],
   "main": "src/index.ts",
   "scripts": {
     "init": "drizzle-kit push",
@@ -8,11 +13,8 @@
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate"
   },
-  "keywords": [],
-  "author": "ohohua",
-  "license": "MIT",
-  "description": "",
   "dependencies": {
+    "@survey/schema": "workspace:^",
     "drizzle-orm": "^0.39.3",
     "mysql2": "^3.12.0"
   },

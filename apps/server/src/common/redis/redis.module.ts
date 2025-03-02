@@ -1,6 +1,5 @@
 import { Global, Module } from '@nestjs/common'
 import { createClient } from 'redis'
-import { environment } from 'src/utils'
 import { RedisService } from './redis.service'
 
 @Global()
@@ -12,8 +11,8 @@ import { RedisService } from './redis.service'
       async useFactory() {
         const client = createClient({
           socket: {
-            host: environment.host,
-            port: 6379,
+            host: process.env.REDIS_HOST,
+            port: Number(process.env.REDIS_PORT),
           },
           database: 2,
         })

@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug server (TS)",
+      "runtimeExecutable": "npm",
+      "args": ["run", "start:debug"],
+      "cwd": "${workspaceFolder}/apps/server",
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "sourceMapPathOverrides": {
+        "../../../*": "${workspaceFolder}/apps/server/src/*",
+        "../*": "${workspaceFolder}/apps/server/src/*"
+      }
+    }
+  ]
+}

@@ -10,9 +10,9 @@ import { knife4jSetup } from 'nest-knife4j'
  */
 export function swaggerSetup(app: INestApplication) {
   const config = new DocumentBuilder()
-    .setTitle('问卷系统')
+    .setTitle('问卷swagger')
     .setDescription('web端和c端接口文档')
-    .setVersion('1.0')
+    .setVersion('1.0.0')
     .addTag('dev')
     .build()
   const documentFactory = () => SwaggerModule.createDocument(app, config)

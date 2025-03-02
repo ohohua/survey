@@ -23,7 +23,8 @@ export class UserController {
   @ApiBody({ type: LoginDto })
   @ApiResponse({ type: '' })
   @Post('register')
-  async register(): Promise<LoginDto> {
-    return new LoginDto()
+  async register() {
+    return this.service.test()
+    // return new LoginDto()
   }
 }

@@ -1,13 +1,13 @@
 {
   "name": "@survey/http",
+  "type": "module",
   "version": "1.0.0",
+  "description": "http request",
+  "author": "",
+  "license": "MIT",
+  "keywords": [],
   "main": "src/index.ts",
   "scripts": {
     "build": "tsup"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "type": "module",
-  "description": "http request"
+  }
 }
