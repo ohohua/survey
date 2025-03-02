@@ -1,22 +1,20 @@
 import { Global, Module } from '@nestjs/common'
 import * as Minio from 'minio'
 import { ModuleController } from './minio.controller'
-import { ModuleService } from './minio.service'
 
 @Global()
 @Module({
   controllers: [ModuleController],
   providers: [
-    ModuleService,
     {
       provide: 'MINIO_CLIENT',
       useFactory: async () => {
         const client = new Minio.Client({
-          endPoint: '192.168.1.7',
-          port: 9000,
+          endPoint: process.env.END_POINT!,
+          port: Number(process.env.MINIO_PORT),
           useSSL: false,
-          accessKey: 'mMjCrrTPRqwadibUcJyE',
-          secretKey: 'mvoXvbKEMZlcI0T3whtEg81xerGT4hPXHzzpG1Qw',
+          accessKey: process.env.ACCESS_KEY,
+          secretKey: process.env.SECRET_KEY,
         })
         return client
       },

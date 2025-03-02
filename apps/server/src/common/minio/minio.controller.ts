@@ -1,11 +1,8 @@
 import type * as Minio from 'minio'
-import type { ModuleService } from './minio.service'
 import { Controller, Get, Inject, Query } from '@nestjs/common'
 
 @Controller('minio')
 export class ModuleController {
-  constructor(private readonly moduleService: ModuleService) {}
-
   @Inject('MINIO_CLIENT')
   private minioClient: Minio.Client
 
