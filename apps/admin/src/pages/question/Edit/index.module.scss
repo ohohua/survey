@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #F0F2F5;
+  height: calc(100vh - 64px);
+}
+
+.left {
+  width: 270px;
+  margin: 10px;
+  background: white;
+}
+
+.center {
+  width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  .canvas {
+    width: 380px;
+    height: 700px;
+    background: white;
+  }
+}
+
+.right {
+  width: 270px;
+   
+  margin: 10px;
+  background: white;
+}

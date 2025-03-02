@@ -1,13 +1,13 @@
 import { Outlet } from 'react-router-dom'
+import s from './QuestionLayout.module.scss'
 
 function QuestionLayout() {
   return (
     <>
-      <p> header </p>
+      <p className={s.header}> header </p>
       <div>
         <Outlet></Outlet>
       </div>
-      <div>footer</div>
     </>
   )
 }
