@@ -138,4 +138,5 @@ dist
 docker
 .volumes
 cache
-course-db
+
+.idea

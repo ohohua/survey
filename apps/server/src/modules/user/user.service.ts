@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common'
-import { user } from '@survey/schema'
-import { eq } from 'drizzle-orm'
+// import { user } from '@survey/schema'
+// import { eq } from 'drizzle-orm'
 import { DB, DbType } from '../global/providers/db.provider'
 
 const logger = new Logger('UserService')
@@ -11,7 +11,7 @@ export class UserService {
 
   async test() {
     try {
-      return await this.db.select().from(user).where(eq(user.id, 1))
+      // return await this.db.select().from(user).where(eq(user.id, ))
     }
     catch (e) {
       logger.error(e)

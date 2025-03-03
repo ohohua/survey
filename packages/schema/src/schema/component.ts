@@ -1,13 +1,13 @@
-import { int, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core'
+import { json, mysqlEnum, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core'
 import { createId } from './index'
 
-export const user = mysqlTable('user', {
+export const component = mysqlTable('component', {
   id: varchar('id', { length: 10 })
     .primaryKey()
     .$defaultFn(() => createId()),
-  name: varchar({ length: 64 }).notNull(),
-  age: int().notNull(),
-  email: varchar({ length: 64 }).notNull().unique(),
+  type: mysqlEnum(['questionTitle', 'questionInput']),
+  title: varchar({ length: 64 }).notNull(),
+  props: json(),
   createAt: timestamp('create_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
 })

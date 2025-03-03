@@ -9,7 +9,7 @@ export default antfu({
     quotes: 'single', // or 'double'
   },
 }, {
-  files: ['apps/**/src/**/*.{js,ts,tsx}', 'packages/**/*.{ts,js}', 'scripts/*.{js,ts}'],
+  files: ['apps/**/src/*.{ts,tsx}', 'packages/**/src/*.{ts,js}'],
   rules: {
     'node/prefer-global/process': 'off',
   },
@@ -17,5 +17,6 @@ export default antfu({
   files: ['apps/server/src/**/*.ts'],
   rules: {
     'ts/consistent-type-imports': 'off',
+    'node/prefer-global/process': 'off'
   },
 })

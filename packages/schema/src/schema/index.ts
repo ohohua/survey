@@ -6,4 +6,6 @@ export const createId = init({
   fingerprint: 'ohohua', // 主机环境的自定义指纹。这有助于在分布式系统中生成id时防止冲突。
 })
 
+export * from './component'
+export * from './question'
 export * from './user'
