@@ -28,6 +28,7 @@ export class FormatResponseInterceptor implements NestInterceptor {
           code: response.statusCode,
           msg: 'success',
           data,
+          timestamp: new Date().getTime(),
         }
       }),
     )

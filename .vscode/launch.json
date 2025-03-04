@@ -10,14 +10,12 @@
       "cwd": "${workspaceFolder}/apps/server",
       "console": "integratedTerminal",
       "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**"],
       "resolveSourceMapLocations": [
         "${workspaceFolder}/**",
         "!**/node_modules/**"
       ],
-      "sourceMapPathOverrides": {
-        "../../../*": "${workspaceFolder}/apps/server/src/*",
-        "../*": "${workspaceFolder}/apps/server/src/*"
-      }
+      
     }
   ]
 }

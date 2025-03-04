@@ -8,4 +8,4 @@ import { UserService } from './user.service'
   controllers: [UserController],
 })
 
-export class UserModule {}
+export class UserModule { }

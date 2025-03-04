@@ -6,9 +6,9 @@ export const component = mysqlTable('component', {
     .primaryKey()
     .$defaultFn(() => createId()),
   questionId: varchar('question_id', { length: 10 }).notNull(),
-  type: mysqlEnum(['questionTitle', 'questionInput']),
+  type: mysqlEnum(['componentTitle', 'componentInput']),
   title: varchar({ length: 64 }).notNull(),
-  props: json(),
+  props: json().default('{}'),
   createAt: timestamp('create_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
 })
