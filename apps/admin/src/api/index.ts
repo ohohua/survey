@@ -5,4 +5,7 @@ export const http = new Request({
   timeout: RequestEnums.TIMEOUT,
 })
 
-export * from './test'
+export const PREFIX = '/api/admin'
+
+export * from './component'
+export * from './question'

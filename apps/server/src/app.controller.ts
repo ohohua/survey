@@ -3,7 +3,7 @@ import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/
 import { AppService } from './app.service'
 
 @ApiTags('测试')
-@Controller()
+@Controller('')
 export class AppController {
   constructor(private readonly appService: AppService) { }
 

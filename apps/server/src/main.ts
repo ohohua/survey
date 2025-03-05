@@ -11,6 +11,8 @@ async function bootstrap() {
 
   // 启用 swagger
   swaggerSetup(app)
+  // 设置前缀
+  app.setGlobalPrefix('api')
   // 允许跨域
   app.enableCors({ origin: [/^http:\/\/localhost(:\d+)?$/, /^http:\/\/xxx\.xxx\.com(:81)?$/] })
   // 启用管道校验

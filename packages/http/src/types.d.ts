@@ -1,7 +1,7 @@
 // 定义请求响应参数
 export interface Result<T> {
   code: number
-  message: string
+  msg: string
   data: T
 }
 

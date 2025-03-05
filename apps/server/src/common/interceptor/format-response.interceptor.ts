@@ -26,7 +26,7 @@ export class FormatResponseInterceptor implements NestInterceptor {
 
         return {
           code: response.statusCode,
-          msg: 'success',
+          msg: '请求成功',
           data,
           timestamp: new Date().getTime(),
         }

@@ -7,7 +7,7 @@ import { QuestionModule } from './modules/question/question.module'
 import { UserModule } from './modules/user/user.module'
 
 @Module({
-  imports: [UserModule, GlobalModule, QuestionModule, ComponentModule],
+  imports: [GlobalModule, ComponentModule, QuestionModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })

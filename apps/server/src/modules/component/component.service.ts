@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common'
+import { component } from '@survey/schema'
+import { eq, getTableColumns } from 'drizzle-orm'
 import { DB, DbType } from '../global/providers/db.provider'
 import { CreateComponentDto } from './model/component.dto'
-// import { component, createId } from '@survey/schema';
 
 @Injectable()
 export class ComponentService {
@@ -9,10 +10,14 @@ export class ComponentService {
   @Inject(DB)
   private db: DbType
 
-  async create(_dto: CreateComponentDto) {
-    // const id = createId()
-    // const {questionId, title, type, props} = dto
-    // await this.db.insert(component).values({ id, questionId, title, type, props })
+  async create(dto: CreateComponentDto) {
+    const { questionId, title, type, props } = dto
+    await this.db.insert(component).values({ questionId, title, type, props })
+    return '创建成功'
+  }
 
+  async getComponentListByQuestionId(questionId: string) {
+    const { isDeleted, ...rest } = getTableColumns(component)
+    return await this.db.select(rest).from(component).where(eq(component.questionId, questionId))
   }
 }

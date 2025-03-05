@@ -16,6 +16,7 @@ function getComponent(componentInfo: ComponentInfo) {
 
 function EditCanvas() {
   const { componentList } = useComponentStore()
+
   return (
     <>
       {

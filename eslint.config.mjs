@@ -9,14 +9,15 @@ export default antfu({
     quotes: 'single', // or 'double'
   },
 }, {
-  files: ['apps/**/src/*.{ts,tsx}', 'packages/**/src/*.{ts,js}'],
+  files: ['apps/**/src/**/*.{ts,tsx}', 'packages/**/src/*.{ts,js}'],
   rules: {
     'node/prefer-global/process': 'off',
+    'react-hooks/exhaustive-deps': 'off',
   },
 }, {
   files: ['apps/server/src/**/*.ts'],
   rules: {
     'ts/consistent-type-imports': 'off',
-    'node/prefer-global/process': 'off'
+    'node/prefer-global/process': 'off',
   },
 })

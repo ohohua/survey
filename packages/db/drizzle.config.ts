@@ -1,5 +1,6 @@
 // import 'dotenv/config'
 import path from 'node:path'
+import process from 'node:process'
 import * as dotenv from 'dotenv'
 import { defineConfig } from 'drizzle-kit'
 

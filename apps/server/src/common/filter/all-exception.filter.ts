@@ -8,7 +8,7 @@ import { responseMessage } from '../../utils'
 // @Catch() 装饰器绑定所需的元数据到异常过滤器上。它告诉 Nest这个特定的过滤器正在寻找
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: HttpException, host: ArgumentsHost) {
     // 获取上下文
     const ctx = host.switchToHttp()
     // 获取响应体
@@ -22,6 +22,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     // 自定义异常返回体
     response
       .status(statusCode)
-      .json(responseMessage(null, '服务器内部错误!', statusCode))
+      .json(responseMessage(null, exception.message || '服务器内部错误!', statusCode))
   }
 }

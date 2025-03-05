@@ -5,7 +5,7 @@ import { LoginVo } from './model/user.vo'
 import { UserService } from './user.service'
 
 @ApiTags('用户')
-@Controller('user')
+@Controller('admin/user')
 export class UserController {
   constructor(private service: UserService) { }
 

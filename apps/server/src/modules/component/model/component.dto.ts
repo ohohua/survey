@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, Length } from 'class-validator'
 
+// 组件类型
+type ComponentType = 'componentInput' | 'componentTitle'
+
 export class CreateComponentDto {
   @ApiProperty({ description: '问卷id' })
   @IsNotEmpty()
@@ -8,7 +11,7 @@ export class CreateComponentDto {
 
   @ApiProperty({ description: '组件类型', enum: ['componentInput', 'componentTitle'] })
   @IsNotEmpty()
-  type: string
+  type: ComponentType
 
   @ApiProperty({ description: '题目名称' })
   @IsNotEmpty()

@@ -16,4 +16,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)), // 和 "@": pathSrc 等价
     },
   },
+  server: {
+    port: 8080,
+  },
 })

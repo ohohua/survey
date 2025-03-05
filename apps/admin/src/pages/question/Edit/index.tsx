@@ -1,9 +1,9 @@
-// import { useParams } from 'react-router-dom'
+import { useLoadQuestionData } from '@/hooks/useLoadQuestionData'
 import EditCanvas from './EditCanvas'
 import s from './index.module.scss'
 
 function Edit() {
-  // const { id = '' } = useParams()
+  useLoadQuestionData()
 
   return (
     <div className={s.container}>
