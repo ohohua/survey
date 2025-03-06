@@ -9,15 +9,18 @@ export interface ComponentInfo {
 }
 // 创建状态存储
 interface ComponentListState {
+  selectId: string
   componentList: ComponentInfo[]
   resetComponent: (componentList: ComponentInfo[]) => void
   addComponent: (component: ComponentInfo) => void
   delComponent: (id: string) => void
   updateComponent: (component: ComponentInfo) => void
+  setSelectId: (id: string) => void
 }
 
 export const useComponentStore = create<ComponentListState>(set => ({
-  componentList: [],
+  selectId: '', // 被选中的 componentId
+  componentList: [], // 问卷组件列表
   resetComponent: componentList => set(() => ({ componentList })),
   addComponent: component => set(state => ({ componentList: [...state.componentList, component] })),
   delComponent: id => set((state) => {
@@ -38,4 +41,6 @@ export const useComponentStore = create<ComponentListState>(set => ({
       }),
     }
   }),
+
+  setSelectId: (id: string) => set(() => ({ selectId: id })),
 }))

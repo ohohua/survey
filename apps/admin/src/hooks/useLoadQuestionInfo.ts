@@ -5,11 +5,12 @@ import { useParams } from 'react-router-dom'
 
 export function useLoadQuestionData() {
   const { id = '' } = useParams()
-  const componentStore = useComponentStore()
+  const { setSelectId, resetComponent } = useComponentStore()
 
   const { data, error, loading, run } = useRequest(async () => {
-    if (!id)
+    if (!id) {
       throw new Error('没有问卷id')
+    }
     const { data } = await loadQuestionInfo(id)
     return data
   }, {
@@ -18,9 +19,14 @@ export function useLoadQuestionData() {
   })
 
   useEffect(() => {
-    if (!data)
+    if (!data) {
       return
-    componentStore.resetComponent(data.componentList)
+    }
+    if (data.componentList!.length) {
+      setSelectId(data.componentList![0].id)
+    }
+
+    resetComponent(data.componentList!)
   }, [data])
 
   useEffect(() => {

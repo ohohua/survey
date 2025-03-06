@@ -24,7 +24,8 @@ export function useLoadQuestionList() {
 
   useEffect(() => {
     if (data) {
-      setQuestionList(data.list)
+      const { list } = data
+      setQuestionList(list)
     }
   }, [data])
 
