@@ -1,4 +1,4 @@
-import { useLoadQuestionData } from '@/hooks/useLoadQuestionData'
+import { useLoadQuestionData } from '@/hooks/useLoadQuestionInfo'
 import EditCanvas from './EditCanvas'
 import s from './index.module.scss'
 

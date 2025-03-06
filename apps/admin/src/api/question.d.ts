@@ -1,8 +1,14 @@
-export interface QuestionInfo<T> {
+export interface QuestionInfo<T = any> {
   id: string
   title: string
   isPublished: boolean
   isStar: boolean
   answerCount: number
-  componentList: T
+  createAt: string
+  componentList?: T
+}
+
+export interface ListVo<T> {
+  list: T[]
+  total: number
 }

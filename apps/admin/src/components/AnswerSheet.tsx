@@ -5,24 +5,25 @@ import { useNavigate } from 'react-router-dom'
 import s from './AnswerSheet.module.scss'
 
 interface AnswerSheetProps {
+  id: string
   title: string
   isPublished: boolean
-  answerNumber: number
+  answerCount: number
   createAt: string
   isStar: boolean
 }
 
 function AnswerSheet(props: PropsWithChildren<AnswerSheetProps>) {
-  const { title, isPublished, answerNumber, createAt, isStar } = props
+  const { id, title, isPublished, answerCount, createAt, isStar } = props
   const nav = useNavigate()
 
   const starStyle = isStar ? { color: '#F4BF4F' } : {}
 
   const handleEdit = () => {
-    nav({ pathname: '/question/edit/1' })
+    nav({ pathname: `/question/edit/${id}` })
   }
   const handleStat = () => {
-    nav({ pathname: '/question/stat/2' })
+    nav({ pathname: `/question/stat/${id}` })
   }
   const handleStar = () => {}
   const handleCopy = () => {}
@@ -35,7 +36,7 @@ function AnswerSheet(props: PropsWithChildren<AnswerSheetProps>) {
         <span className={s['answer-sheet__question--published']}>{isPublished ? <Tag color="blue">已发布</Tag> : <Tag>未发布</Tag>}</span>
         <span className={s['answer-sheet__question--number']}>
           答卷：
-          {answerNumber}
+          {answerCount}
         </span>
         <div className={s['answer-sheet__question--create-at']}>{createAt}</div>
       </div>
