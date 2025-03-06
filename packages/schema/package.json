@@ -6,7 +6,7 @@
   "author": "ohohua",
   "license": "ISC",
   "keywords": [],
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup"

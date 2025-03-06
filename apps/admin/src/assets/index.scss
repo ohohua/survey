@@ -10,6 +10,8 @@
 html {
   line-height: 1.15; // 修正默认行高
   -webkit-text-size-adjust: 100%; // 禁止iOS字体自动调整
+  scrollbar-width: thin;
+  scrollbar-color: #eaeaea transparent;
 }
 
 body {

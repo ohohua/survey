@@ -12,7 +12,7 @@ export class QuestionService {
   async create() {
     const id = createId()
     try {
-      await this.db.insert(question).values({ id, title: `新建问卷${Math.random().toString().slice(2, 8)}` })
+      await this.db.insert(question).values({ id, title: `新建问卷${id}` })
     }
     catch (e) {
       throw new BadRequestException(e)
