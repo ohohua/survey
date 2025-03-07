@@ -3,15 +3,20 @@ import { Checkbox, Form, Input, Select } from 'antd'
 
 function PropComponent(props: QuestionTitleProps) {
   const [form] = Form.useForm()
-  const { title, level, isCenter } = props
+  const { title, level, isCenter, onChange } = props
 
   useEffect(() => {
     form.setFieldsValue({ title, level, isCenter })
   }, [title, level, isCenter])
 
+  function handleChange() {
+    if (onChange) {
+      onChange(form.getFieldsValue())
+    }
+  }
   return (
     <>
-      <Form layout="vertical" initialValues={{ title, level, isCenter }} form={form}>
+      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, level, isCenter }} form={form}>
         <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
           <Input />
         </Form.Item>
@@ -26,7 +31,7 @@ function PropComponent(props: QuestionTitleProps) {
           />
         </Form.Item>
         <Form.Item name="isCenter" valuePropName="checked">
-          <Checkbox>是否选中</Checkbox>
+          <Checkbox>是否居中</Checkbox>
         </Form.Item>
       </Form>
     </>

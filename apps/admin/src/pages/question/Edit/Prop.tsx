@@ -1,5 +1,7 @@
-import { getComponentByType } from '@/components/Question'
+import type { ComponentPropsType } from '@/components/Question'
+import { getComponentConfigByType } from '@/components/Question'
 import { useGetComponentInfo } from '@/hooks/useGetComponentInfo'
+import { useComponentStore } from '@/store'
 
 function NoContent() {
   return <div style={{ textAlign: 'center' }}> 未选中组件 </div>
@@ -7,19 +9,32 @@ function NoContent() {
 
 function Prop() {
   const { selectedComponent } = useGetComponentInfo()
+  const { updateComponent } = useComponentStore()
 
   if (!selectedComponent) {
     return <NoContent />
   }
-  const { type, props } = selectedComponent
-  const componentConfig = getComponentByType(type)
+  const { type, props, id } = selectedComponent
+  const componentConfig = getComponentConfigByType(type)
 
   if (!componentConfig) {
     return <NoContent />
   }
   const { PropComponent } = componentConfig
 
-  return <PropComponent {...props} />
+  function newPropsChange(newProps: ComponentPropsType) {
+    if (!selectedComponent) {
+      return
+    }
+
+    updateComponent({
+      id,
+      type,
+      props: newProps,
+    })
+  }
+
+  return <PropComponent {...props} onChange={newPropsChange} />
 }
 
 export default Prop

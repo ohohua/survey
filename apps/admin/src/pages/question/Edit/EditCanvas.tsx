@@ -1,6 +1,6 @@
 import type { ComponentInfo } from '@/store/useComponentStore'
 import type { MouseEvent } from 'react'
-import { getComponentByType } from '@/components/Question'
+import { getComponentConfigByType } from '@/components/Question'
 import { useComponentStore } from '@/store/useComponentStore'
 import clsx from 'clsx'
 import s from './EditCanvas.module.scss'
@@ -8,7 +8,7 @@ import s from './EditCanvas.module.scss'
 function getComponent(componentInfo: ComponentInfo) {
   const { props, type } = componentInfo
 
-  const componentConfig = getComponentByType(type)
+  const componentConfig = getComponentConfigByType(type)
   if (componentConfig == null)
     return null
 

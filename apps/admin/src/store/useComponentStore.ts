@@ -4,7 +4,6 @@ import { create } from 'zustand'
 export interface ComponentInfo {
   id: string
   type: string
-  title: string
   props: ComponentPropsType
 }
 // 创建状态存储

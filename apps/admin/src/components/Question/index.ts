@@ -16,7 +16,7 @@ export interface ComponentConfigType {
   defaultProps: ComponentPropsType
 }
 
-// 全部组件构成的列表
+// 全部组件构成的列表，渲染组件时候使用
 export const componentList: ComponentConfigType[] = [QuestionInput, QuestionTitle]
 
 // 组件库
@@ -38,5 +38,5 @@ export const componentGroup = [
   },
 ]
 
-// 根据type获取组件
-export const getComponentByType = (type: string) => componentList.find(c => c.type === type)
+// 根据type获取组件: Component || PropComponent
+export const getComponentConfigByType = (type: string) => componentList.find(c => c.type === type)

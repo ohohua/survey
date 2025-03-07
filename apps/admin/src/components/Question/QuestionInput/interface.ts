@@ -1,6 +1,7 @@
 export interface QuestionInputProps {
   title?: string
   placeholder?: string
+  onChange?: (newProps: QuestionInputProps) => void
 }
 
 export const QuestionInputDefault: QuestionInputProps = {
