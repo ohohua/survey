@@ -3,6 +3,7 @@ import { useComponentStore } from '@/store'
 import { FileOutlined, OrderedListOutlined, ProductOutlined, SettingOutlined } from '@ant-design/icons'
 import { Tabs } from 'antd'
 import EditCanvas from './EditCanvas'
+import EditHeader from './EditHeader'
 import s from './index.module.scss'
 import Lib from './Lib'
 import Prop from './Prop'
@@ -42,27 +43,30 @@ function Edit() {
   }
 
   return (
-    <div className={s.container}>
-      <aside className={s.left}>
-        <Tabs
-          defaultActiveKey="lib"
-          centered
-          items={tabItems}
-        />
-      </aside>
-      <div className={s.center} onClick={handleClickOutside}>
-        <div className={s.canvas}>
-          <EditCanvas></EditCanvas>
+    <>
+      <EditHeader></EditHeader>
+      <div className={s.container}>
+        <aside className={s.left}>
+          <Tabs
+            defaultActiveKey="lib"
+            centered
+            items={tabItems}
+          />
+        </aside>
+        <div className={s.center} onClick={handleClickOutside}>
+          <div className={s.canvas}>
+            <EditCanvas></EditCanvas>
+          </div>
+        </div>
+        <div className={s.right}>
+          <Tabs
+            defaultActiveKey="stats"
+            centered
+            items={tabSettingItems}
+          />
         </div>
       </div>
-      <div className={s.right}>
-        <Tabs
-          defaultActiveKey="stats"
-          centered
-          items={tabSettingItems}
-        />
-      </div>
-    </div>
+    </>
   )
 }
 export default Edit

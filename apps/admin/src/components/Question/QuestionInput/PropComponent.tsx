@@ -1,9 +1,10 @@
 import type { QuestionInputProps } from './interface'
 import { Form, Input } from 'antd'
+import { QuestionInputDefault } from './interface'
 
 function PropComponent(props: QuestionInputProps) {
   const [form] = Form.useForm()
-  const { title, placeholder, onChange } = props
+  const { title, placeholder, onChange } = { ...QuestionInputDefault, ...props }
 
   useEffect(() => {
     form.setFieldsValue({ title, placeholder })

@@ -9,7 +9,6 @@ export type ComponentPropsType = QuestionInputProps | QuestionTitleProps
 
 // 组件类型
 export interface ComponentConfigType {
-  title: string
   type: string
   Component: FC<ComponentPropsType>
   PropComponent: FC<ComponentPropsType>

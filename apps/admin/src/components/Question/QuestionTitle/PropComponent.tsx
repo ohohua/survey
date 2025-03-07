@@ -1,9 +1,10 @@
 import type { QuestionTitleProps } from './interface'
 import { Checkbox, Form, Input, Select } from 'antd'
+import { QuestionTitleDefault } from './interface'
 
 function PropComponent(props: QuestionTitleProps) {
   const [form] = Form.useForm()
-  const { title, level, isCenter, onChange } = props
+  const { title, level, isCenter, onChange } = { ...QuestionTitleDefault, ...props }
 
   useEffect(() => {
     form.setFieldsValue({ title, level, isCenter })

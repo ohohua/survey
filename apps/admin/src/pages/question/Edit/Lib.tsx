@@ -9,12 +9,12 @@ function Lib() {
   const { addComponent } = useComponentStore()
 
   function getComponent(c: ComponentConfigType) {
-    const { type, title, Component, defaultProps } = c
+    const { type, Component, defaultProps } = c
 
     function handleClick() {
       const component = getComponentConfigByType(type)
       if (component) {
-        addComponent({ id: nanoid(5), type, title, props: defaultProps })
+        addComponent({ id: nanoid(5), type, props: defaultProps })
       }
     }
 
