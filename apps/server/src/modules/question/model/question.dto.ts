@@ -1,7 +1,7 @@
-import { ApiProperty, OmitType } from '@nestjs/swagger'
+import { ApiProperty, IntersectionType, OmitType } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
 import { IsNotEmpty, ValidateNested } from 'class-validator'
-import { CreateComponentDto, UpdateComponentDto } from 'src/modules/component/model/component.dto'
+import { CreateComponentDto } from 'src/modules/component/model/component.dto'
 
 class ComponentDto extends OmitType(CreateComponentDto, ['questionId'] as const) { }
 
@@ -20,6 +20,13 @@ export class CreateQuestionDto {
   @Type(() => ComponentDto)
   components?: ComponentDto[]
 }
+
+class UpdateComponentPickIdDto {
+  @ApiProperty({ description: '组件id, 没有则新增组件' })
+  id?: string
+}
+
+class UpdateComponentDto extends IntersectionType(UpdateComponentPickIdDto, CreateComponentDto) { }
 
 export class UpdateQuestionDto {
   @ApiProperty({ example: 'u7odcj4ott', description: '问卷id, 不能为空' })

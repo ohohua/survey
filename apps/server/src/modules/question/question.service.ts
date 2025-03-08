@@ -2,7 +2,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { component, createId, question } from '@survey/schema'
 import { eq, getTableColumns, like, sql } from 'drizzle-orm'
 import { DB, DbType } from '../global/providers/db.provider'
-import { CreateQuestionDto } from './model/question.dto'
+import { CreateQuestionDto, UpdateQuestionDto } from './model/question.dto'
 
 @Injectable()
 export class QuestionService {
@@ -13,14 +13,12 @@ export class QuestionService {
   async newQuestionnaire(dto: CreateQuestionDto) {
     const id = createId()
     const { backgroundImage, pageHeaderImage, components } = dto
-
     try {
       await this.db.insert(question).values({ id, title: dto.title || `问卷${id}`, backgroundImage, pageHeaderImage })
 
       if (!components || !components.length) {
         return id
       }
-
       for (const c of components) {
         await this.db.insert(component).values({ type: c.type, props: c.props, questionId: id })
       }
@@ -29,6 +27,27 @@ export class QuestionService {
       throw new BadRequestException(e)
     }
     return id
+  }
+
+  async editQuestionnaire(dto: UpdateQuestionDto) {
+    const { id, title, backgroundImage, pageHeaderImage, components } = dto
+    await this.db.update(question).set({ title, backgroundImage, pageHeaderImage }).where(eq(question.id, id))
+
+    if (!components || !components.length) {
+      return '修改成功'
+    }
+    // 要么全成功, 要么都失败
+    await this.db.transaction(async (tx) => {
+      for (const c of components) {
+        if (c.id) {
+          await tx.update(component).set({ type: c.type, props: c.props }).where(eq(component.id, c.id))
+        }
+        else {
+          await tx.insert(component).values({ ...c })
+        }
+      }
+    })
+    return '修改成功'
   }
 
   async issueQuestionnaire(id: string) {
@@ -42,7 +61,7 @@ export class QuestionService {
     if (hasQuestion[0].isDeleted) {
       throw new BadRequestException('问卷已删除')
     }
-    await this.db.update(question).set({ isPublished: true })
+    await this.db.update(question).set({ isPublished: true }).where(eq(question.id, id))
 
     return id
   }

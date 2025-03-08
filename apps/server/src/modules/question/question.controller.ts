@@ -21,8 +21,8 @@ export class QuestionController {
   @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
   @ApiBody({ type: UpdateQuestionDto, description: '' })
   @Put()
-  updateQuestionnaire(@Body() dto: CreateQuestionDto) {
-    return this.service.newQuestionnaire(dto)
+  updateQuestionnaire(@Body() dto: UpdateQuestionDto) {
+    return this.service.editQuestionnaire(dto)
   }
 
   @ApiOperation({ summary: '发布问卷' })
