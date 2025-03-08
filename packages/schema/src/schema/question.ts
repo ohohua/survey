@@ -6,6 +6,8 @@ export const question = mysqlTable('question', {
     .primaryKey()
     .$defaultFn(() => createId()),
   title: varchar({ length: 255 }).notNull(),
+  backgroundImage: varchar('background_image', { length: 255 }),
+  pageHeaderImage: varchar('page_header_image', { length: 255 }),
   isPublished: boolean('is_published').default(false),
   isStar: boolean('is_star').default(false),
   answerCount: int('answer_count').default(0),

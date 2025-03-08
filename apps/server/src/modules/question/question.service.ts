@@ -2,6 +2,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { component, createId, question } from '@survey/schema'
 import { eq, getTableColumns, like, sql } from 'drizzle-orm'
 import { DB, DbType } from '../global/providers/db.provider'
+import { CreateQuestionDto } from './model/question.dto'
 
 @Injectable()
 export class QuestionService {
@@ -9,14 +10,40 @@ export class QuestionService {
   @Inject(DB)
   private db: DbType
 
-  async create() {
+  async newQuestionnaire(dto: CreateQuestionDto) {
     const id = createId()
+    const { backgroundImage, pageHeaderImage, components } = dto
+
     try {
-      await this.db.insert(question).values({ id, title: `新建问卷${id}` })
+      await this.db.insert(question).values({ id, title: dto.title || `问卷${id}`, backgroundImage, pageHeaderImage })
+
+      if (!components || !components.length) {
+        return id
+      }
+
+      for (const c of components) {
+        await this.db.insert(component).values({ type: c.type, props: c.props, questionId: id })
+      }
     }
     catch (e) {
       throw new BadRequestException(e)
     }
+    return id
+  }
+
+  async issueQuestionnaire(id: string) {
+    const hasQuestion = await this.db.select({ isPublished: question.isPublished, isDeleted: question.isDeleted }).from(question).where(eq(question.id, id))
+    if (!hasQuestion || !hasQuestion.length) {
+      throw new BadRequestException('请先保存问卷')
+    }
+    if (hasQuestion[0].isPublished) {
+      throw new BadRequestException('问卷已发布')
+    }
+    if (hasQuestion[0].isDeleted) {
+      throw new BadRequestException('问卷已删除')
+    }
+    await this.db.update(question).set({ isPublished: true })
+
     return id
   }
 

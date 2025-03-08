@@ -1,6 +1,7 @@
-import { Controller, Get, HttpStatus, Param, Post, Query } from '@nestjs/common'
-import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Get, HttpStatus, Param, Patch, Post, Put, Query } from '@nestjs/common'
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { ApiResponseVo } from 'src/common/dto/api-response.dto'
+import { CreateQuestionDto, UpdateQuestionDto } from './model/question.dto'
 import { QuestionService } from './question.service'
 
 @ApiTags('问卷')
@@ -10,9 +11,26 @@ export class QuestionController {
 
   @ApiOperation({ summary: '新建问卷' })
   @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiBody({ type: CreateQuestionDto, description: '' })
   @Post()
-  create() {
-    return this.service.create()
+  newQuestionnaire(@Body() dto: CreateQuestionDto) {
+    return this.service.newQuestionnaire(dto)
+  }
+
+  @ApiOperation({ summary: '修改问卷' })
+  @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiBody({ type: UpdateQuestionDto, description: '' })
+  @Put()
+  updateQuestionnaire(@Body() dto: CreateQuestionDto) {
+    return this.service.newQuestionnaire(dto)
+  }
+
+  @ApiOperation({ summary: '发布问卷' })
+  @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiParam({ name: 'id', type: String, required: true, description: '问卷id' })
+  @Patch(':id')
+  issueQuestionnaire(@Param('id') id: string) {
+    return this.service.issueQuestionnaire(id)
   }
 
   @ApiOperation({ summary: '问卷列表' })

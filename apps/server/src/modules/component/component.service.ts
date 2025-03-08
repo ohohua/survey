@@ -11,8 +11,8 @@ export class ComponentService {
   private db: DbType
 
   async create(dto: CreateComponentDto) {
-    const { questionId, title, type, props } = dto
-    await this.db.insert(component).values({ questionId, title, type, props })
+    const { questionId, type, props } = dto
+    await this.db.insert(component).values({ questionId, type, props })
     return '创建成功'
   }
 
