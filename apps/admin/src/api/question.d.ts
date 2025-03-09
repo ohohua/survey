@@ -20,6 +20,7 @@ export interface QuestionInfoDto {
   components?: {
     id?: string
     type: string
+    sort: number
     props: string
   }[]
 }

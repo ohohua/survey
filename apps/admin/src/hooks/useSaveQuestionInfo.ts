@@ -7,18 +7,17 @@ export function useSaveQuestionInfo() {
   const { id = '' } = useParams()
   const { questionInfo, componentList } = useComponentStore()
 
-  const components = componentList.map((item) => {
+  const components = componentList.map((item, index) => {
     if (item.id.includes(TEMP_ID_PREFIX)) {
-      return { type: item.type, questionId: id, props: JSON.stringify(item.props) }
+      const { id, ...rest } = item
+      return { ...rest, sort: index, questionId: id, props: JSON.stringify(item.props) }
     }
-    return { ...item, questionId: id, props: JSON.stringify(item.props) }
+    return { ...item, sort: index, questionId: id, props: JSON.stringify(item.props) }
   })
   const params = { id, ...questionInfo, components }
 
   const { loading, run } = useRequest(async () => {
-    const res = id ? await updateQuestionInfo(params) : saveQuestionInfo(params)
-
-    return res
+    return id ? await updateQuestionInfo(params) : saveQuestionInfo(params)
   }, {
     loadingDelay: 300,
     manual: true,

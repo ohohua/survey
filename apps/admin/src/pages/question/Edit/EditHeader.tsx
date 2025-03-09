@@ -2,12 +2,13 @@ import { useSaveQuestionInfo } from '@/hooks/useSaveQuestionInfo'
 import { TEMP_ID, useComponentStore } from '@/store'
 import { CopyOutlined, DeleteOutlined, DownOutlined, LeftOutlined, LockOutlined, RedoOutlined, SnippetsOutlined, UndoOutlined, UnlockOutlined, UpOutlined } from '@ant-design/icons'
 import { Button, Flex, message, Space, Tooltip } from 'antd'
+import { cloneDeep } from 'lodash-es'
 import { useNavigate } from 'react-router-dom'
 import s from './EditHeader.module.scss'
 
 function EditHeader() {
   const nav = useNavigate()
-  const { selectId, componentList, tempComponent, delComponent, addComponent, updateComponent, setTempComponent } = useComponentStore()
+  const { selectId, componentList, tempComponent, setSelectId, delComponent, addComponent, updateComponent, setTempComponent } = useComponentStore()
   const { loading, run } = useSaveQuestionInfo()
 
   // 按钮状态
@@ -42,15 +43,39 @@ function EditHeader() {
   }
   function handlePaste() {
     if (tempComponent) {
-      addComponent({ ...tempComponent, id: TEMP_ID })
+      addComponent({ ...tempComponent, id: TEMP_ID() })
       message.success('粘贴成功')
     }
     else {
       message.warning('请先复制组件')
     }
   }
-  function handleTurnUp() { }
-  function handleTurnDown() { }
+  function handleTurnUp() {
+    if (!selectId) {
+      return
+    }
+    const index = componentList.findIndex(c => c.id === selectId)
+    if (index <= 0) {
+      return
+    }
+    const currentComponent = cloneDeep(componentList[index])
+    delComponent()
+    addComponent(currentComponent, index - 1)
+    setSelectId(currentComponent.id)
+  }
+  function handleTurnDown() {
+    if (!selectId) {
+      return
+    }
+    const index = componentList.findIndex(c => c.id === selectId)
+    if (index === componentList.length - 1) {
+      return
+    }
+    const currentComponent = cloneDeep(componentList[index])
+    delComponent()
+    addComponent(currentComponent, index + 1)
+    setSelectId(currentComponent.id)
+  }
   function handleUndo() { }
   function handleRedo() { }
 

@@ -1,12 +1,11 @@
-import { TEMP_ID_PREFIX, useComponentStore } from '@/store'
+import { TEMP_ID, useComponentStore } from '@/store'
 import { useKeyPress } from 'ahooks'
 import { message } from 'antd'
-import { nanoid } from 'nanoid'
 
 export function useBindCanvasKeyPress() {
   const { selectId, tempComponent, delComponent, addComponent, setTempComponent, setSelectIdTurnUp, setSelectIdTurnDown } = useComponentStore()
 
-  useKeyPress(['delete', 'backspace'], () => {
+  useKeyPress('delete', () => {
     delComponent()
   })
 
@@ -22,7 +21,7 @@ export function useBindCanvasKeyPress() {
 
   useKeyPress(['ctrl.v', 'meta.v'], () => {
     if (tempComponent) {
-      addComponent({ ...tempComponent, id: `${TEMP_ID_PREFIX}${nanoid(5)}` })
+      addComponent({ ...tempComponent, id: TEMP_ID() })
       message.success('粘贴成功')
     }
     else {

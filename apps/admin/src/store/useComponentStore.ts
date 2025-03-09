@@ -22,7 +22,7 @@ interface ComponentListState {
   tempComponent?: ComponentInfo // 复制组件存放之地
 
   resetComponent: (componentList: ComponentInfo[]) => void
-  addComponent: (component: ComponentInfo) => void
+  addComponent: (component: ComponentInfo, position?: number) => void
   delComponent: () => void
   updateComponent: (component: ComponentInfo) => void
 
@@ -36,7 +36,7 @@ interface ComponentListState {
 
 // 新增的临时 id 的前缀，提交时候需要删除
 export const TEMP_ID_PREFIX = 'temp_'
-export const TEMP_ID = `${TEMP_ID_PREFIX}${nanoid(5)}`
+export const TEMP_ID = () => `${TEMP_ID_PREFIX}${nanoid(5)}`
 
 export const useComponentStore = create<ComponentListState>(set => ({
   selectId: undefined, // 被选中的 componentId
@@ -50,7 +50,16 @@ export const useComponentStore = create<ComponentListState>(set => ({
 
   // 组件列表
   resetComponent: componentList => set(() => ({ componentList })),
-  addComponent: component => set(state => ({ componentList: [...state.componentList, component] })),
+  addComponent: (component, position) => set((state) => {
+    // 没传下标，直接在末尾添加
+    if (position !== 0 && !position) {
+      return { componentList: [...state.componentList, component] }
+    }
+    // 在下标处添加
+    const newComponentList = cloneDeep(state.componentList)
+    newComponentList.splice(position, 0, component)
+    return { componentList: newComponentList }
+  }),
   delComponent: () => set((state) => {
     if (!state.selectId) {
       return state
@@ -108,7 +117,7 @@ export const useComponentStore = create<ComponentListState>(set => ({
     }
     const index = state.componentList.findIndex(c => c.id === state.selectId)
     return {
-      tempComponent: { ...cloneDeep(state.componentList[index]), id: TEMP_ID },
+      tempComponent: { ...cloneDeep(state.componentList[index]), id: TEMP_ID() },
     }
   }),
 }))

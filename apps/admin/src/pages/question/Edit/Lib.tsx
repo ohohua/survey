@@ -14,7 +14,7 @@ function Lib() {
     function handleClick() {
       const component = getComponentConfigByType(type)
       if (component) {
-        addComponent({ id: TEMP_ID, type, props: defaultProps })
+        addComponent({ id: TEMP_ID(), type, props: defaultProps })
       }
     }
 
