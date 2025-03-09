@@ -1,6 +1,6 @@
 import type { ComponentConfigType } from '@/components/Question'
 import { componentGroup, getComponentConfigByType } from '@/components/Question'
-import { useComponentStore } from '@/store'
+import { TEMP_ID, useComponentStore } from '@/store'
 import Title from 'antd/es/typography/Title'
 import { nanoid } from 'nanoid'
 import s from './Lib.module.scss'
@@ -14,7 +14,7 @@ function Lib() {
     function handleClick() {
       const component = getComponentConfigByType(type)
       if (component) {
-        addComponent({ id: nanoid(5), type, props: defaultProps })
+        addComponent({ id: TEMP_ID, type, props: defaultProps })
       }
     }
 

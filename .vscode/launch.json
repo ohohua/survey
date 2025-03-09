@@ -2,9 +2,16 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug admin",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/apps/admin"
+    },
+    {
       "type": "node",
       "request": "launch",
-      "name": "Debug server (TS)",
+      "name": "Debug server",
       "runtimeExecutable": "npm",
       "args": ["run", "start:debug"],
       "cwd": "${workspaceFolder}/apps/server",
@@ -14,8 +21,8 @@
       "resolveSourceMapLocations": [
         "${workspaceFolder}/**",
         "!**/node_modules/**"
-      ],
-      
+      ]
     }
+
   ]
 }

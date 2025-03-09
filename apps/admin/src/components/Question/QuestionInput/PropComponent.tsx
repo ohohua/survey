@@ -4,7 +4,7 @@ import { QuestionInputDefault } from './interface'
 
 function PropComponent(props: QuestionInputProps) {
   const [form] = Form.useForm()
-  const { title, placeholder, onChange } = { ...QuestionInputDefault, ...props }
+  const { title, placeholder, isLock, onChange } = { ...QuestionInputDefault, ...props }
 
   useEffect(() => {
     form.setFieldsValue({ title, placeholder })
@@ -19,10 +19,10 @@ function PropComponent(props: QuestionInputProps) {
     <>
       <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, placeholder }} form={form}>
         <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
-          <Input />
+          <Input disabled={isLock} />
         </Form.Item>
         <Form.Item label="Placeholder" name="placeholder">
-          <Input />
+          <Input disabled={isLock} />
         </Form.Item>
       </Form>
     </>

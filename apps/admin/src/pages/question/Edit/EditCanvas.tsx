@@ -1,6 +1,7 @@
 import type { ComponentInfo } from '@/store/useComponentStore'
 import type { MouseEvent } from 'react'
 import { getComponentConfigByType } from '@/components/Question'
+import { useBindCanvasKeyPress } from '@/hooks/useBindCanvasKeyPress'
 import { useComponentStore } from '@/store/useComponentStore'
 import clsx from 'clsx'
 import s from './EditCanvas.module.scss'
@@ -19,6 +20,9 @@ function getComponent(componentInfo: ComponentInfo) {
 function EditCanvas() {
   const { componentList, selectId, setSelectId } = useComponentStore()
 
+  // 注册键盘快捷键
+  useBindCanvasKeyPress()
+
   function handleClick(e: MouseEvent<HTMLDivElement>, id: string) {
     e.stopPropagation()
     setSelectId(id)
@@ -28,10 +32,11 @@ function EditCanvas() {
     <>
       {
         componentList.map((c) => {
-          const { id } = c
+          const { id, props } = c
           const classNameWrapper = clsx({
             [s.component]: true,
             [s['select-component']]: selectId === id,
+            [s.locked]: props.isLock,
           })
 
           return (

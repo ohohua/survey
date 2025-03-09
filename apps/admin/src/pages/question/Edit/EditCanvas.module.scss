@@ -11,3 +11,9 @@
 .select-component {
   border: 1px solid #3875F6 !important;
 }
+
+.locked {
+  background: #F5F5F5;
+  opacity: .5;
+  cursor: not-allowed;
+}
