@@ -30,11 +30,12 @@ class UpdateComponentDto extends IntersectionType(UpdateComponentPickIdDto, Crea
 
 export class UpdateQuestionDto {
   @ApiProperty({ example: 'u7odcj4ott', description: '问卷id, 不能为空' })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: '问卷id不能为空' })
   id: string
 
   @ApiProperty({ description: '问卷标题' })
-  title?: string
+  @IsNotEmpty({ message: '问卷标题不能为空' })
+  title: string
 
   @ApiProperty({ description: '背景图片地址' })
   backgroundImage?: string

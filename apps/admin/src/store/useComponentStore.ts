@@ -6,19 +6,34 @@ export interface ComponentInfo {
   type: string
   props: ComponentPropsType
 }
+
+export interface QuestionInfo {
+  title: string
+  backgroundImage?: string
+  pageHeaderImage?: string
+}
 // 创建状态存储
 interface ComponentListState {
-  selectId: string
-  componentList: ComponentInfo[]
+  selectId: string // 被选中的组件
+  questionInfo: QuestionInfo // 问卷基本信息
+  componentList: ComponentInfo[] // 组件列表
   resetComponent: (componentList: ComponentInfo[]) => void
   addComponent: (component: ComponentInfo) => void
   delComponent: (id: string) => void
   updateComponent: (component: ComponentInfo) => void
+
   setSelectId: (id: string) => void
+
+  setQuestionInfo: (info: QuestionInfo) => void
 }
 
 export const useComponentStore = create<ComponentListState>(set => ({
   selectId: '', // 被选中的 componentId
+  questionInfo: {
+    title: '',
+    backgroundImage: undefined,
+    pageHeaderImage: undefined,
+  },
   componentList: [], // 问卷组件列表
   resetComponent: componentList => set(() => ({ componentList })),
   addComponent: component => set(state => ({ componentList: [...state.componentList, component] })),
@@ -42,4 +57,6 @@ export const useComponentStore = create<ComponentListState>(set => ({
   }),
 
   setSelectId: (id: string) => set(() => ({ selectId: id })),
+
+  setQuestionInfo: (info: QuestionInfo) => set(state => Object.assign(state, info)),
 }))

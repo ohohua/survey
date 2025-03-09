@@ -1,3 +1,4 @@
+import type { ComponentPropsType } from '@/components/Question'
 import { loadQuestionInfo } from '@/api'
 import { useComponentStore } from '@/store'
 import { useRequest } from 'ahooks'
@@ -26,6 +27,12 @@ export function useLoadQuestionData() {
       setSelectId(data.componentList![0].id)
     }
 
+    data.componentList = data.componentList?.map((item) => {
+      return {
+        ...item,
+        props: JSON.parse(item.props as string || '{}') as ComponentPropsType,
+      }
+    })
     resetComponent(data.componentList!)
   }, [data])
 

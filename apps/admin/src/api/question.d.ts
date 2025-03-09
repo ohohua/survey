@@ -12,3 +12,18 @@ export interface ListVo<T> {
   list: T[]
   total: number
 }
+
+export interface QuestionInfoDto {
+  title?: string
+  backgroundImage?: string
+  pageHeaderImage?: string
+  components?: {
+    id?: string
+    type: string
+    props: string
+  }[]
+}
+
+export interface UpdateQuestionInfo extends QuestionInfoDto {
+  id: string
+}

@@ -1,5 +1,6 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import type { Result } from './types'
+import { message } from 'antd'
 import axios from 'axios'
 
 // 数据返回的接口
@@ -7,9 +8,8 @@ import axios from 'axios'
 enum RequestEnums {
   TIMEOUT = 20000,
   OVERDUE = 500, // 登录失效
-  FAIL = 999, // 请求失败
+  FAIL = 400, // 请求失败
   SUCCESS = 200, // 请求成功
-  SUCCESS_OTHER = 1000, // 请求成功
 }
 
 class Request {
@@ -44,31 +44,31 @@ class Request {
           localStorage.setItem('token', '')
           return Promise.reject(data)
         } // 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
-        if (data.code && data.code !== RequestEnums.SUCCESS && data.code !== RequestEnums.SUCCESS_OTHER) {
-          console.error(data) // 此处也可以使用组件提示报错信息
+        if (data.code && data.code !== RequestEnums.SUCCESS) {
+          message.error(data) // 此处也可以使用组件提示报错信息
           return Promise.reject(data)
         }
         return data
       },
-      (error: AxiosError) => {
+      (error: AxiosError<Result<any>>) => {
         const { response } = error
         if (response) {
-          this.handleCode(response.status)
+          this.handleCode(response.status, response.data.msg)
         }
         if (!window.navigator.onLine) {
-          console.error('网络连接失败') // 可以跳转到错误页面，也可以不做操作
+          message.error('网络连接失败') // 可以跳转到错误页面，也可以不做操作
         }
       },
     )
   }
 
-  handleCode(code: number): void {
+  handleCode(code: number, msg: string): void {
     switch (code) {
       case 401:
         console.error('登录失败，请重新登录')
         break
       default:
-        console.error('请求失败')
+        message.error(msg)
         break
     }
   }

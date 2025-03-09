@@ -9,5 +9,8 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsup"
+  },
+  "dependencies": {
+    "antd": "^5.24.1"
   }
 }

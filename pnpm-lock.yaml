@@ -286,7 +286,11 @@ importers:
         specifier: ^0.30.5
         version: 0.30.5
 
-  packages/http: {}
+  packages/http:
+    dependencies:
+      antd:
+        specifier: ^5.24.1
+        version: 5.24.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
 
   packages/schema:
     dependencies:

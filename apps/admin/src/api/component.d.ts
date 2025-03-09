@@ -1,7 +1,6 @@
 export interface ComponentInfo {
-  id: string
+  id?: string
   questionId: string
   type: string
-  title: string
   props: JSON
 }
