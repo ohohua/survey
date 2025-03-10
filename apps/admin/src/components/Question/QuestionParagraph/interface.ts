@@ -6,7 +6,7 @@ export interface QuestionParagraphProps {
 }
 
 export const QuestionParagraphDefault: QuestionParagraphProps = {
-  content: '一个段落',
+  content: '段落',
   isCenter: false,
   isLock: false,
 }

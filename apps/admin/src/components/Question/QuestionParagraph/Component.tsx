@@ -8,7 +8,6 @@ const { Text } = Typography
 function QuestionParagraph(props: QuestionParagraphProps) {
   const { content = '', isCenter } = { ...QuestionParagraphDefault, ...props }
 
-  // const t = content.replaceAll('\n', '<br>')
   const t = content.split('\n')
   return (
     <div style={{ pointerEvents: 'none' }}>
