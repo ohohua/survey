@@ -20,7 +20,7 @@ export class QuestionService {
         return id
       }
       for (const c of components) {
-        await this.db.insert(component).values({ type: c.type, props: c.props, questionId: id })
+        await this.db.insert(component).values({ type: c.type, props: c.props, sort: c.sort, questionId: id })
       }
     }
     catch (e) {
@@ -40,7 +40,7 @@ export class QuestionService {
     await this.db.transaction(async (tx) => {
       for (const c of components) {
         if (c.id) {
-          await tx.update(component).set({ type: c.type, props: c.props }).where(eq(component.id, c.id))
+          await tx.update(component).set({ type: c.type, props: c.props, sort: c.sort }).where(eq(component.id, c.id))
         }
         else {
           await tx.insert(component).values({ ...c })

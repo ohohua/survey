@@ -12,6 +12,10 @@ export class CreateComponentDto {
   @IsNotEmpty()
   type: COMPONENT_TYPE
 
+  @ApiProperty({ description: '组件排序' })
+  @IsNotEmpty({ message: '组件排序不能为空' })
+  sort: number
+
   @ApiProperty({ description: '题目props信息, json' })
   @IsNotEmpty()
   @IsJSON()

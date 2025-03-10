@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 
 export function useLoadQuestionData() {
   const { id = '' } = useParams()
-  const { setSelectId, resetComponent } = useComponentStore()
+  const { setSelectId, resetComponent, setQuestionInfo } = useComponentStore()
 
   const { data, error, loading, run } = useRequest(async () => {
     if (!id) {
@@ -23,17 +23,21 @@ export function useLoadQuestionData() {
     if (!data) {
       return
     }
-    if (data.componentList!.length) {
+    if (data.componentList?.length) {
       setSelectId(data.componentList![0].id)
     }
 
-    data.componentList = data.componentList?.map((item) => {
+    const { title, backgroundImage, pageHeaderImage, componentList } = data
+
+    const components = componentList?.map((item) => {
       return {
         ...item,
         props: JSON.parse(item.props as string || '{}') as ComponentPropsType,
       }
     })
-    resetComponent(data.componentList!)
+
+    setQuestionInfo({ title, backgroundImage, pageHeaderImage })
+    resetComponent(components!)
   }, [data])
 
   useEffect(() => {

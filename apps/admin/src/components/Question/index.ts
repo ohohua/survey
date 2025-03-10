@@ -1,11 +1,13 @@
 import type { FC } from 'react'
 import type { QuestionInputProps } from './QuestionInput'
+import type { QuestionParagraphProps } from './QuestionParagraph'
 import type { QuestionTitleProps } from './QuestionTitle'
 import QuestionInput from './QuestionInput'
+import QuestionParagraph from './QuestionParagraph'
 import QuestionTitle from './QuestionTitle'
 
 // 各个组件的 props 类型
-export type ComponentPropsType = QuestionInputProps | QuestionTitleProps
+export type ComponentPropsType = QuestionInputProps | QuestionTitleProps | QuestionParagraphProps
 
 // 组件类型
 export interface ComponentConfigType {
@@ -16,14 +18,14 @@ export interface ComponentConfigType {
 }
 
 // 全部组件构成的列表，渲染组件时候使用
-export const componentList: ComponentConfigType[] = [QuestionInput, QuestionTitle]
+export const componentList: ComponentConfigType[] = [QuestionInput, QuestionTitle, QuestionParagraph]
 
 // 组件库
 export const componentGroup = [
   {
     groupName: '文本显示',
     key: 'text',
-    components: [QuestionTitle],
+    components: [QuestionTitle, QuestionParagraph],
   },
   {
     groupName: '用户输入',

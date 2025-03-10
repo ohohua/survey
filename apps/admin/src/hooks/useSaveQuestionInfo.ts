@@ -9,7 +9,7 @@ export function useSaveQuestionInfo() {
 
   const components = componentList.map((item, index) => {
     if (item.id.includes(TEMP_ID_PREFIX)) {
-      const { id, ...rest } = item
+      const { id: componentId, ...rest } = item
       return { ...rest, sort: index, questionId: id, props: JSON.stringify(item.props) }
     }
     return { ...item, sort: index, questionId: id, props: JSON.stringify(item.props) }

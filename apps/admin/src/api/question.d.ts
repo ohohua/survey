@@ -4,6 +4,8 @@ export interface QuestionInfo<T = any> {
   isPublished: boolean
   isStar: boolean
   answerCount: number
+  backgroundImage?: string
+  pageHeaderImage?: string
   createAt: string
   componentList?: T
 }

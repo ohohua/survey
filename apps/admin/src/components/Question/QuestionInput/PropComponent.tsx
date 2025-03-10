@@ -17,7 +17,7 @@ function PropComponent(props: QuestionInputProps) {
   }
   return (
     <>
-      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, placeholder }} form={form}>
+      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, placeholder }} form={form} autoComplete="off">
         <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
           <Input disabled={isLock} />
         </Form.Item>

@@ -7,6 +7,7 @@ import EditHeader from './EditHeader'
 import s from './index.module.scss'
 import Lib from './Lib'
 import Prop from './Prop'
+import Setting from './Setting'
 
 const tabItems = [
   {
@@ -31,7 +32,7 @@ const tabSettingItems = [{
 }, {
   key: 'setting',
   label: '页面设置',
-  children: <></>,
+  children: <Setting />,
   icon: <SettingOutlined />,
 }]
 function Edit() {

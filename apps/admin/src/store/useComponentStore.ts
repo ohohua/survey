@@ -109,7 +109,7 @@ export const useComponentStore = create<ComponentListState>(set => ({
     return { selectId: state.componentList[index + 1].id }
   }),
   // 问卷信息
-  setQuestionInfo: (info: QuestionInfo) => set(state => Object.assign(state, info)),
+  setQuestionInfo: (info: QuestionInfo) => set(state => ({ questionInfo: { ...state.questionInfo, ...info } })),
   // 复制问卷
   setTempComponent: () => set((state) => {
     if (!state.selectId) {
