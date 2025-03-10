@@ -1,6 +1,6 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { component, createId, question } from '@survey/schema'
-import { eq, getTableColumns, like, sql } from 'drizzle-orm'
+import { asc, eq, getTableColumns, like, sql } from 'drizzle-orm'
 import { DB, DbType } from '../global/providers/db.provider'
 import { CreateQuestionDto, UpdateQuestionDto } from './model/question.dto'
 
@@ -96,7 +96,11 @@ export class QuestionService {
 
     const id = questionInfo[0].id
     const { isDeleted: del, createAt: cAt, updatedAt: uAt, ...restComponent } = getTableColumns(component)
-    const componentList = await this.db.select(restComponent).from(component).where(eq(component.questionId, id))
+    const componentList = await this.db
+      .select(restComponent)
+      .from(component)
+      .where(eq(component.questionId, id))
+      .orderBy(asc(component.sort))
 
     return {
       ...questionInfo[0],

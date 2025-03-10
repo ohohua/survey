@@ -25,4 +25,5 @@ export enum RESPONSE_MSG {
 export enum COMPONENT_TYPE {
   TITLE = 'componentTitle',
   INPUT = 'componentInput',
+  PARAGRAPH = 'componentParagraph',
 }

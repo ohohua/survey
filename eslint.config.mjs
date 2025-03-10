@@ -13,7 +13,6 @@ export default antfu({
   rules: {
     'node/prefer-global/process': 'off',
     'react-hooks/exhaustive-deps': 'off',
-    'react-dom/no-dangerously-set-innerhtml': 'off',
   },
 }, {
   files: ['apps/server/src/**/*.ts'],

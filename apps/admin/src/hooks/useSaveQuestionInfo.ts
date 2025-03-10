@@ -1,6 +1,7 @@
 import { saveQuestionInfo, updateQuestionInfo } from '@/api'
 import { TEMP_ID_PREFIX, useComponentStore } from '@/store'
 import { useRequest } from 'ahooks'
+import { message } from 'antd'
 import { useParams } from 'react-router-dom'
 
 export function useSaveQuestionInfo() {
@@ -16,12 +17,17 @@ export function useSaveQuestionInfo() {
   })
   const params = { id, ...questionInfo, components }
 
-  const { loading, run } = useRequest(async () => {
+  const { data, loading, run } = useRequest(async () => {
     return id ? await updateQuestionInfo(params) : saveQuestionInfo(params)
   }, {
     loadingDelay: 300,
     manual: true,
   })
 
+  useEffect(() => {
+    if (data && data.code === 200) {
+      message.success(data.data)
+    }
+  }, [data])
   return { loading, run }
 }
