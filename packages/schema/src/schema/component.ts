@@ -1,4 +1,4 @@
-import { boolean, int, json, mysqlEnum, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core'
+import { boolean, int, json, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core'
 import { createId } from './index'
 
 export const component = mysqlTable('component', {
@@ -6,7 +6,7 @@ export const component = mysqlTable('component', {
     .primaryKey()
     .$defaultFn(() => createId()),
   questionId: varchar('question_id', { length: 10 }).notNull(),
-  type: mysqlEnum(['componentTitle', 'componentInput', 'componentParagraph', 'componentTextarea']),
+  type: varchar('type', { length: 64 }),
   sort: int('sort').notNull(),
   props: json('json').default('{}'),
   isDeleted: boolean('is_deleted').default(false),

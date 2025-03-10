@@ -11,13 +11,13 @@ function QuestionParagraph(props: QuestionParagraphProps) {
   const t = content.split('\n')
   return (
     <div style={{ pointerEvents: 'none' }}>
-      <Text style={{ textAlign: isCenter ? 'center' : 'left' }}>
+      <Text>
         {
           t.map((text, index) => (
-            <span key={nanoid(5)}>
+            <div key={nanoid(5)} style={{ textAlign: isCenter ? 'center' : 'left' }}>
               {index > 0 && <br />}
               {text}
-            </span>
+            </div>
           ))
         }
       </Text>
