@@ -24,19 +24,7 @@ function PropComponent(props: QuestionRadioProps) {
           <Input disabled={isLock} />
         </Form.Item>
         <Form.Item label="选项">
-
-          <Form.List
-            name="options"
-            rules={[
-              {
-                validator: async (_, options) => {
-                  if (!options || options.length < 2) {
-                    return Promise.reject(new Error('至少两个选项'))
-                  }
-                },
-              },
-            ]}
-          >
+          <Form.List name="options">
             {(fields, { add, remove }, { errors }) => (
               <>
                 {fields.map(({ key, name }, index) => (
@@ -57,9 +45,9 @@ function PropComponent(props: QuestionRadioProps) {
 
                       ]}
                     >
-                      <Input placeholder="请输入" />
+                      <Input placeholder="请输入" disabled={isLock} />
                     </Form.Item>
-                    {index > 1 ? (<MinusCircleOutlined onClick={() => remove(key)} />) : null}
+                    {index > 1 && !isLock ? (<MinusCircleOutlined onClick={() => remove(key)} />) : null}
                   </Space>
                 ))}
                 <Form.Item>
@@ -68,6 +56,7 @@ function PropComponent(props: QuestionRadioProps) {
                     onClick={() => add({ label: ``, value: nanoid(5) })}
                     style={{ width: '90%' }}
                     icon={<PlusOutlined />}
+                    disabled={isLock}
                   >
                     添加选项
                   </Button>
