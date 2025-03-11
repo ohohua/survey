@@ -27,4 +27,6 @@ export enum COMPONENT_TYPE {
   INPUT = 'componentInput',
   PARAGRAPH = 'componentParagraph',
   TEXTAREA = 'componentTextarea',
+  RADIO = 'componentRadio',
+  MULTIPLE = 'componentMultiple',
 }
