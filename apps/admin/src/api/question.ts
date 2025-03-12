@@ -27,3 +27,9 @@ export const saveQuestionInfo = (data: QuestionInfoDto) => http.post<string>(`${
  * @returns 修改状态
  */
 export const updateQuestionInfo = (data: UpdateQuestionInfo) => http.put<string>(`${PREFIX}/question`, data)
+/**
+ * 发布问卷
+ * @param id
+ * @returns id
+ */
+export const publishQuestion = (id: string) => http.patch<string>(`${PREFIX}/question/${id}`)

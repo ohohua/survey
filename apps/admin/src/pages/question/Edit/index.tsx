@@ -75,6 +75,7 @@ function Edit() {
         <div className={s.right}>
           <Tabs
             activeKey={rightKey}
+            onChange={(key: string) => setRightKey(key as TAB_KEYS)}
             centered
             items={tabSettingItems}
           />

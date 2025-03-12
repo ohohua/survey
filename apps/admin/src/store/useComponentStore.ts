@@ -21,6 +21,7 @@ interface ComponentListState {
   componentList: ComponentInfo[] // 组件列表
   tempComponent?: ComponentInfo // 复制组件存放之地
 
+  resetStore: () => void
   resetComponent: (componentList: ComponentInfo[]) => void
   addComponent: (component: ComponentInfo, position?: number) => void
   delComponent: () => void
@@ -48,6 +49,18 @@ export const useComponentStore = create<ComponentListState>(set => ({
   componentList: [], // 问卷组件列表
   tempComponent: undefined,
 
+  resetStore: () => set(() => {
+    return {
+      selectId: undefined, // 被选中的 componentId
+      questionInfo: {
+        title: '',
+        backgroundImage: undefined,
+        pageHeaderImage: undefined,
+      },
+      componentList: [], // 问卷组件列表
+      tempComponent: undefined,
+    }
+  }),
   // 组件列表
   resetComponent: componentList => set(() => ({ componentList })),
   addComponent: (component, position) => set((state) => {

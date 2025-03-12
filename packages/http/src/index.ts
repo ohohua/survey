@@ -89,6 +89,10 @@ class Request {
     return this.service.put(url, params)
   }
 
+  patch<T>(url: string, params?: object): Promise<Result<T>> {
+    return this.service.patch(url, params)
+  }
+
   delete<T>(url: string, params?: object): Promise<Result<T>> {
     return this.service.delete(url, { params })
   }

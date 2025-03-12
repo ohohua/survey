@@ -8,8 +8,8 @@ import s from './EditHeader.module.scss'
 
 function EditHeader() {
   const nav = useNavigate()
-  const { selectId, componentList, tempComponent, setSelectId, delComponent, addComponent, updateComponent, setTempComponent } = useComponentStore()
-  const { loading, run } = useSaveQuestionInfo()
+  const { selectId, componentList, tempComponent, setSelectId, delComponent, addComponent, updateComponent, setTempComponent, resetStore } = useComponentStore()
+  const { loading, run, pubLoading, pubRun } = useSaveQuestionInfo()
 
   // 按钮状态
   function locked() {
@@ -80,10 +80,10 @@ function EditHeader() {
   function handleRedo() { }
 
   function handleBack() {
+    resetStore()
     nav({ pathname: '/manage/list' })
   }
 
-  function handlePublish() { }
   return (
     <Flex className={s.header} justify="space-between" align="center">
       <div>
@@ -116,8 +116,8 @@ function EditHeader() {
         </Tooltip>
       </Space>
       <Flex gap="small">
-        <Button type="default" onClick={run} loading={loading}> 保存 </Button>
-        <Button type="primary" onClick={handlePublish}> 发布 </Button>
+        <Button type="default" onClick={run} loading={loading} disabled={loading}> 保存 </Button>
+        <Button type="primary" onClick={pubRun} loading={pubLoading} disabled={pubLoading}> 发布 </Button>
       </Flex>
     </Flex>
   )

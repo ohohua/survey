@@ -8,6 +8,11 @@ function Setting() {
   function handleChange() {
     setQuestionInfo(form.getFieldsValue())
   }
+
+  useEffect(() => {
+    form.setFieldsValue(questionInfo)
+  }, [questionInfo])
+
   return (
     <>
       <Form layout="vertical" onValuesChange={handleChange} initialValues={questionInfo} form={form}>
