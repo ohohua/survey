@@ -1,22 +1,23 @@
-import type { OptionsRadioType, QuestionRadioProps } from './interface'
+import type { OptionsMultipleType, QuestionMultipleProps } from './interface'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Form, Input, Select, Space } from 'antd'
 import { nanoid } from 'nanoid'
-import { QuestionRadioDefault } from './interface'
+import { QuestionMultipleDefault } from './interface'
 
-function PropComponent(props: QuestionRadioProps) {
+function PropComponent(props: QuestionMultipleProps) {
   const [form] = Form.useForm()
-  const { title, options = [], vertical, isLock, onChange } = { ...QuestionRadioDefault, ...props }
+  const { title, options = [], vertical, isLock, onChange } = { ...QuestionMultipleDefault, ...props }
 
-  useEffect(() => {
-    form.setFieldsValue({ title })
-  }, [title])
+  // useEffect(() => {
+  //   form.setFieldsValue({ title })
+  // }, [title])
 
   function handleChange() {
     if (onChange) {
       onChange(form.getFieldsValue())
     }
   }
+
   return (
     <>
       <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, options, vertical }} form={form} autoComplete="off">
@@ -26,7 +27,8 @@ function PropComponent(props: QuestionRadioProps) {
         <Form.Item label="选项">
           <Form.List name="options">
             {(fields, { add, remove }, { errors }) => (
-              <>
+              <div>
+                {JSON.stringify(fields)}
                 {fields.map(({ key, name }, index) => (
                   <Space key={key} align="baseline">
                     <Form.Item
@@ -37,17 +39,16 @@ function PropComponent(props: QuestionRadioProps) {
                           const { options } = getFieldsValue()
                           return {
                             validator(_, label) {
-                              const nums = options.reduce((total: number, cur: OptionsRadioType) => total += cur.label === label ? 1 : 0, 0)
+                              const nums = options.reduce((total: number, cur: OptionsMultipleType) => total += cur.label === label ? 1 : 0, 0)
                               return nums > 1 ? Promise.reject(new Error('选项值不能重复')) : Promise.resolve()
                             },
                           }
                         },
-
                       ]}
                     >
                       <Input placeholder="请输入" disabled={isLock} />
                     </Form.Item>
-                    {index > 1 && !isLock ? (<MinusCircleOutlined onClick={() => remove(name)} />) : null}
+                    {index > 0 && !isLock ? (<MinusCircleOutlined onClick={() => remove(name)} />) : null}
                   </Space>
                 ))}
                 <Form.Item>
@@ -62,12 +63,12 @@ function PropComponent(props: QuestionRadioProps) {
                   </Button>
                   <Form.ErrorList errors={errors} />
                 </Form.Item>
-              </>
+              </div>
             )}
           </Form.List>
         </Form.Item>
-        <Form.Item label="默认选中" name="value">
-          <Select options={options} disabled={isLock} placeholder="请选择" />
+        <Form.Item label="默认选中" name="checked">
+          <Select options={options} disabled={isLock} placeholder="请选择" mode="multiple" />
         </Form.Item>
         <Form.Item label="排列方式" name="vertical" valuePropName="checked">
           <Checkbox disabled={isLock}>竖向排列</Checkbox>

@@ -5,7 +5,7 @@ import Paragraph from 'antd/es/typography/Paragraph'
 import { QuestionRadioDefault } from './interface'
 
 function QuestionRadio(props: QuestionRadioProps) {
-  const { title, options, vertical } = { ...QuestionRadioDefault, ...props }
+  const { title, options, vertical, value } = { ...QuestionRadioDefault, ...props }
 
   const style: React.CSSProperties = {
     display: 'flex',
@@ -17,6 +17,7 @@ function QuestionRadio(props: QuestionRadioProps) {
     <div style={{ pointerEvents: 'none' }}>
       <Paragraph strong>{title}</Paragraph>
       <Radio.Group
+        value={value}
         style={vertical ? style : {}}
         options={options}
       />

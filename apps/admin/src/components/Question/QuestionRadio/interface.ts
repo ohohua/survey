@@ -1,10 +1,10 @@
-export interface OptionsType { label: string, value: string }
+export interface OptionsRadioType { label: string, value: string }
 
 export interface QuestionRadioProps {
   title?: string
   vertical?: boolean
   value?: string
-  options?: OptionsType[]
+  options?: OptionsRadioType[]
   isLock?: boolean
   onChange?: (newProps: QuestionRadioProps) => void
 }
