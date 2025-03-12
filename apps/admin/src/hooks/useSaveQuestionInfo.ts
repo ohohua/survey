@@ -1,6 +1,6 @@
 import { saveQuestionInfo, updateQuestionInfo } from '@/api'
 import { TEMP_ID_PREFIX, useComponentStore } from '@/store'
-import { useRequest } from 'ahooks'
+import { useKeyPress, useRequest } from 'ahooks'
 import { message } from 'antd'
 import { useParams } from 'react-router-dom'
 
@@ -22,6 +22,13 @@ export function useSaveQuestionInfo() {
   }, {
     loadingDelay: 300,
     manual: true,
+  })
+
+  useKeyPress(['ctrl.s', 'meta.s'], (e: KeyboardEvent) => {
+    e.preventDefault()
+    if (!loading) {
+      run()
+    }
   })
 
   useEffect(() => {

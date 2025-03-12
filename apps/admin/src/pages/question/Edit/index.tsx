@@ -24,24 +24,37 @@ const tabItems = [
   },
 ]
 
-const tabSettingItems = [{
-  key: 'stats',
-  label: '属性',
-  children: <Prop />,
-  icon: <FileOutlined />,
-}, {
-  key: 'setting',
-  label: '页面设置',
-  children: <Setting />,
-  icon: <SettingOutlined />,
-}]
+enum TAB_KEYS {
+  STATS = 'stats',
+  SETTING = 'setting',
+}
+const tabSettingItems = [
+  {
+    key: TAB_KEYS.STATS,
+    label: '属性',
+    children: <Prop />,
+    icon: <FileOutlined />,
+  },
+  {
+    key: TAB_KEYS.SETTING,
+    label: '页面设置',
+    children: <Setting />,
+    icon: <SettingOutlined />,
+  },
+]
+
 function Edit() {
   useLoadQuestionData()
-  const { setSelectId } = useComponentStore()
+  const { selectId, setSelectId } = useComponentStore()
+  const [rightKey, setRightKey] = useState(TAB_KEYS.STATS)
 
   function handleClickOutside() {
     setSelectId('')
   }
+
+  useEffect(() => {
+    setRightKey(selectId ? TAB_KEYS.STATS : TAB_KEYS.SETTING)
+  }, [selectId])
 
   return (
     <>
@@ -61,7 +74,7 @@ function Edit() {
         </div>
         <div className={s.right}>
           <Tabs
-            defaultActiveKey="stats"
+            activeKey={rightKey}
             centered
             items={tabSettingItems}
           />
