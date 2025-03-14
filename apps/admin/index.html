@@ -9,6 +9,19 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+        (function() {
+          function calc() {
+            const w = document.documentElement.clientWidth;
+            console.log(w);
+            document.documentElement.style.fontSize = 100 * (w / 1920) + 'px'; // 1920 为设计稿宽度
+          }
+          calc();
+          window.onresize = function() {
+            calc();
+          };
+    })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

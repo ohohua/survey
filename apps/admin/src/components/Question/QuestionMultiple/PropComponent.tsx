@@ -28,7 +28,6 @@ function PropComponent(props: QuestionMultipleProps) {
           <Form.List name="options">
             {(fields, { add, remove }, { errors }) => (
               <div>
-                {JSON.stringify(fields)}
                 {fields.map(({ key, name }, index) => (
                   <Space key={key} align="baseline">
                     <Form.Item

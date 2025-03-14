@@ -112,7 +112,7 @@ function EditHeader() {
           <Button shape="circle" icon={<UndoOutlined />} onClick={handleUndo} />
         </Tooltip>
         <Tooltip placement="top" title="重做">
-          <Button shape="circle" icon={<RedoOutlined />} onClick={handleRedo} />
+          <Button shape="circle" icon={<RedoOutlined />} onClick={handleRedo}></Button>
         </Tooltip>
       </Space>
       <Flex gap="small">
