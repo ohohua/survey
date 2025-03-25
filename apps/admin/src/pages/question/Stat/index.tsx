@@ -1,4 +1,10 @@
+import StatHeader from './StatHeader'
+
 function Stat() {
-  return <>stat</>
+  return (
+    <>
+      <StatHeader />
+    </>
+  )
 }
 export default Stat
