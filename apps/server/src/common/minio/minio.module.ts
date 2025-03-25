@@ -1,8 +1,7 @@
-import { Global, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import * as Minio from 'minio'
 import { ModuleController } from './minio.controller'
 
-@Global()
 @Module({
   controllers: [ModuleController],
   providers: [
@@ -22,4 +21,4 @@ import { ModuleController } from './minio.controller'
   ],
   exports: ['MINIO_CLIENT'],
 })
-export class ModuleModule {}
+export class MinioModule {}

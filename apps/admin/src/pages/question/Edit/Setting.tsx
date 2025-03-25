@@ -1,3 +1,4 @@
+import UploadImage from '@/components/UploadImage'
 import { useComponentStore } from '@/store'
 import { Form, Input } from 'antd'
 
@@ -20,10 +21,12 @@ function Setting() {
           <Input />
         </Form.Item>
         <Form.Item label="背景图" name="backgroundImage">
-          <Input />
+          {/* <Input /> */}
+          <UploadImage></UploadImage>
         </Form.Item>
         <Form.Item label="页眉图" name="pageHeaderImage">
-          <Input />
+          {/* <Input /> */}
+          <UploadImage></UploadImage>
         </Form.Item>
       </Form>
     </>

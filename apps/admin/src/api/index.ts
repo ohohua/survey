@@ -9,3 +9,4 @@ export const PREFIX = '/api/admin'
 
 export * from './component'
 export * from './question'
+export * from './upload'
