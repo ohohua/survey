@@ -21,12 +21,10 @@ function Setting() {
           <Input />
         </Form.Item>
         <Form.Item label="背景图" name="backgroundImage">
-          {/* <Input /> */}
-          <UploadImage></UploadImage>
+          <UploadImage />
         </Form.Item>
         <Form.Item label="页眉图" name="pageHeaderImage">
-          {/* <Input /> */}
-          <UploadImage></UploadImage>
+          <UploadImage />
         </Form.Item>
       </Form>
     </>

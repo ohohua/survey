@@ -47,7 +47,7 @@ export class ModuleController {
       const bucketName = 'survey'
       const fileName = `${new Date().getTime()}_${file.originalname}`
       await this.minioClient.putObject(bucketName, fileName, file.buffer)
-      const url = `${process.env.END_POINT}:${process.env.MINIO_PORT}/${bucketName}/${fileName}`
+      const url = `http://${process.env.END_POINT}:${process.env.MINIO_PORT}/${bucketName}/${fileName}`
       // 返回可访问的图片url路径
       return url
     }

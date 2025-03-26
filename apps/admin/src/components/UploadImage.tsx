@@ -2,26 +2,26 @@ import type { GetProp, UploadFile, UploadProps } from 'antd'
 import { PREFIX } from '@/api'
 import { message, Upload } from 'antd'
 import ImgCrop from 'antd-img-crop'
-import { nanoid } from 'nanoid'
+// import { nanoid } from 'nanoid'
 import { useState } from 'react'
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
+
 interface Props {
-  images: string
-  onChange?: (fileList: UploadFile[]) => void
+  value?: string
+  onChange?: (url: string) => void
 }
 
 function UploadImage(props: Props) {
-  const { images, onChange: parentOnChange } = props
+  const { value = '', onChange: parentOnChange } = props
 
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: nanoid(5),
-      name: 'image.png',
-      status: 'done',
-      url: images,
-    },
-  ])
+  const [fileList, setFileList] = useState<UploadFile[]>([])
+
+  useEffect(() => {
+    if (value) {
+      setFileList([{ uid: '-1', name: 'image.png', status: 'done', url: value }])
+    }
+  }, [value])
 
   const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
     setFileList(newFileList)
@@ -33,6 +33,7 @@ function UploadImage(props: Props) {
     if (status === 'done' && response.code === 200) {
       message.success(`${newFileList[0].name} 文件上传成功`)
 
+      // 传递给父组件
       if (parentOnChange) {
         parentOnChange(response.data)
       }
