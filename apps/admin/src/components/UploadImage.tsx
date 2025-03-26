@@ -61,7 +61,9 @@ function UploadImage() {
           const { onSuccess, file, action } = options
           // console.log(options)
 
-          const res = await axios.put(action, file, {})
+          const res = await axios.put(action, file, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          })
           // console.log(res)
 
           onSuccess!(res.data)
