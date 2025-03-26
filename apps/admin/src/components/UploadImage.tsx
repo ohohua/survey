@@ -1,33 +1,41 @@
 import type { GetProp, UploadFile, UploadProps } from 'antd'
-import { getPresignedUrl } from '@/api'
+import { PREFIX } from '@/api'
 import { message, Upload } from 'antd'
 import ImgCrop from 'antd-img-crop'
-import axios from 'axios'
+import { nanoid } from 'nanoid'
 import { useState } from 'react'
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
-// interface Props {
-//   onChange?: (fileList: UploadFile[]) => void
-// }
+interface Props {
+  images: string
+  onChange?: (fileList: UploadFile[]) => void
+}
 
-function UploadImage() {
+function UploadImage(props: Props) {
+  const { images, onChange: parentOnChange } = props
+
   const [fileList, setFileList] = useState<UploadFile[]>([
-    // {
-    //   uid: '-1',
-    //   name: 'image.png',
-    //   status: 'done',
-    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    // },
+    {
+      uid: nanoid(5),
+      name: 'image.png',
+      status: 'done',
+      url: images,
+    },
   ])
 
   const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
     setFileList(newFileList)
+
     if (!newFileList || newFileList.length === 0) {
       return
     }
-    const { status } = newFileList[0]
-    if (status === 'done') {
+    const { status, response } = newFileList[0]
+    if (status === 'done' && response.code === 200) {
       message.success(`${newFileList[0].name} 文件上传成功`)
+
+      if (parentOnChange) {
+        parentOnChange(response.data)
+      }
     }
     else if (status === 'error') {
       message.error(`${newFileList[0].name} 文件上传失败`)
@@ -53,21 +61,7 @@ function UploadImage() {
     <ImgCrop rotationSlider>
       <Upload
         name="file"
-        action={async (file) => {
-          const res = await getPresignedUrl(file.name)
-          return res.data
-        }}
-        customRequest={async (options) => {
-          const { onSuccess, file, action } = options
-          // console.log(options)
-
-          const res = await axios.put(action, file, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-          })
-          // console.log(res)
-
-          onSuccess!(res.data)
-        }}
+        action={`${import.meta.env.VITE_SERVICE_BASE_URL}${PREFIX}/minio/upload`}
         maxCount={1}
         listType="picture-card"
         fileList={fileList}
