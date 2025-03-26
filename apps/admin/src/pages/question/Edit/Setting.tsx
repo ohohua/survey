@@ -21,10 +21,10 @@ function Setting() {
           <Input />
         </Form.Item>
         <Form.Item label="背景图" name="backgroundImage">
-          <UploadImage />
+          <UploadImage aspect={9 / 16} />
         </Form.Item>
         <Form.Item label="页眉图" name="pageHeaderImage">
-          <UploadImage />
+          <UploadImage aspect={3 / 1} />
         </Form.Item>
       </Form>
     </>

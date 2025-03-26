@@ -10,10 +10,11 @@ type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
 interface Props {
   value?: string
   onChange?: (url: string) => void
+  aspect?: number
 }
 
 function UploadImage(props: Props) {
-  const { value = '', onChange: parentOnChange } = props
+  const { value = '', onChange: parentOnChange, aspect = 1 / 1 } = props
 
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
@@ -27,6 +28,9 @@ function UploadImage(props: Props) {
     setFileList(newFileList)
 
     if (!newFileList || newFileList.length === 0) {
+      if (parentOnChange) {
+        parentOnChange('')
+      }
       return
     }
     const { status, response } = newFileList[0]
@@ -59,7 +63,7 @@ function UploadImage(props: Props) {
   }
 
   return (
-    <ImgCrop rotationSlider>
+    <ImgCrop rotationSlider aspect={aspect}>
       <Upload
         name="file"
         action={`${import.meta.env.VITE_SERVICE_BASE_URL}${PREFIX}/minio/upload`}

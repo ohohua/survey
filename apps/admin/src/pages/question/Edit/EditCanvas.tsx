@@ -18,7 +18,7 @@ function getComponent(componentInfo: ComponentInfo) {
 }
 
 function EditCanvas() {
-  const { componentList, selectId, setSelectId } = useComponentStore()
+  const { componentList, selectId, questionInfo, setSelectId } = useComponentStore()
 
   // 注册键盘快捷键
   useBindCanvasKeyPress()
@@ -29,7 +29,10 @@ function EditCanvas() {
   }
 
   return (
-    <>
+    <div className={s.container}>
+      {
+        questionInfo.pageHeaderImage && (<img src={questionInfo.pageHeaderImage} alt="header" />)
+      }
       {
         componentList.map((c) => {
           const { id, props } = c
@@ -47,7 +50,7 @@ function EditCanvas() {
         })
       }
 
-    </>
+    </div>
   )
 }
 

@@ -45,7 +45,7 @@ const tabSettingItems = [
 
 function Edit() {
   useLoadQuestionData()
-  const { selectId, setSelectId } = useComponentStore()
+  const { selectId, questionInfo, setSelectId } = useComponentStore()
   const [rightKey, setRightKey] = useState(TAB_KEYS.STATS)
 
   function handleClickOutside() {
@@ -68,7 +68,7 @@ function Edit() {
           />
         </aside>
         <div className={s.center} onClick={handleClickOutside}>
-          <div className={s.canvas}>
+          <div className={s.canvas} style={{ backgroundImage: `url(${questionInfo.backgroundImage})` }}>
             <EditCanvas></EditCanvas>
           </div>
         </div>
