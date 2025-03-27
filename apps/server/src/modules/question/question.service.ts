@@ -70,7 +70,7 @@ export class QuestionService {
     const offset = (pageIndex - 1) * pageSize
     const whereClause = title ? like(question.title, `%${title}%`) : undefined
     const { isDeleted, ...rest } = getTableColumns(question)
-    const list = await this.db.select(rest).from(question).where(whereClause).limit(pageSize).offset(offset)
+    const list = await this.db.select(rest).from(question).where(and(whereClause, eq(isDeleted, false))).limit(pageSize).offset(offset)
 
     const totalResult = await this.db
       .select({ count: sql<number>`count(*)` })
@@ -119,7 +119,7 @@ export class QuestionService {
 
     await this.db.update(question).set({ isStar: !hasQuestion[0].isStar }).where(eq(question.id, id))
 
-    return '标星成功'
+    return !hasQuestion[0].isStar ? '标星成功' : '取消标星成功'
   }
 
   async deleteQuestionnaire(id: string) {

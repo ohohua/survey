@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { ApiResponseVo } from 'src/common/dto/api-response.dto'
-import { CreateQuestionDto, UpdateQuestionDto } from './model/question.dto'
+import { CopyQuestionDto, CreateQuestionDto, UpdateQuestionDto } from './model/question.dto'
 import { QuestionService } from './question.service'
 
 @ApiTags('问卷')
@@ -54,7 +54,7 @@ export class QuestionController {
   @ApiOperation({ summary: '问卷标星' })
   @ApiParam({ name: 'id', type: String, required: true, description: '问卷id' })
   @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
-  @Patch('start/:id')
+  @Patch('star/:id')
   starQuestion(@Param('id') id: string) {
     return this.service.starQuestionnaire(id)
   }
@@ -69,9 +69,9 @@ export class QuestionController {
 
   @ApiOperation({ summary: '复制问卷' })
   @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
-  @ApiParam({ name: 'id', type: String, required: true, description: '问卷id' })
-  @Post(':id')
-  copyQuestion(@Param('id') id: string) {
+  @ApiBody({ type: CopyQuestionDto, description: '' })
+  @Post('copy')
+  copyQuestion(@Body('id') id: string) {
     return this.service.copyQuestionnaire(id)
   }
 }

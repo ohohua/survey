@@ -48,3 +48,9 @@ export class UpdateQuestionDto {
   @Type(() => UpdateComponentDto)
   components?: UpdateComponentDto[]
 }
+
+export class CopyQuestionDto {
+  @ApiProperty({ example: 'u7odcj4ott', description: '问卷id, 不能为空' })
+  @IsNotEmpty({ message: '问卷id不能为空' })
+  id: string
+}

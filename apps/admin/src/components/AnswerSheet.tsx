@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from 'react'
+import { copyQuestion, deleteQuestion, starQuestion } from '@/api'
 import { CopyOutlined, DeleteOutlined, FormOutlined, FundOutlined, StarFilled, StarOutlined } from '@ant-design/icons'
-import { Button, Tag, Tooltip } from 'antd'
+import { Button, message, Tag, Tooltip } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import s from './AnswerSheet.module.scss'
 
@@ -11,23 +12,36 @@ interface AnswerSheetProps {
   answerCount: number
   createAt: string
   isStar: boolean
+  onChange: () => void
 }
 
 function AnswerSheet(props: PropsWithChildren<AnswerSheetProps>) {
-  const { id, title, isPublished, answerCount, createAt, isStar } = props
+  const { id, title, isPublished, answerCount, createAt, isStar, onChange } = props
   const nav = useNavigate()
 
   const starStyle = isStar ? { color: '#F4BF4F' } : {}
 
-  const handleEdit = () => {
+  function handleEdit() {
     nav({ pathname: `/question/edit/${id}` })
   }
-  const handleStat = () => {
+  function handleStat() {
     nav({ pathname: `/question/stat/${id}` })
   }
-  const handleStar = () => {}
-  const handleCopy = () => {}
-  const handleDelete = () => {}
+  async function handleStar() {
+    const { data } = await starQuestion(id)
+    message.success(data)
+    onChange()
+  }
+  async function handleCopy() {
+    const { data } = await copyQuestion(id)
+    message.success(data)
+    onChange()
+  }
+  async function handleDelete() {
+    const { data } = await deleteQuestion(id)
+    message.success(data)
+    onChange()
+  }
 
   return (
     <div className={s['answer-sheet']}>

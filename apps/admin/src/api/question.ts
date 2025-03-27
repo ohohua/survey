@@ -33,3 +33,21 @@ export const updateQuestionInfo = (data: UpdateQuestionInfo) => http.put<string>
  * @returns id
  */
 export const publishQuestion = (id: string) => http.patch<string>(`${PREFIX}/question/${id}`)
+/**
+ * 星标问卷，取消星标
+ * @param id
+ * @returns 标星状态语
+ */
+export const starQuestion = (id: string) => http.patch<string>(`${PREFIX}/question/star/${id}`)
+/**
+ * 删除问卷
+ * @param id
+ * @returns 标星状态语
+ */
+export const deleteQuestion = (id: string) => http.delete<string>(`${PREFIX}/question/${id}`)
+/**
+ * 复制问卷
+ * @param id
+ * @returns 复制成功
+ */
+export const copyQuestion = (id: string) => http.post<string>(`${PREFIX}/question/copy`, { id })

@@ -6,7 +6,7 @@ import { Flex, Typography } from 'antd'
 const { Title } = Typography
 
 function List() {
-  const { loading, questionList } = useLoadQuestionList()
+  const { loading, questionList, run } = useLoadQuestionList()
 
   if (loading) {
     return <>loading</>
@@ -21,7 +21,7 @@ function List() {
         </Flex>
       </Title>
       {questionList.map((answer) => {
-        return <AnswerSheet key={answer.id} {...answer} />
+        return <AnswerSheet key={answer.id} {...answer} onChange={run} />
       })}
     </div>
   )
