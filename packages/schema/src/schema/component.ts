@@ -8,7 +8,8 @@ export const component = mysqlTable('component', {
   questionId: varchar('question_id', { length: 10 }).notNull(),
   type: varchar('type', { length: 64 }),
   sort: int('sort').notNull(),
-  props: json('json').default('{}'),
+  props: json().default(JSON.stringify({})),
+  answer: json().default(JSON.stringify({})), // 答卷答案
   isDeleted: boolean('is_deleted').default(false),
   createAt: timestamp('create_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),

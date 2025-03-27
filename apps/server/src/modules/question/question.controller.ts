@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Patch, Post, Put, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { ApiResponseVo } from 'src/common/dto/api-response.dto'
 import { CreateQuestionDto, UpdateQuestionDto } from './model/question.dto'
@@ -49,5 +49,29 @@ export class QuestionController {
   @Get(':id')
   loadDetail(@Param('id') id: string) {
     return this.service.loadDetail(id)
+  }
+
+  @ApiOperation({ summary: '问卷标星' })
+  @ApiParam({ name: 'id', type: String, required: true, description: '问卷id' })
+  @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
+  @Patch('start/:id')
+  starQuestion(@Param('id') id: string) {
+    return this.service.starQuestionnaire(id)
+  }
+
+  @ApiOperation({ summary: '删除问卷' })
+  @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiParam({ name: 'id', type: String, required: true, description: '问卷id' })
+  @Delete(':id')
+  deleteQuestion(@Param('id') id: string) {
+    return this.service.deleteQuestionnaire(id)
+  }
+
+  @ApiOperation({ summary: '复制问卷' })
+  @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiParam({ name: 'id', type: String, required: true, description: '问卷id' })
+  @Post(':id')
+  copyQuestion(@Param('id') id: string) {
+    return this.service.copyQuestionnaire(id)
   }
 }

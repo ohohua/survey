@@ -1,6 +1,6 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { component, createId, question } from '@survey/schema'
-import { asc, eq, getTableColumns, like, sql } from 'drizzle-orm'
+import { and, asc, eq, getTableColumns, like, sql } from 'drizzle-orm'
 import { DB, DbType } from '../global/providers/db.provider'
 import { CreateQuestionDto, UpdateQuestionDto } from './model/question.dto'
 
@@ -106,5 +106,47 @@ export class QuestionService {
       ...questionInfo[0],
       componentList,
     }
+  }
+
+  async starQuestionnaire(id: string) {
+    const hasQuestion = await this.db.select({ isStar: question.isStar })
+      .from(question)
+      .where(and(eq(question.id, id), eq(question.isDeleted, false)))
+
+    if (!hasQuestion || !hasQuestion.length) {
+      throw new BadRequestException('问卷不存在')
+    }
+
+    await this.db.update(question).set({ isStar: !hasQuestion[0].isStar }).where(eq(question.id, id))
+
+    return '标星成功'
+  }
+
+  async deleteQuestionnaire(id: string) {
+    const hasQuestion = await this.db.select()
+      .from(question)
+      .where(and(eq(question.id, id), eq(question.isDeleted, false)))
+
+    if (!hasQuestion || !hasQuestion.length) {
+      throw new BadRequestException('问卷不存在')
+    }
+
+    await this.db.update(question).set({ isDeleted: true }).where(eq(question.id, id))
+
+    return '删除成功'
+  }
+
+  async copyQuestionnaire(id: string) {
+    const hasQuestion = await this.db.select()
+      .from(question)
+      .where(and(eq(question.id, id), eq(question.isDeleted, false)))
+
+    if (!hasQuestion || !hasQuestion.length) {
+      throw new BadRequestException('问卷不存在')
+    }
+
+    await this.db.insert(question).values({ ...hasQuestion[0], id: createId() })
+
+    return '复制成功'
   }
 }

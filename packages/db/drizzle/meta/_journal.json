@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1743081681088,
+      "tag": "0000_chubby_scarlet_spider",
+      "breakpoints": true
+    }
+  ]
+}
