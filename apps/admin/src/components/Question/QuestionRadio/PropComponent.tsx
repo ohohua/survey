@@ -6,7 +6,7 @@ import { QuestionRadioDefault } from './interface'
 
 function PropComponent(props: QuestionRadioProps) {
   const [form] = Form.useForm()
-  const { title, options = [], vertical, isLock, onChange } = { ...QuestionRadioDefault, ...props }
+  const { title, options = [], vertical, isLock, value, onChange } = { ...QuestionRadioDefault, ...props }
 
   useEffect(() => {
     form.setFieldsValue({ title })
@@ -19,7 +19,7 @@ function PropComponent(props: QuestionRadioProps) {
   }
   return (
     <>
-      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, options, vertical }} form={form} autoComplete="off">
+      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, options, vertical, value }} form={form} autoComplete="off">
         <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
           <Input disabled={isLock} />
         </Form.Item>

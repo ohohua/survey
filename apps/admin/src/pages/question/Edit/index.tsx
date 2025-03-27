@@ -58,7 +58,7 @@ function Edit() {
 
   return (
     <>
-      <EditHeader></EditHeader>
+      <EditHeader />
       <div className={s.container}>
         <aside className={s.left}>
           <Tabs
@@ -68,8 +68,8 @@ function Edit() {
           />
         </aside>
         <div className={s.center} onClick={handleClickOutside}>
-          <div className={s.canvas} style={{ backgroundImage: `url(${questionInfo.backgroundImage})` }}>
-            <EditCanvas></EditCanvas>
+          <div className={s.canvas} style={{ backgroundImage: `url(${questionInfo.backgroundImage}`, backgroundSize: 'cover' }}>
+            <EditCanvas />
           </div>
         </div>
         <div className={s.right}>

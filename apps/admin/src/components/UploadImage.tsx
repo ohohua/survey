@@ -20,7 +20,7 @@ function UploadImage(props: Props) {
 
   useEffect(() => {
     if (value) {
-      setFileList([{ uid: '-1', name: 'image.png', status: 'done', url: value }])
+      setFileList([{ uid: '-1', name: value.split('_')[1] || 'image.png', status: 'done', url: value }])
     }
   }, [value])
 

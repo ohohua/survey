@@ -6,11 +6,7 @@ import { QuestionMultipleDefault } from './interface'
 
 function PropComponent(props: QuestionMultipleProps) {
   const [form] = Form.useForm()
-  const { title, options = [], vertical, isLock, onChange } = { ...QuestionMultipleDefault, ...props }
-
-  // useEffect(() => {
-  //   form.setFieldsValue({ title })
-  // }, [title])
+  const { title, options = [], vertical, checked, isLock, onChange } = { ...QuestionMultipleDefault, ...props }
 
   function handleChange() {
     if (onChange) {
@@ -20,7 +16,7 @@ function PropComponent(props: QuestionMultipleProps) {
 
   return (
     <>
-      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, options, vertical }} form={form} autoComplete="off">
+      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, options, vertical, checked }} form={form} autoComplete="off">
         <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
           <Input disabled={isLock} />
         </Form.Item>
