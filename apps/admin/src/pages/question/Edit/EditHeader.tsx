@@ -3,11 +3,12 @@ import { TEMP_ID, useComponentStore } from '@/store'
 import { CopyOutlined, DeleteOutlined, DownOutlined, LeftOutlined, LockOutlined, RedoOutlined, SnippetsOutlined, UndoOutlined, UnlockOutlined, UpOutlined } from '@ant-design/icons'
 import { Button, Flex, message, Space, Tooltip } from 'antd'
 import { cloneDeep } from 'lodash-es'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import s from './EditHeader.module.scss'
 
 function EditHeader() {
   const nav = useNavigate()
+  const { id = '' } = useParams()
   const { selectId, componentList, tempComponent, setSelectId, delComponent, addComponent, updateComponent, setTempComponent, resetStore } = useComponentStore()
   const { loading, run, pubLoading, pubRun } = useSaveQuestionInfo()
 
@@ -83,6 +84,12 @@ function EditHeader() {
     resetStore()
     nav({ pathname: '/manage/list' })
   }
+  async function publish() {
+    pubRun()
+    setTimeout(() => {
+      nav({ pathname: `/question/stat/${id}` })
+    }, 2000)
+  }
 
   return (
     <Flex className={s.header} justify="space-between" align="center">
@@ -117,7 +124,7 @@ function EditHeader() {
       </Space>
       <Flex gap="small">
         <Button type="default" onClick={run} loading={loading} disabled={loading}> 保存 </Button>
-        <Button type="primary" onClick={pubRun} loading={pubLoading} disabled={pubLoading}> 发布 </Button>
+        <Button type="primary" onClick={publish} loading={pubLoading} disabled={pubLoading}> 发布 </Button>
       </Flex>
     </Flex>
   )

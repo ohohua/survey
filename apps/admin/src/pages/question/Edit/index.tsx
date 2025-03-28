@@ -1,7 +1,7 @@
 import { useLoadQuestionData } from '@/hooks/useLoadQuestionInfo'
 import { useComponentStore } from '@/store'
 import { FileOutlined, OrderedListOutlined, ProductOutlined, SettingOutlined } from '@ant-design/icons'
-import { Tabs } from 'antd'
+import { Spin, Tabs } from 'antd'
 import EditCanvas from './EditCanvas'
 import EditHeader from './EditHeader'
 import s from './index.module.scss'
@@ -44,7 +44,7 @@ const tabSettingItems = [
 ]
 
 function Edit() {
-  useLoadQuestionData()
+  const { loading } = useLoadQuestionData()
   const { selectId, questionInfo, setSelectId } = useComponentStore()
   const [rightKey, setRightKey] = useState(TAB_KEYS.STATS)
 
@@ -67,11 +67,18 @@ function Edit() {
             items={tabItems}
           />
         </aside>
-        <div className={s.center} onClick={handleClickOutside}>
-          <div className={s.canvas} style={{ backgroundImage: `url(${questionInfo.backgroundImage}`, backgroundSize: 'cover' }}>
-            <EditCanvas />
-          </div>
-        </div>
+        {
+
+          loading
+            ? <Spin style={{ marginTop: '60px' }} />
+            : (
+                <div className={s.center} onClick={handleClickOutside}>
+                  <div className={s.canvas} style={{ backgroundImage: `url(${questionInfo.backgroundImage}`, backgroundSize: 'cover' }}>
+                    <EditCanvas />
+                  </div>
+                </div>
+              )
+        }
         <div className={s.right}>
           <Tabs
             activeKey={rightKey}
