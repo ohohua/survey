@@ -1,0 +1,23 @@
+.container {
+  background-color: #F0F2F5;
+  height: 100vh;
+}
+
+.content {
+  height: calc(100vh - 64px);
+}
+
+.left {
+  box-sizing: border-box;
+  height: calc(100% - 20px);
+  margin: 10px;
+  padding: 0 10px;
+  background: white;
+}
+
+.center {
+  margin: 10px;
+  height: calc(100% - 30px);
+  display: flex;
+  background-color: #fff;
+}

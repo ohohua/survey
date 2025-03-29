@@ -31,7 +31,7 @@ function StatHeader() {
           <Button style={{ flexShrink: 0 }} icon={<QrcodeOutlined />} />
         </Popover>
       </Flex>
-      <Button type="primary" onClick={handleEdit}>编辑</Button>
+      <Button type="default" onClick={handleEdit}>编辑</Button>
     </Flex>
   )
 }
