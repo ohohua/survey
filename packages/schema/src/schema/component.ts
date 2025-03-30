@@ -9,7 +9,6 @@ export const component = mysqlTable('component', {
   type: varchar('type', { length: 64 }),
   sort: int('sort').notNull(),
   props: json().default(JSON.stringify({})),
-  answer: json().default(JSON.stringify({})), // 答卷答案
   isDeleted: boolean('is_deleted').default(false),
   createAt: timestamp('create_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
