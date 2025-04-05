@@ -45,7 +45,7 @@ class Request {
           return Promise.reject(data)
         } // 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
         if (data.code && data.code !== RequestEnums.SUCCESS) {
-          message.error(data) // 此处也可以使用组件提示报错信息
+          message.error(data)
           return Promise.reject(data)
         }
         return data
@@ -56,7 +56,7 @@ class Request {
           this.handleCode(response.status, response.data.msg)
         }
         if (!window.navigator.onLine) {
-          message.error('网络连接失败') // 可以跳转到错误页面，也可以不做操作
+          message.error('网络连接失败')
         }
       },
     )

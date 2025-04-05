@@ -1,11 +1,14 @@
 import { CopyOutlined, LeftOutlined, QrcodeOutlined } from '@ant-design/icons'
-import { Button, Flex, Input, message, Popover } from 'antd'
+import { Button, Flex, Input, message, Popover, QRCode } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
 import s from './StatHeader.module.scss'
 
 function StatHeader() {
   const nav = useNavigate()
   const { id = '' } = useParams()
+
+  // 问卷移动端链接
+  const mobileUrl = useMemo(() => `${import.meta.env.VITE_SERVICE_MOBILE_URL}/question/${id}`, [id])
 
   function handleBack() {
     nav({ pathname: '/manage/list' })
@@ -20,13 +23,15 @@ function StatHeader() {
   }
 
   function renderQrcode() {
-    return <div className={s.qrcode}></div>
+    return (
+      <QRCode value={mobileUrl} bordered={false} />
+    )
   }
   return (
     <Flex className={s.header} justify="space-between" align="center">
       <Button type="link" icon={<LeftOutlined />} onClick={handleBack}> 返回 </Button>
       <Flex gap="small">
-        <Input addonAfter={<CopyOutlined onClick={handleCopy} />} placeholder="问卷链接" />
+        <Input className={s.input} addonAfter={<CopyOutlined onClick={handleCopy} />} defaultValue={mobileUrl} placeholder="问卷链接" />
         <Popover content={renderQrcode()} trigger="click">
           <Button style={{ flexShrink: 0 }} icon={<QrcodeOutlined />} />
         </Popover>
