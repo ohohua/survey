@@ -1,5 +1,4 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import type { Result } from './types'
 import { message } from 'antd'
 import axios from 'axios'
 
@@ -10,6 +9,23 @@ enum RequestEnums {
   OVERDUE = 500, // 登录失效
   FAIL = 400, // 请求失败
   SUCCESS = 200, // 请求成功
+}
+// 定义请求响应参数
+export interface Result<T> {
+  code: number
+  msg: string
+  data: T
+}
+
+export interface ListDto {
+  pageIndex: number
+  pageSize: number
+  [props: string]: string | number
+}
+
+export interface ListTime {
+  createTime: Date
+  updateTime: Date
 }
 
 class Request {
