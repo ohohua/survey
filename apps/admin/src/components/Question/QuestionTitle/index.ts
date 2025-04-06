@@ -1,3 +1,4 @@
+import { COMPONENT_TYPE } from '@survey/common'
 import Component from './Component'
 import { QuestionTitleDefault } from './interface'
 import PropComponent from './PropComponent'
@@ -5,7 +6,7 @@ import PropComponent from './PropComponent'
 export * from './interface'
 
 export default {
-  type: 'componentTitle',
+  type: COMPONENT_TYPE.TITLE,
   Component,
   PropComponent,
   defaultProps: QuestionTitleDefault,

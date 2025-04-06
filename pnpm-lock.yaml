@@ -75,6 +75,9 @@ importers:
       '@ant-design/v5-patch-for-react-19':
         specifier: ^1.0.3
         version: 1.0.3(antd@5.24.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@survey/common':
+        specifier: workspace:^
+        version: link:../../packages/common
       '@survey/http':
         specifier: workspace:^
         version: link:../../packages/http
@@ -160,6 +163,9 @@ importers:
       '@prisma/client':
         specifier: ^6.4.1
         version: 6.4.1(prisma@6.4.1(typescript@5.7.3))(typescript@5.7.3)
+      '@survey/common':
+        specifier: workspace:^
+        version: link:../../packages/common
       '@survey/db':
         specifier: workspace:^
         version: link:../../packages/db
@@ -287,6 +293,8 @@ importers:
       webpack-cli:
         specifier: ^6.0.1
         version: 6.0.1(webpack@5.98.0)
+
+  packages/common: {}
 
   packages/db:
     dependencies:

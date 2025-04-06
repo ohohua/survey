@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { COMPONENT_TYPE } from '@survey/common'
 import { IsEnum, IsJSON, IsNotEmpty } from 'class-validator'
-import { COMPONENT_TYPE } from 'src/enums'
 
 export class CreateComponentDto {
   @ApiProperty({ description: '问卷id' })

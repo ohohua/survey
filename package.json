@@ -15,6 +15,7 @@
   "keywords": [],
   "scripts": {
     "preinstall": "pnpm dlx only-allow pnpm",
+    "depend:init": "pnpm --filter @survey/common run build && pnpm --filter @survey/http run build",
     "db:init": "pnpm --filter @survey/schema run build && pnpm --filter @survey/db run init",
     "db:studio": "pnpm --filter @survey/db db:studio",
     "docker:start": "docker-compose up -d",

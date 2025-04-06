@@ -1,4 +1,5 @@
 import type { ComponentInfo } from '@/store'
+import { COMPONENT_TYPE } from '@survey/common'
 import { Table } from 'antd'
 import Column from 'antd/es/table/Column'
 import s from './index.module.scss'
@@ -64,8 +65,8 @@ const dataSource: DataType[] = [
 ]
 function StatAnswer(props: StatAnswerProps) {
   const { list, selectId: _selectId, loading } = props
-
-  const columns = useMemo(() => list.map(item => ({ title: item.props.title, dataIndex: item.id })), [list])
+  const needComponentColumnType = [COMPONENT_TYPE.INPUT, COMPONENT_TYPE.RADIO, COMPONENT_TYPE.MULTIPLE, COMPONENT_TYPE.TEXTAREA]
+  const columns = list.filter(item => needComponentColumnType.includes(item.type as COMPONENT_TYPE)).map(item => ({ title: item.props.title, dataIndex: item.id }))
 
   if (loading) {
     return <>loading</>
