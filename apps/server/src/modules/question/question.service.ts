@@ -36,8 +36,19 @@ export class QuestionService {
     if (!components || !components.length) {
       return '修改成功'
     }
+    // dto 中没有的组件需要删除
+    // 查询当前问卷下的所有组件id
+    const hasComponent = await this.db.select({ id: component.id }).from(component).where(eq(component.questionId, id))
+    // 需要删除的组件
+    const needDel = hasComponent.filter(item => !components.some(c => c.id === item.id))
+
     // 要么全成功, 要么都失败
     await this.db.transaction(async (tx) => {
+      // 物理删除组件
+      for (const c of needDel) {
+        await tx.delete(component).where(and(eq(component.questionId, id), eq(component.id, c.id)))
+      }
+
       for (const c of components) {
         if (c.id) {
           await tx.update(component).set({ type: c.type, props: c.props, sort: c.sort }).where(eq(component.id, c.id))
