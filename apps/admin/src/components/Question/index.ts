@@ -15,11 +15,11 @@ import QuestionTitle from './QuestionTitle'
 // 各个组件的 props 类型
 export type ComponentPropsType =
   QuestionInputProps
-  | QuestionTitleProps
-  | QuestionParagraphProps
-  | QuestionTextareaProps
-  | QuestionRadioProps
-  | QuestionMultipleProps
+  & QuestionTitleProps
+  & QuestionParagraphProps
+  & QuestionTextareaProps
+  & QuestionRadioProps
+  & QuestionMultipleProps
 
 // 组件类型
 export interface ComponentConfigType {
