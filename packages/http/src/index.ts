@@ -69,7 +69,7 @@ class Request {
       (error: AxiosError<Result<any>>) => {
         const { response } = error
         if (response) {
-          this.handleCode(response.status, response.data.msg)
+          this.handleCode({ code: response.status, msg: response.data.msg })
         }
         if (!window.navigator.onLine) {
           message.error('网络连接失败')
@@ -78,7 +78,7 @@ class Request {
     )
   }
 
-  handleCode(code: number, msg: string): void {
+  handleCode({ code, msg }: { code: number, msg: string }): void {
     switch (code) {
       case 401:
         console.error('登录失败，请重新登录')

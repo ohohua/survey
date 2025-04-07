@@ -1,5 +1,5 @@
 import type { ComponentInfo } from '@/store/useComponentStore'
-import type { ListDto } from '@survey/http/src/types'
+import type { ListDto } from '@survey/http'
 import type { ListVo, QuestionInfo, QuestionInfoDto, UpdateQuestionInfo } from './question.d'
 import { http, PREFIX } from './index'
 

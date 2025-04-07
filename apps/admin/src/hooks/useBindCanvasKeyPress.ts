@@ -2,6 +2,9 @@ import { TEMP_ID, useComponentStore } from '@/store'
 import { useKeyPress } from 'ahooks'
 import { message } from 'antd'
 
+/**
+ * 注册快捷键
+ */
 export function useBindCanvasKeyPress() {
   const { selectId, tempComponent, delComponent, addComponent, setTempComponent, setSelectIdTurnUp, setSelectIdTurnDown } = useComponentStore()
 

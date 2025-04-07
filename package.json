@@ -26,6 +26,8 @@
     "dev:server": "pnpm run --filter server start:debug",
     "build:admin": "pnpm run --filter admin build",
     "build:server": "pnpm run --filter server build",
+    "look:package": "find . -name 'node_modules' -type d -prune | xargs du -chs",
+    "del:package": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "lint": "eslint --fix '{apps/**/src,packages/**/src}/**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
