@@ -1,7 +1,6 @@
 import type { ComponentInfo } from '@/store'
 import { COMPONENT_TYPE } from '@survey/common'
 import { Table } from 'antd'
-import Column from 'antd/es/table/Column'
 import s from './index.module.scss'
 
 interface DataType {
@@ -18,66 +17,33 @@ interface StatAnswerProps {
   loading: boolean
 }
 
-const dataSource: DataType[] = [
-  {
-    id: 1,
-    title: 'Question 12',
-    isPublished: true,
-    answerNumber: 10,
-    createAt: '2021-09-01',
-  },
-  {
-    id: 2,
-    title: 'Question 2',
-    isPublished: false,
-    answerNumber: 20,
-    createAt: '2021-09-02',
-  },
-  {
-    id: 3,
-    title: 'Question 2',
-    isPublished: false,
-    answerNumber: 20,
-    createAt: '2021-09-02',
-  },
-  {
-    id: 4,
-    title: 'Question 2',
-    isPublished: false,
-    answerNumber: 20,
-    createAt: '2021-09-02',
-  },
-  {
-    id: 5,
-    title: 'Question 2',
-    isPublished: false,
-    answerNumber: 20,
-    createAt: '2021-09-02',
-  },
-  {
-    id: 6,
-    title: 'Question 2',
-    isPublished: false,
-    answerNumber: 20,
-    createAt: '2021-09-02',
-  },
-
-]
+const needComponentColumnType = [COMPONENT_TYPE.INPUT, COMPONENT_TYPE.RADIO, COMPONENT_TYPE.MULTIPLE, COMPONENT_TYPE.TEXTAREA]
 function StatAnswer(props: StatAnswerProps) {
-  const { list, selectId: _selectId, loading } = props
-  const needComponentColumnType = [COMPONENT_TYPE.INPUT, COMPONENT_TYPE.RADIO, COMPONENT_TYPE.MULTIPLE, COMPONENT_TYPE.TEXTAREA]
-  const columns = list.filter(item => needComponentColumnType.includes(item.type as COMPONENT_TYPE)).map(item => ({ title: item.props.title, dataIndex: item.id }))
+  const { list, selectId, loading } = props
+  const [dataSource, _setDataSource] = useState<DataType[]>([])
+
+  const filterColumns = list.filter(item => needComponentColumnType.includes(item.type as COMPONENT_TYPE)).map((c) => {
+    return {
+      title: (
+        <div
+          style={{ cursor: 'pointer' }}
+          onClick={() => { }}
+        >
+          <span style={{ color: c.id === selectId ? '#1890ff' : 'inherit' }}>
+            {c.props.title}
+          </span>
+        </div>
+      ),
+      dataIndex: c.id,
+    }
+  })
 
   if (loading) {
     return <>loading</>
   }
   return (
     <div className={s.center}>
-      <Table dataSource={dataSource} rowKey="id">
-        {
-          columns.map(c => <Column {...c} key={c.dataIndex} />)
-        }
-      </Table>
+      <Table columns={filterColumns} dataSource={dataSource} pagination={false} />
     </div>
   )
 }
