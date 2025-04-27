@@ -15,11 +15,12 @@ interface StatAnswerProps {
   list: ComponentInfo[]
   selectId: string | undefined
   loading: boolean
+  changeId: (id: string) => void
 }
 
 const needComponentColumnType = [COMPONENT_TYPE.INPUT, COMPONENT_TYPE.RADIO, COMPONENT_TYPE.MULTIPLE, COMPONENT_TYPE.TEXTAREA]
 function StatAnswer(props: StatAnswerProps) {
-  const { list, selectId, loading } = props
+  const { list, selectId, loading, changeId } = props
   const [dataSource, _setDataSource] = useState<DataType[]>([])
 
   const filterColumns = list.filter(item => needComponentColumnType.includes(item.type as COMPONENT_TYPE)).map((c) => {
@@ -27,7 +28,7 @@ function StatAnswer(props: StatAnswerProps) {
       title: (
         <div
           style={{ cursor: 'pointer' }}
-          onClick={() => { }}
+          onClick={() => changeId(c.id)}
         >
           <span style={{ color: c.id === selectId ? '#1890ff' : 'inherit' }}>
             {c.props.title}
@@ -41,6 +42,7 @@ function StatAnswer(props: StatAnswerProps) {
   if (loading) {
     return <>loading</>
   }
+
   return (
     <div className={s.center}>
       <Table columns={filterColumns} dataSource={dataSource} pagination={false} />

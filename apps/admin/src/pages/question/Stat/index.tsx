@@ -34,7 +34,7 @@ function Stat() {
           <StatQuestion list={list} selectId={selectId} loading={loading} changeId={setSelectId} />
         </Splitter.Panel>
         <Splitter.Panel>
-          <StatAnswer list={list} selectId={selectId} loading={loading} />
+          <StatAnswer list={list} selectId={selectId} loading={loading} changeId={setSelectId} />
         </Splitter.Panel>
       </Splitter>
     </div>
