@@ -10,6 +10,18 @@ import { http, PREFIX } from './index'
  */
 export const loadQuestionList = (data: ListDto) => http.get<ListVo<QuestionInfo>>(`${PREFIX}/question`, data)
 /**
+ * 获取星标问卷列表
+ * @param data 分页参数
+ * @returns 问卷分页列表
+ */
+export const loadQuestionStarList = (data: ListDto) => http.get<ListVo<QuestionInfo>>(`${PREFIX}/question/star-list`, data)
+/**
+ * 获取回收站问卷列表
+ * @param data 分页参数
+ * @returns 问卷分页列表
+ */
+export const loadQuestionTrashList = (data: ListDto) => http.get<ListVo<QuestionInfo>>(`${PREFIX}/question/trash-list`, data)
+/**
  * 获取问卷所有信息
  * @param id
  * @returns 标题，组件

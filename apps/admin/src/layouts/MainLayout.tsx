@@ -1,7 +1,7 @@
 import Logo from '@/components/Logo'
 import UserInfo from '@/components/UserInfo'
 import { Layout } from 'antd'
-import { Content, Footer, Header } from 'antd/es/layout/layout'
+import { Content, Header } from 'antd/es/layout/layout'
 import { Outlet } from 'react-router-dom'
 import s from './MainLayout.module.scss'
 
@@ -15,7 +15,7 @@ function MainLayout() {
       <Content className={s.content}>
         <Outlet></Outlet>
       </Content>
-      <Footer className={s.footer}>Footer</Footer>
+      {/* <Footer className={s.footer}>Footer</Footer> */}
     </Layout>
   )
 }

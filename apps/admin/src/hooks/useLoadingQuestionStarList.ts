@@ -1,10 +1,10 @@
 import type { QuestionInfo } from '@/api/question.d'
-import { loadQuestionList } from '@/api'
+import { loadQuestionStarList } from '@/api'
 import { SEARCH_KEYWORD } from '@/constant'
 import { useRequest } from 'ahooks'
 import { useSearchParams } from 'react-router-dom'
 
-export function useLoadQuestionList() {
+export function useLoadQuestionStarList() {
   const [searchParams] = useSearchParams()
   const [questionList, setQuestionList] = useState<QuestionInfo[]>([])
 
@@ -14,7 +14,7 @@ export function useLoadQuestionList() {
       pageSize: 10,
     }
 
-    const { data } = await loadQuestionList({ ...params, title: searchParams.get(SEARCH_KEYWORD) || '' })
+    const { data } = await loadQuestionStarList({ ...params, title: searchParams.get(SEARCH_KEYWORD) || '' })
 
     return data
   }, {

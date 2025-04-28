@@ -35,12 +35,32 @@ export class QuestionController {
 
   @ApiOperation({ summary: '问卷列表' })
   @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
-  @ApiQuery({ name: 'pageIndex', type: Number, description: '页码', required: true })
+  @ApiQuery({ name: 'current', type: Number, description: '页码', required: true })
   @ApiQuery({ name: 'pageSize', type: Number, description: '分页大小', required: true })
   @ApiQuery({ name: 'title', type: String, description: '问卷名称', required: false })
   @Get()
-  loadQuestionList(@Query('pageIndex') pageIndex: number, @Query('pageSize') pageSize: number, @Query('title') title: string) {
-    return this.service.loadQuestionList(pageIndex, pageSize, title)
+  loadQuestionList(@Query('current') current: number, @Query('pageSize') pageSize: number, @Query('title') title: string) {
+    return this.service.loadQuestionList(current, pageSize, title)
+  }
+
+  @ApiOperation({ summary: '星标问卷列表' })
+  @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiQuery({ name: 'current', type: Number, description: '页码', required: true })
+  @ApiQuery({ name: 'pageSize', type: Number, description: '分页大小', required: true })
+  @ApiQuery({ name: 'title', type: String, description: '问卷名称', required: false })
+  @Get('star-list')
+  loadQuestionStarList(@Query('current') current: number, @Query('pageSize') pageSize: number, @Query('title') title: string) {
+    return this.service.loadQuestionStarList(current, pageSize, title)
+  }
+
+  @ApiOperation({ summary: '回收站问卷列表' })
+  @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiQuery({ name: 'current', type: Number, description: '页码', required: true })
+  @ApiQuery({ name: 'pageSize', type: Number, description: '分页大小', required: true })
+  @ApiQuery({ name: 'title', type: String, description: '问卷名称', required: false })
+  @Get('trash-list')
+  loadQuestionTrashList(@Query('current') current: number, @Query('pageSize') pageSize: number, @Query('title') title: string) {
+    return this.service.loadQuestionTrashList(current, pageSize, title)
   }
 
   @ApiOperation({ summary: '问卷详情' })

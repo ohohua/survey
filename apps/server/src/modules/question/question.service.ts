@@ -77,20 +77,56 @@ export class QuestionService {
     return id
   }
 
-  async loadQuestionList(pageIndex: number, pageSize: number, title?: string) {
-    const offset = (pageIndex - 1) * pageSize
+  async loadQuestionList(current: number, pageSize: number, title?: string, star: boolean = false) {
+    const offset = (current - 1) * pageSize
     const whereClause = title ? like(question.title, `%${title}%`) : undefined
+    const isStar = star ? eq(question.isStar, star) : undefined
     const { isDeleted, ...rest } = getTableColumns(question)
-    const list = await this.db.select(rest).from(question).where(and(whereClause, eq(isDeleted, false))).limit(pageSize).offset(offset)
-
-    const totalResult = await this.db
-      .select({ count: sql<number>`count(*)` })
+    const result = await this.db
+      .select({
+        ...rest,
+        total: sql<number>`COUNT(*) OVER()`, // 使用窗口函数计算总数
+      })
       .from(question)
-      .where(whereClause) // 添加查询条件
+      .where(and(whereClause, isStar, eq(isDeleted, false)))
+      .limit(pageSize)
+      .offset(offset)
+
+    const list = result.map(({ total, ...item }) => item)
+    const total = result.length > 0 ? result[0].total : 0
 
     return {
       list,
-      total: totalResult[0].count,
+      total,
+    }
+  }
+
+  async loadQuestionStarList(current: number, pageSize: number, title?: string) {
+    return await this.loadQuestionList(current, pageSize, title, true)
+  }
+
+  async loadQuestionTrashList(current: number, pageSize: number, title?: string) {
+    const offset = (current - 1) * pageSize
+    const whereClause = title ? like(question.title, `%${title}%`) : undefined
+    const { isDeleted, ...rest } = getTableColumns(question)
+    // 合并查询
+    const result = await this.db
+      .select({
+        ...rest,
+        total: sql<number>`COUNT(*) OVER()`, // 使用窗口函数计算总数
+      })
+      .from(question)
+      .where(and(whereClause, eq(isDeleted, true)))
+      .limit(pageSize)
+      .offset(offset)
+
+    // 提取列表数据和总数
+    const list = result.map(({ total, ...item }) => item)
+    const total = result.length > 0 ? result[0].total : 0
+
+    return {
+      list,
+      total,
     }
   }
 

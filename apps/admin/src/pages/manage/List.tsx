@@ -2,6 +2,7 @@ import AnswerSheet from '@/components/AnswerSheet'
 import ListSearch from '@/components/ListSearch'
 import { useLoadQuestionList } from '@/hooks/useLoadingQuestionList'
 import { Flex, Typography } from 'antd'
+import s from './List.module.scss'
 
 const { Title } = Typography
 
@@ -20,9 +21,11 @@ function List() {
           <ListSearch></ListSearch>
         </Flex>
       </Title>
-      {questionList.map((answer) => {
-        return <AnswerSheet key={answer.id} {...answer} onChange={run} />
-      })}
+      <div className={s.container}>
+        {questionList.map((answer) => {
+          return <AnswerSheet key={answer.id} {...answer} onChange={run} />
+        })}
+      </div>
     </div>
   )
 }

@@ -1,83 +1,35 @@
-import type { TableRowSelection } from 'antd/es/table/interface'
+import type { ListDto } from '@survey/http'
+import { loadQuestionTrashList } from '@/api'
 import ListSearch from '@/components/ListSearch'
-import { Button, Flex, Modal, Table, Tag, Typography } from 'antd'
+import { usePagination } from 'ahooks'
+import { Button, Flex, Modal, Pagination, Table, Tag, Typography } from 'antd'
 import Column from 'antd/es/table/Column'
-// import { useAntdTable } from 'ahooks'
-
-interface DataType {
-  id: number
-  title: string
-  isPublished: boolean
-  answerNumber: number
-  createAt: string
-}
+import to from 'await-to-js'
 
 const { Title } = Typography
 
-const dataSource: DataType[] = [
-  {
-    id: 1,
-    title: 'Question 12',
-    isPublished: true,
-    answerNumber: 10,
-    createAt: '2021-09-01',
-  },
-  {
-    id: 2,
-    title: 'Question 2',
-    isPublished: false,
-    answerNumber: 20,
-    createAt: '2021-09-02',
-  },
-  {
-    id: 3,
-    title: 'Question 2',
-    isPublished: false,
-    answerNumber: 20,
-    createAt: '2021-09-02',
-  },
-  {
-    id: 4,
-    title: 'Question 2',
-    isPublished: false,
-    answerNumber: 20,
-    createAt: '2021-09-02',
-  },
-  {
-    id: 5,
-    title: 'Question 2',
-    isPublished: false,
-    answerNumber: 20,
-    createAt: '2021-09-02',
-  },
-  {
-    id: 6,
-    title: 'Question 2',
-    isPublished: false,
-    answerNumber: 20,
-    createAt: '2021-09-02',
-  },
-
-]
+// 获取列表数据
+async function loadListData(params: ListDto) {
+  const [error, trashData] = await to(loadQuestionTrashList(params))
+  return error ? { total: 0, list: [] } : trashData.data
+}
 
 function Trash() {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
-  const [loading, setLoading] = useState(false)
   const [modal, contextHolder] = Modal.useModal()
-  // const {} = useAntdTable()
+  const { data, loading, pagination } = usePagination(loadListData)
 
   const start = () => {
-    setLoading(true)
+    pagination.onChange(1, 20)
     setTimeout(() => {
       setSelectedRowKeys([])
-      setLoading(false)
     }, 1000)
   }
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys)
   }
 
-  const rowSelection: TableRowSelection<DataType> = {
+  const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
   }
@@ -116,7 +68,7 @@ function Trash() {
         </Button>
       </Flex>
       &nbsp;
-      <Table dataSource={dataSource} rowSelection={rowSelection} rowKey="id">
+      <Table loading={loading} pagination={false} dataSource={data?.list} rowSelection={rowSelection} rowKey="id">
         <Column title="标题" dataIndex="title" />
         <Column
           title="发布状态"
@@ -140,6 +92,19 @@ function Trash() {
           )}
         />
       </Table>
+      <div>
+
+      </div>
+      <Pagination
+        current={pagination.current}
+        pageSize={pagination.pageSize}
+        total={data?.total}
+        onChange={pagination.onChange}
+        onShowSizeChange={pagination.onChange}
+        showQuickJumper
+        showSizeChanger
+        style={{ marginTop: 16, justifyContent: 'flex-end' }}
+      />
       {contextHolder}
     </>
   )

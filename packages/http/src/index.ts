@@ -18,7 +18,7 @@ export interface Result<T> {
 }
 
 export interface ListDto {
-  pageIndex: number
+  current: number
   pageSize: number
   [props: string]: string | number
 }
