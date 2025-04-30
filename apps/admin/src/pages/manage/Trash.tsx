@@ -1,8 +1,8 @@
 import type { ListDto } from '@survey/http'
-import { loadQuestionTrashList } from '@/api'
+import { deleteQuestionTrash, loadQuestionTrashList } from '@/api'
 import ListSearch from '@/components/ListSearch'
 import { usePagination } from 'ahooks'
-import { Button, Flex, Modal, Pagination, Table, Tag, Typography } from 'antd'
+import { Button, Flex, message, Modal, Pagination, Table, Tag, Typography } from 'antd'
 import Column from 'antd/es/table/Column'
 import to from 'await-to-js'
 
@@ -17,14 +17,14 @@ async function loadListData(params: ListDto) {
 function Trash() {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [modal, contextHolder] = Modal.useModal()
-  const { data, loading, pagination } = usePagination(loadListData)
+  const { data, loading, pagination, run } = usePagination(loadListData)
 
-  const start = () => {
-    pagination.onChange(1, 20)
-    setTimeout(() => {
-      setSelectedRowKeys([])
-    }, 1000)
-  }
+  // const start = () => {
+  //   pagination.onChange(1, 20)
+  //   setTimeout(() => {
+  //     setSelectedRowKeys([])
+  //   }, 1000)
+  // }
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys)
   }
@@ -40,7 +40,7 @@ function Trash() {
     // 恢复
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (id?: string) => {
     const confirmed = await modal.confirm({
       content: '确定删除吗？',
       okText: '确定',
@@ -48,7 +48,15 @@ function Trash() {
     })
 
     if (confirmed) {
-      // delete
+      const ids = id || selectedRowKeys.join(',')
+      const [error, res] = await to(deleteQuestionTrash(ids))
+      if (error) {
+        return message.error('删除失败')
+      }
+      if (res) {
+        message.success('删除成功')
+        run({ current: 1, pageSize: 20 })
+      }
     }
   }
   return (
@@ -60,10 +68,10 @@ function Trash() {
         </Flex>
       </Title>
       <Flex align="center" gap="middle">
-        <Button type="primary" onClick={start} disabled={!hasSelected} loading={loading}>
+        <Button type="primary" onClick={() => handleRecover()} disabled={!hasSelected} loading={loading}>
           批量恢复
         </Button>
-        <Button type="primary" danger onClick={start} disabled={!hasSelected} loading={loading}>
+        <Button type="primary" danger onClick={() => handleDelete()} disabled={!hasSelected} loading={loading}>
           批量删除
         </Button>
       </Flex>
@@ -84,17 +92,15 @@ function Trash() {
         <Column
           title="操作"
           dataIndex="action"
-          render={(_, _record) => (
+          render={(_, record) => (
             <>
               <Button type="link" onClick={handleRecover}>恢复</Button>
-              <Button type="link" danger onClick={handleDelete}>删除</Button>
+              <Button type="link" danger onClick={() => handleDelete(record.id)}>删除</Button>
             </>
           )}
         />
       </Table>
-      <div>
 
-      </div>
       <Pagination
         current={pagination.current}
         pageSize={pagination.pageSize}

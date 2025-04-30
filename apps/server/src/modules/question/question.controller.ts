@@ -63,6 +63,14 @@ export class QuestionController {
     return this.service.loadQuestionTrashList(current, pageSize, title)
   }
 
+  @ApiOperation({ summary: '回收站问卷删除' })
+  @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiParam({ name: 'ids', type: String, description: '问卷id，以逗号分隔', required: true })
+  @Delete('trash/:ids')
+  deleteQuestionTrash(@Param('ids') ids: string) {
+    return this.service.deleteQuestionTrash(ids)
+  }
+
   @ApiOperation({ summary: '问卷详情' })
   @ApiParam({ name: 'id', type: String, required: true, description: '问卷id' })
   @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })

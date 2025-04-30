@@ -63,3 +63,9 @@ export const deleteQuestion = (id: string) => http.delete<string>(`${PREFIX}/que
  * @returns 复制成功
  */
 export const copyQuestion = (id: string) => http.post<string>(`${PREFIX}/question/copy`, { id })
+/**
+ * 回收站删除问卷
+ * @param ids
+ * @returns 删除成功
+ */
+export const deleteQuestionTrash = (ids: string) => http.delete<ListVo<string>>(`${PREFIX}/question/trash/${ids}`)

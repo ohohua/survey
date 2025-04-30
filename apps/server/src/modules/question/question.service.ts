@@ -130,6 +130,24 @@ export class QuestionService {
     }
   }
 
+  deleteQuestionTrash(ids: string) {
+    const idList = ids.split(',')
+    if (!idList || !idList.length) {
+      throw new BadRequestException('id 错误')
+    }
+    // 物理删除
+    this.db.transaction(async (tx) => {
+      for (const id of idList) {
+        await tx.delete(component).where(eq(component.questionId, id))
+        await tx.delete(question).where(eq(question.id, id))
+      }
+    }).then(() => {
+      return '删除成功'
+    }).catch((e) => {
+      throw new BadRequestException(e)
+    })
+  }
+
   async loadDetail(questionId: string) {
     const { isDeleted, createAt, updatedAt, ...rest } = getTableColumns(question)
     const questionInfo = await this.db
