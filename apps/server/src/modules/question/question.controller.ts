@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { ApiResponseVo } from 'src/common/dto/api-response.dto'
+import { ApiResponseVo } from 'src/common/swagger/api-response.vo'
 import { CopyQuestionDto, CreateQuestionDto, UpdateQuestionDto } from './model/question.dto'
 import { QuestionService } from './question.service'
 

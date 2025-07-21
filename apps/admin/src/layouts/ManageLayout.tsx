@@ -25,7 +25,7 @@ function ManageLayout() {
         <Button onClick={() => nav('/manage/trash')} size="large" type={pathname.includes('trash') ? 'default' : 'text'} icon={<DeleteOutlined />}>回收站</Button>
       </aside>
       <div className={s.manage}>
-        <Outlet></Outlet>
+        <Outlet />
       </div>
     </div>
   )

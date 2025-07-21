@@ -5,6 +5,8 @@ import type { Response } from 'express'
 import type { Observable } from 'rxjs'
 import { HttpStatus, Injectable } from '@nestjs/common'
 import { map } from 'rxjs'
+import { RESPONSE_MSG } from 'src/enums'
+import { ApiResponseVo } from '../swagger/api-response.vo'
 
 @Injectable()
 export class FormatResponseInterceptor implements NestInterceptor {
@@ -24,12 +26,12 @@ export class FormatResponseInterceptor implements NestInterceptor {
           }
         }
 
-        return {
-          code: response.statusCode,
-          msg: '请求成功',
+        return new ApiResponseVo(
+          response.statusCode,
+          RESPONSE_MSG.SUCCESS,
           data,
-          timestamp: new Date().getTime(),
-        }
+          new Date().getTime(),
+        )
       }),
     )
   }

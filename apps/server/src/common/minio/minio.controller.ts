@@ -2,7 +2,7 @@ import type * as Minio from 'minio'
 import { BadRequestException, Controller, Get, HttpStatus, Inject, MaxFileSizeValidator, ParseFilePipe, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { ApiResponseVo } from '../dto/api-response.dto'
+import { ApiResponseVo } from '../swagger/api-response.vo'
 
 @ApiTags('Minio')
 @Controller('admin/minio')
