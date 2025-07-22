@@ -214,4 +214,20 @@ export class QuestionService {
 
     return '复制成功'
   }
+
+  async restoreQuestionnaire(ids: string) {
+    const idList = ids.split(',')
+    idList.forEach(async (id) => {
+      const hasQuestion = await this.db.select()
+        .from(question)
+        .where(and(eq(question.id, id), eq(question.isDeleted, true)))
+
+      if (!hasQuestion || !hasQuestion.length) {
+        throw new BadRequestException('问卷不存在或未被删除')
+      }
+      await this.db.update(question).set({ isDeleted: false }).where(eq(question.id, id))
+    })
+
+    return '恢复成功'
+  }
 }

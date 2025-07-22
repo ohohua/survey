@@ -102,4 +102,12 @@ export class QuestionController {
   copyQuestion(@Body('id') id: string) {
     return this.service.copyQuestionnaire(id)
   }
+
+  @ApiOperation({ summary: '恢复问卷' })
+  @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
+  @ApiParam({ name: 'id', type: String, required: true, description: '问卷id' })
+  @Patch('restore/:ids')
+  restoreQuestion(@Param('ids') ids: string) {
+    return this.service.restoreQuestionnaire(ids)
+  }
 }

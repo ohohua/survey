@@ -1,5 +1,5 @@
 import type { ListDto } from '@survey/http'
-import { deleteQuestionTrash, loadQuestionTrashList } from '@/api'
+import { deleteQuestionTrash, loadQuestionTrashList, restoreQuestionTrash } from '@/api'
 import ListSearch from '@/components/ListSearch'
 import { usePagination } from 'ahooks'
 import { Button, Flex, message, Modal, Pagination, Table, Tag, Typography } from 'antd'
@@ -36,28 +36,43 @@ function Trash() {
 
   const hasSelected = selectedRowKeys.length > 0
 
-  const handleRecover = () => {
+  const handleRecover = (id?: string) => {
+    const ids = id || selectedRowKeys.join(',')
     // 恢复
+    modal.confirm({
+      content: '确定恢复吗？',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: async () => {
+        const [error, res] = await to(restoreQuestionTrash(ids))
+        if (error) {
+          return message.error('恢复失败')
+        }
+        if (res) {
+          message.success('恢复成功')
+          run({ current: 1, pageSize: 20 })
+        }
+      },
+    })
   }
 
-  const handleDelete = async (id?: string) => {
-    const confirmed = await modal.confirm({
+  const handleDelete = (id?: string) => {
+    modal.confirm({
       content: '确定删除吗？',
       okText: '确定',
       cancelText: '取消',
+      onOk: async () => {
+        const ids = id || selectedRowKeys.join(',')
+        const [error, res] = await to(deleteQuestionTrash(ids))
+        if (error) {
+          return message.error('删除失败')
+        }
+        if (res) {
+          message.success('删除成功')
+          run({ current: 1, pageSize: 20 })
+        }
+      },
     })
-
-    if (confirmed) {
-      const ids = id || selectedRowKeys.join(',')
-      const [error, res] = await to(deleteQuestionTrash(ids))
-      if (error) {
-        return message.error('删除失败')
-      }
-      if (res) {
-        message.success('删除成功')
-        run({ current: 1, pageSize: 20 })
-      }
-    }
   }
   return (
     <>
@@ -94,7 +109,7 @@ function Trash() {
           dataIndex="action"
           render={(_, record) => (
             <>
-              <Button type="link" onClick={handleRecover}>恢复</Button>
+              <Button type="link" onClick={() => handleRecover(record.id)}>恢复</Button>
               <Button type="link" danger onClick={() => handleDelete(record.id)}>删除</Button>
             </>
           )}
