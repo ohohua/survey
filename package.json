@@ -23,6 +23,7 @@
     "docker:delete": "docker compose down",
     "docker:down": "docker compose down --volumes",
     "dev:admin": "pnpm run --filter admin dev",
+    "dev:client": "pnpm run --filter client dev",
     "dev:server": "pnpm run --filter server start:debug",
     "build:admin": "pnpm run --filter admin build",
     "build:server": "pnpm run --filter server build",

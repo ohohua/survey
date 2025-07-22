@@ -19,12 +19,6 @@ function Trash() {
   const [modal, contextHolder] = Modal.useModal()
   const { data, loading, pagination, run } = usePagination(loadListData)
 
-  // const start = () => {
-  //   pagination.onChange(1, 20)
-  //   setTimeout(() => {
-  //     setSelectedRowKeys([])
-  //   }, 1000)
-  // }
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys)
   }

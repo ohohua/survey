@@ -9,7 +9,7 @@ function StatHeader() {
   const { id = '' } = useParams()
 
   // 问卷移动端链接
-  const mobileUrl = useMemo(() => `${import.meta.env.VITE_SERVICE_MOBILE_URL}/question/${id}`, [id])
+  const mobileUrl = useMemo(() => `${import.meta.env.VITE_SERVICE_MOBILE_URL}/questionnaire/${id}`, [id])
   const [, setCopied] = useClipboard(mobileUrl)
 
   function handleBack() {
