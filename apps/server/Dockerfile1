@@ -1,0 +1,72 @@
+# 使用官方 Node 镜像
+FROM node:20-alpine AS base
+
+# 安装 pnpm
+RUN corepack enable
+
+# ------------ 第一阶段：依赖安装 ------------
+FROM base AS deps
+WORKDIR /app
+
+# 复制根目录的 package.json 和 pnpm 配置文件
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# 复制后端的 package.json
+COPY apps/server/package.json ./apps/server/package.json
+# 如果有共享库，也需要复制它们的 package.json
+COPY packages/common/package.json ./packages/common/package.json
+COPY packages/db/package.json ./packages/db/package.json
+COPY packages/http/package.json ./packages/http/package.json
+COPY packages/schema/package.json ./packages/schema/package.json
+
+# 在根目录安装所有依赖
+RUN pnpm install --frozen-lockfile
+
+# ------------ 第二阶段：构建 ------------
+FROM base AS build
+WORKDIR /app
+# 从 deps 阶段复制 node_modules 和所有源码
+# COPY --from=deps node_modules ./node_modules
+# COPY --from=deps apps/server/node_modules ./app/server/node_modules
+# COPY --from=deps packages/common/node_modules ./packages/common/node_modules
+# COPY --from=deps packages/db/node_modules ./packages/db/node_modules
+# COPY --from=deps packages/http/node_modules ./packages/http/node_modules
+# COPY --from=deps packages/schema/node_modules ./packages/schema/node_modules
+# 复制全部源码
+COPY . .
+
+# 构建后端应用
+RUN pnpm run build:server
+
+# ------------ 第三阶段：生产运行 ------------
+FROM base AS runner
+WORKDIR /app
+
+# 从构建阶段复制编译后的代码和生产依赖
+COPY --from=build ./apps/server/dist ./dist
+COPY --from=build ./node_modules ./node_modules
+
+# 复制生产所需的 package.json
+COPY --from=build ./apps/server/package.json ./apps/server
+
+# 复制环境变量文件
+COPY ./apps/server/.env.prod ./apps/server
+COPY ./apps/server/.env.dev ./apps/server
+
+# 暴露端口（与 main.ts 中配置的一致）
+EXPOSE 8888
+
+ENV NODE_ENV=production
+
+# 启动应用
+CMD ["node", "dist/main"]
+
+
+
+# 启动脚本
+# COPY start.sh /start.sh
+# RUN chmod +x /start.sh
+
+
+
+# CMD ["/start.sh"]
+

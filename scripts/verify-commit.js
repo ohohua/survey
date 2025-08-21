@@ -1,6 +1,7 @@
 /* eslint-disable regexp/no-unused-capturing-group */
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
+import process from 'node:process'
 
 import pico from 'picocolors'
 

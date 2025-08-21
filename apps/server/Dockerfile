@@ -1,66 +1,31 @@
-# 第一阶段：构建阶段
-FROM node:18.0-alpine3.14 AS builder
+# 使用官方 Node 镜像
+FROM node:20-alpine AS base
 
-# 设置工作目录
-WORKDIR /app
+# 安装 pnpm
+# RUN corepack enable
 
-# 复制 package.json 和 package-lock.json
-COPY package*.json ./
+# 设置非交互式环境
+ENV COREPACK_ENABLE_PROMPT=0
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
-RUN npm config set registry https://registry.npmmirror.com/
+# ------------ 第一阶段：依赖安装 ------------
+FROM base AS deps
+# WORKDIR /app
 
-# 安装依赖
-RUN npm install
-
-# 安装envdot
-# RUN npm install -g envdot
-
-# 复制项目文件
+# 复制全部源码
 COPY . .
 
-# 生成 Prisma 客户端
-RUN npx prisma generate
+# 直接使用npm安装pnpm
+RUN npm install -g pnpm@10.15.0
 
-# 构建项目
-RUN npm run build
+# 构建后端应用
+RUN pnpm run build:server
 
-# 第二阶段：生产阶段
-FROM node:18.0-alpine3.14 AS production
+# 暴露端口（与 main.ts 中配置的一致）
+EXPOSE 8888
 
-# 设置工作目录
-WORKDIR /app
-
-# 安装生产环境依赖
-COPY --from=builder /app/package*.json ./
-
-RUN npm config set registry https://registry.npmmirror.com/
-
-RUN npm install --only=production
-
-# 复制构建好的文件
-COPY --from=builder /app/dist ./dist
-
-# 复制 .env 文件
-COPY .env.dev ./
-COPY .env.prod ./
-
-# 复制 Prisma 相关文件
-COPY --from=builder /app/prisma ./prisma
-
-# 生成 Prisma 客户端
-RUN npx prisma generate
-
-# 设置环境变量
 ENV NODE_ENV=production
 
-# 暴露端口
-EXPOSE 3005
-
-# 启动脚本
-COPY ./start.sh /start.sh
-RUN chmod +x /start.sh
-
 # 启动应用
-# CMD ["node", "dist/main.js"]
-CMD ["/start.sh"]
-
+CMD ["node", "/dist/main"]
+# CMD ["pnpm", "start:prod"]
