@@ -43,6 +43,7 @@ const Question: React.FC<Props> = ({ params }) => {
 
   const list = data.componentList.map(c => (
     <div key={c.id}>
+      <div>{JSON.stringify(c)}</div>
       {getComponent(c)}
     </div>
   ))

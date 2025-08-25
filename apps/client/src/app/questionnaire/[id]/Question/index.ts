@@ -39,24 +39,5 @@ export const componentList: ComponentConfigType[] = [
   QuestionMultiple,
 ]
 
-// 组件库
-export const componentGroup = [
-  {
-    groupName: '文本显示',
-    key: 'text',
-    components: [QuestionTitle, QuestionParagraph],
-  },
-  {
-    groupName: '用户输入',
-    key: 'input',
-    components: [QuestionInput, QuestionTextarea],
-  },
-  {
-    groupName: '用户选择',
-    key: 'select',
-    components: [QuestionRadio, QuestionMultiple],
-  },
-]
-
 // 根据type获取组件: Component || PropComponent
 export const getComponentConfigByType = (type: string) => componentList.find(c => c.type === type)
