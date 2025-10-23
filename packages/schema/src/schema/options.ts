@@ -1,15 +1,14 @@
 import { mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core'
 import { createId } from './index'
 
-export const answer = mysqlTable('answer', {
+export const options = mysqlTable('options', {
   id: varchar('id', { length: 10 })
     .primaryKey()
     .$defaultFn(() => createId()),
 
-  userId: varchar('user_id', { length: 10 }).notNull(),
   questionId: varchar('question_id', { length: 10 }).notNull(),
   componentId: varchar('component_id', { length: 10 }).notNull(),
-  content: varchar('content', { length: 255 }),
+  option: varchar('option', { length: 255 }),
   createAt: timestamp('create_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
 })

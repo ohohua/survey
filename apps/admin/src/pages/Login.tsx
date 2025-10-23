@@ -1,6 +1,9 @@
 import type { FormProps } from 'antd'
+import { getPublicKey, login } from '@/api'
 import { REGISTER_PATHNAME } from '@/router'
-import { Button, Flex, Form, Input } from 'antd'
+import { encryptWithPublicKey } from '@/utils/encrypt'
+import { useRequest } from 'ahooks'
+import { Button, Flex, Form, Input, message } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import s from './Register.module.scss'
@@ -10,21 +13,37 @@ interface FieldType {
   password?: string
 }
 
-const onFinish: FormProps<FieldType>['onFinish'] = (_values) => {
-  // console.log('Success:', values)
-}
-
 const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (_errorInfo) => {
   // console.log('Failed:', errorInfo)
 }
 
 const Login: React.FC = () => {
+  const { run, loading } = useRequest(async (values) => {
+    try {
+      const resp = await getPublicKey()
+      const payload = {
+        ...values,
+        password: encryptWithPublicKey(values.password!, resp.data.publicKey),
+      }
+      const respLogin = await login(payload as any)
+      // TODO
+      return respLogin
+    }
+    catch (error: any) {
+      message.error(error?.response?.data?.message || '登录失败')
+      throw error
+    }
+  }, {
+    manual: true,
+  })
+
   return (
     <div className={s.container}>
       <Form
+        style={{ width: '300px' }}
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        onFinish={onFinish}
+        onFinish={run}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
@@ -49,8 +68,8 @@ const Login: React.FC = () => {
         </Form.Item>
 
         <Form.Item label={null}>
-          <Flex justify="space-between">
-            <Button type="primary" htmlType="submit">
+          <Flex justify="space-between" align="center">
+            <Button type="primary" htmlType="submit" loading={loading}>
               登录
             </Button>
             <Link to={`/${REGISTER_PATHNAME}`}>没有账号，去注册</Link>

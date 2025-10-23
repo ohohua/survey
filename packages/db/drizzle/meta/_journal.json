@@ -8,6 +8,13 @@
       "when": 1743081681088,
       "tag": "0000_chubby_scarlet_spider",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1761186679341,
+      "tag": "0001_great_princess_powerful",
+      "breakpoints": true
     }
   ]
 }

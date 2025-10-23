@@ -1,5 +1,6 @@
 import { Global, Logger, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
 import { DB, DbProvider } from './providers/db.provider'
 
 const logger = new Logger('Global')
@@ -18,6 +19,11 @@ logger.log(process.env.NODE_ENV)
     ConfigModule.forRoot({
       envFilePath,
       isGlobal: true,
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' },
     }),
   ],
   providers: [DbProvider],

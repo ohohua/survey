@@ -1,7 +1,7 @@
 import { Body, Controller, HttpStatus, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { LoginDto } from './model/user.dto'
-import { LoginVo } from './model/user.vo'
+import { LoginDto, RegisterDto } from './model/user.dto'
+import { LoginVo, RegisterVo } from './model/user.vo'
 import { UserService } from './user.service'
 
 @ApiTags('用户')
@@ -14,17 +14,14 @@ export class UserController {
   @ApiResponse({ type: LoginVo, status: HttpStatus.OK, description: '请求成功' })
   @Post('login')
   login(@Body() dto: LoginDto) {
-    return {
-      token: dto.toString(),
-    }
+    return this.service.login(dto)
   }
 
   @ApiOperation({ summary: '注册' })
-  @ApiBody({ type: LoginDto })
-  @ApiResponse({ type: '' })
+  @ApiBody({ type: RegisterDto })
+  @ApiResponse({ type: RegisterVo, status: HttpStatus.OK, description: '请求成功' })
   @Post('register')
-  async register() {
-    return this.service.test()
-    // return new LoginDto()
+  async register(@Body() dto: RegisterDto) {
+    return await this.service.register(dto)
   }
 }
