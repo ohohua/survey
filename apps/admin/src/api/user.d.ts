@@ -4,5 +4,5 @@ export interface LoginInfoDto {
 }
 
 export interface LoginInfoVo {
-
+  token: string
 }

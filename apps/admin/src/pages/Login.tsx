@@ -1,11 +1,12 @@
 import type { FormProps } from 'antd'
 import { getPublicKey, login } from '@/api'
 import { REGISTER_PATHNAME } from '@/router'
+import { useAuthStore } from '@/store/useAuthStore'
 import { encryptWithPublicKey } from '@/utils/encrypt'
 import { useRequest } from 'ahooks'
 import { Button, Flex, Form, Input, message } from 'antd'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import s from './Register.module.scss'
 
 interface FieldType {
@@ -18,6 +19,8 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (_errorInfo) => {
 }
 
 const Login: React.FC = () => {
+  const navigate = useNavigate()
+  const { setToken } = useAuthStore()
   const { run, loading } = useRequest(async (values) => {
     try {
       const resp = await getPublicKey()
@@ -26,8 +29,13 @@ const Login: React.FC = () => {
         password: encryptWithPublicKey(values.password!, resp.data.publicKey),
       }
       const respLogin = await login(payload as any)
-      // TODO
-      return respLogin
+      const token = respLogin.data.token
+      if (token) {
+        message.success('登录成功')
+        setToken(token)
+        navigate({ pathname: '/' })
+        return respLogin
+      }
     }
     catch (error: any) {
       message.error(error?.response?.data?.message || '登录失败')

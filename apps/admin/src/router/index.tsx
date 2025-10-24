@@ -1,4 +1,3 @@
-import { RequireAuth } from '@/components/ReuqireAuth'
 import MainLayout from '@/layouts/MainLayout'
 import ManageLayout from '@/layouts/ManageLayout'
 
@@ -12,6 +11,7 @@ import NotFound from '@/pages/NotFound'
 import Edit from '@/pages/question/Edit'
 import Stat from '@/pages/question/Stat'
 import Register from '@/pages/Register'
+import { useAuthStore } from '@/store/useAuthStore'
 import { createBrowserRouter, redirect } from 'react-router-dom'
 
 export const HOME_PATHNAME = '/'
@@ -22,7 +22,7 @@ export const MANAGE_INDEX_PATHNAME = 'manage/list'
 // 全局登录检查函数
 async function requireAuthLoader(payload: any) {
   const { request } = payload
-  const token = localStorage.getItem('authToken')
+  const { token } = useAuthStore.getState()
   if (!token) {
     // 未登录：重定向到登录页，并携带当前路径
     const url = new URL(request.url)
@@ -53,10 +53,11 @@ const router = createBrowserRouter([
         path: 'manage',
         element: (
           // 路由守卫 方式1
-          <RequireAuth>
-            <ManageLayout />
-          </RequireAuth>
+          // <RequireAuth>
+          <ManageLayout />
+          // </RequireAuth>
         ),
+        loader: requireAuthLoader, // 路由守卫 方式2
         children: [
           {
             path: 'list',

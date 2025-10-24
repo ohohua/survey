@@ -1,4 +1,5 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { useAuthStore } from 'admin/src/store/useAuthStore'
 import { message } from 'antd'
 import axios from 'axios'
 
@@ -40,7 +41,8 @@ class Request {
      */
     this.service.interceptors.request.use(
       (config) => {
-        config.headers.Authorization = localStorage.getItem('token') || ''
+        const { token } = useAuthStore.getState()
+        config.headers.Authorization = token || localStorage.getItem('token') || ''
         return config
       },
       (error: AxiosError) => {

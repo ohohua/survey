@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from 'react'
+import { LOGIN_PATHNAME } from '@/router'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 function checkAuth() {
@@ -14,7 +15,7 @@ export function RequireAuth({ children }: PropsWithChildren) {
   useEffect(() => {
     const isAuthenticated = checkAuth()
     if (!isAuthenticated) {
-      navigate('/login', { state: { from: location.pathname }, replace: true })
+      navigate(LOGIN_PATHNAME, { state: { from: location.pathname }, replace: true })
     }
     else {
       setLoading(false)
