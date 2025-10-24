@@ -42,7 +42,9 @@ export class UserService {
     }
 
     return {
-      token: this.jwtService.sign({ id: loginUser.id, username: loginUser.username }),
+      token: this.jwtService.sign({ id: loginUser.id, username: loginUser.username }, {
+        expiresIn: '7d',
+      }),
     }
   }
 

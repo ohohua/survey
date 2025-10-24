@@ -16,6 +16,7 @@ import { UserModule } from './modules/user/user.module'
     UserModule,
     MinioModule,
     AnswerModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],

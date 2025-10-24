@@ -3,10 +3,11 @@ import * as path from 'node:path'
 import { Body, Controller, HttpStatus, Post, Sse } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { interval, map } from 'rxjs'
+import { Auth } from 'src/common/decorators/auth.decorator'
 import { AnswerService } from './answer.service'
 
-class Ans {}
-class LoginVo {}
+class Ans { }
+class LoginVo { }
 
 @ApiTags('提交答卷')
 @Controller('client/answer')
@@ -16,6 +17,7 @@ export class AnswerController {
   @ApiOperation({ summary: '提交答案' })
   @ApiBody({ type: Ans })
   @ApiResponse({ type: LoginVo, status: HttpStatus.OK, description: '请求成功' })
+  @Auth()
   @Post('submit')
   submit(@Body() dto: string) {
     return this.service.submitAnswer(dto)
