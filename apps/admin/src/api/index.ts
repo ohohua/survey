@@ -1,4 +1,4 @@
-import { Request, RequestEnums } from '@survey/http'
+import { Request, RequestEnums } from '@/http'
 
 export const http = new Request({
   baseURL: import.meta.env.VITE_SERVICE_BASE_URL,

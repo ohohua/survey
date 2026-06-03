@@ -78,9 +78,6 @@ importers:
       '@ant-design/v5-patch-for-react-19':
         specifier: ^1.0.3
         version: 1.0.3(antd@5.24.1(luxon@3.6.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@survey/http':
-        specifier: workspace:^
-        version: link:../../packages/http
       '@survey/shared':
         specifier: workspace:^
         version: link:../../packages/shared
@@ -412,12 +409,6 @@ importers:
       drizzle-kit:
         specifier: ^0.30.5
         version: 0.30.5
-
-  packages/http:
-    dependencies:
-      antd:
-        specifier: ^5.24.1
-        version: 5.24.1(luxon@3.6.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
 
   packages/schema:
     dependencies:

@@ -1,4 +1,4 @@
-import type { ListDto } from '@survey/http'
+import type { ListDto } from '@/http'
 import { deleteQuestionTrash, loadQuestionTrashList, restoreQuestionTrash } from '@/api'
 import ListSearch from '@/components/ListSearch'
 import { usePagination } from 'ahooks'

@@ -1,17 +1,15 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { useAuthStore } from 'admin/src/store/useAuthStore'
+import { useAuthStore } from '@/store/useAuthStore'
 import { message } from 'antd'
 import axios from 'axios'
 
-// 数据返回的接口
-
-enum RequestEnums {
+export enum RequestEnums {
   TIMEOUT = 20000,
-  OVERDUE = 500, // 登录失效
-  FAIL = 400, // 请求失败
-  SUCCESS = 200, // 请求成功
+  OVERDUE = 500,
+  FAIL = 400,
+  SUCCESS = 200,
 }
-// 定义请求响应参数
+
 export interface Result<T> {
   code: number
   msg: string
@@ -29,16 +27,12 @@ export interface ListTime {
   updateTime: Date
 }
 
-class Request {
-  // 定义成员变量并指定类型
+export class Request {
   service: AxiosInstance
+
   public constructor(config: AxiosRequestConfig) {
-    // 实例化axios
     this.service = axios.create(config)
 
-    /**
-     * 请求拦截器
-     */
     this.service.interceptors.request.use(
       (config) => {
         const { token } = useAuthStore.getState()
@@ -46,22 +40,17 @@ class Request {
         return config
       },
       (error: AxiosError) => {
-        // 请求报错
         Promise.reject(error)
       },
     )
 
-    /**
-     * 响应拦截器
-     */
     this.service.interceptors.response.use(
       (response: AxiosResponse) => {
         const { data } = response
         if (data.code === RequestEnums.OVERDUE) {
-          // 登录信息失效，应跳转到登录页面，并清空本地的token
           localStorage.setItem('token', '')
           return Promise.reject(data)
-        } // 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
+        }
         if (data.code && data.code !== RequestEnums.SUCCESS) {
           message.error(data)
           return Promise.reject(data)
@@ -91,10 +80,6 @@ class Request {
     }
   }
 
-  /*  get<T = any, R = AxiosResponse<T>, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
-   *  AxiosResponse<T> 并不是最终的返回值。最终的返回值应该是 response.data 对应的类型
-   */
-  // 常用方法封装
   get<T>(url: string, params?: object): Promise<Result<T>> {
     return this.service.get(url, { params })
   }
@@ -123,5 +108,3 @@ class Request {
     return this.service.post(url, params, { headers: { 'Content-Type': 'multipart/form-data' } })
   }
 }
-
-export { Request, RequestEnums }

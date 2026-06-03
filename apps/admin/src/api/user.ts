@@ -1,4 +1,4 @@
-import type { Result } from '@survey/http'
+import type { Result } from '@/http'
 import type { LoginInfoDto, LoginInfoVo } from './user.d'
 import { http, PREFIX } from './index'
 
