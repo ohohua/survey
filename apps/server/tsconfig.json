@@ -4,7 +4,7 @@
     "target": "ES2023",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "rootDir": "./src",
+    "rootDir": "../../",
     "module": "commonjs",
     "paths": {
       "src/*": ["./src/*"]

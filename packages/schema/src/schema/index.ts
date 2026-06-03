@@ -8,5 +8,6 @@ export const createId = init({
 
 export * from './answer'
 export * from './component'
+export * from './options'
 export * from './question'
 export * from './user'

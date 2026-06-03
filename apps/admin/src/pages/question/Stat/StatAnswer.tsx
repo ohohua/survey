@@ -1,4 +1,5 @@
 import type { ComponentInfo } from '@/store'
+import type { ComponentType } from '@survey/shared'
 import { COMPONENT_TYPE } from '@survey/shared'
 import { Table } from 'antd'
 import s from './index.module.scss'
@@ -23,7 +24,7 @@ function StatAnswer(props: StatAnswerProps) {
   const { list, selectId, loading, changeId } = props
   const [dataSource, _setDataSource] = useState<DataType[]>([])
 
-  const filterColumns = list.filter(item => needComponentColumnType.includes(item.type as COMPONENT_TYPE)).map((c) => {
+  const filterColumns = list.filter(item => needComponentColumnType.includes(item.type as ComponentType)).map((c) => {
     return {
       title: (
         <div
