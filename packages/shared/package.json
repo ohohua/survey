@@ -1,5 +1,5 @@
 {
-  "name": "@survey/common",
+  "name": "@survey/shared",
   "type": "module",
   "version": "1.0.0",
   "description": "apps共用的代码",

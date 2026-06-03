@@ -6,14 +6,13 @@
     "lib": ["ES2021", "DOM", "DOM.Iterable"],
     "moduleDetection": "force",
     "useDefineForClassFields": true,
-    "baseUrl": "./",
     "module": "ESNext",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
     "paths": {
-      "@": ["src/"],
-      "@/*": ["src/*"]
+      "@": ["./src/"],
+      "@/*": ["./src/*"]
     },
     "types": ["vite-plugin-app-loading/client"],
     "allowImportingTsExtensions": true,

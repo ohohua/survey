@@ -1,4 +1,4 @@
-import { COMPONENT_TYPE } from '@survey/common'
+import { COMPONENT_TYPE } from '@survey/shared'
 import Component from './Component'
 import { QuestionTitleDefault } from './interface'
 import PropComponent from './PropComponent'

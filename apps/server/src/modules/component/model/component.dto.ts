@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { COMPONENT_TYPE } from '@survey/common'
+import { COMPONENT_TYPE } from '@survey/shared'
 import { IsEnum, IsJSON, IsNotEmpty } from 'class-validator'
 
 export class CreateComponentDto {

@@ -9,7 +9,6 @@
     "moduleDetection": "force",
 
     /* Path Aliases */
-    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {

@@ -1,5 +1,5 @@
 import type { ComponentInfo } from '@/store'
-import { COMPONENT_TYPE } from '@survey/common'
+import { COMPONENT_TYPE } from '@survey/shared'
 import { Table } from 'antd'
 import s from './index.module.scss'
 
