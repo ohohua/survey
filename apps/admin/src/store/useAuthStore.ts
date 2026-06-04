@@ -23,5 +23,5 @@ export const useAuthStore = create<AuthState>()(persist(
 
 export function getToken() {
   const authStorage = JSON.parse(localStorage.getItem(AUTH_STORE_KEY) || '{}')
-  return authStorage.state.token
+  return authStorage.state?.token || ''
 }

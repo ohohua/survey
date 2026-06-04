@@ -2,11 +2,10 @@ import type { ListDto } from '@/http'
 import { deleteQuestionTrash, loadQuestionTrashList, restoreQuestionTrash } from '@/api'
 import ListSearch from '@/components/ListSearch'
 import { usePagination } from 'ahooks'
-import { Button, Flex, message, Modal, Pagination, Table, Tag, Typography } from 'antd'
+import { Button, message, Modal, Pagination, Table, Tag } from 'antd'
 import Column from 'antd/es/table/Column'
 import to from 'await-to-js'
-
-const { Title } = Typography
+import s from './List.module.scss'
 
 // 获取列表数据
 async function loadListData(params: ListDto) {
@@ -69,46 +68,63 @@ function Trash() {
     })
   }
   return (
-    <>
-      <Title level={3}>
-        <Flex justify="space-between">
-          <span>回收站</span>
-          <ListSearch></ListSearch>
-        </Flex>
-      </Title>
-      <Flex align="center" gap="middle">
-        <Button type="primary" onClick={() => handleRecover()} disabled={!hasSelected} loading={loading}>
-          批量恢复
-        </Button>
-        <Button type="primary" danger onClick={() => handleDelete()} disabled={!hasSelected} loading={loading}>
-          批量删除
-        </Button>
-      </Flex>
-      &nbsp;
-      <Table loading={loading} pagination={false} dataSource={data?.list} rowSelection={rowSelection} rowKey="id">
-        <Column title="标题" dataIndex="title" />
-        <Column
-          title="发布状态"
-          dataIndex="isPublished"
-          render={(_, record) => (
-            <>
-              {record.isPublished ? <Tag color="blue">已发布</Tag> : <Tag>未发布</Tag>}
-            </>
-          )}
-        />
-        <Column title="答卷数量" dataIndex="answerNumber" />
-        <Column title="创建时间" dataIndex="createAt" />
-        <Column
-          title="操作"
-          dataIndex="action"
-          render={(_, record) => (
-            <>
-              <Button type="link" onClick={() => handleRecover(record.id)}>恢复</Button>
-              <Button type="link" danger onClick={() => handleDelete(record.id)}>删除</Button>
-            </>
-          )}
-        />
-      </Table>
+    <section className={s.page}>
+      <div className={s.header}>
+        <div>
+          <h1>回收站</h1>
+          <p>
+            共
+            {' '}
+            {data?.total || 0}
+            {' '}
+            份
+          </p>
+        </div>
+        <ListSearch />
+      </div>
+      <div className={s.toolbar}>
+        <span>
+          已选择
+          {' '}
+          {selectedRowKeys.length}
+          {' '}
+          项
+        </span>
+        <div className={s.actions}>
+          <Button type="primary" onClick={() => handleRecover()} disabled={!hasSelected} loading={loading}>
+            批量恢复
+          </Button>
+          <Button danger onClick={() => handleDelete()} disabled={!hasSelected} loading={loading}>
+            批量删除
+          </Button>
+        </div>
+      </div>
+      <div className={s.tableCard}>
+        <Table loading={loading} pagination={false} dataSource={data?.list} rowSelection={rowSelection} rowKey="id">
+          <Column title="标题" dataIndex="title" />
+          <Column
+            title="发布状态"
+            dataIndex="isPublished"
+            render={(_, record) => (
+              <>
+                {record.isPublished ? <Tag color="processing">已发布</Tag> : <Tag>未发布</Tag>}
+              </>
+            )}
+          />
+          <Column title="答卷数量" dataIndex="answerNumber" />
+          <Column title="创建时间" dataIndex="createAt" />
+          <Column
+            title="操作"
+            dataIndex="action"
+            render={(_, record) => (
+              <>
+                <Button type="link" onClick={() => handleRecover(record.id)}>恢复</Button>
+                <Button type="link" danger onClick={() => handleDelete(record.id)}>删除</Button>
+              </>
+            )}
+          />
+        </Table>
+      </div>
 
       <Pagination
         current={pagination.current}
@@ -121,7 +137,7 @@ function Trash() {
         style={{ marginTop: 16, justifyContent: 'flex-end' }}
       />
       {contextHolder}
-    </>
+    </section>
   )
 }
 export default Trash

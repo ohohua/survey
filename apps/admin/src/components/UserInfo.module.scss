@@ -1,0 +1,9 @@
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  :global(.ant-btn) {
+    font-weight: 700;
+  }
+}

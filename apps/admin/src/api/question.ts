@@ -1,7 +1,37 @@
 import type { ListDto } from '@/http'
 import type { ComponentInfo } from '@/store/useComponentStore'
-import type { ListVo, QuestionInfo, QuestionInfoDto, UpdateQuestionInfo } from './question.d'
+import type { NewComponent, Question } from '@survey/shared'
 import { http, PREFIX } from './index'
+
+export interface ListVo<T> {
+  list: T[]
+  total: number
+}
+
+export type QuestionInfo<T = any> = Omit<Pick<Question, 'id' | 'title' | 'createAt'>, 'createAt'> & {
+  isPublished: boolean
+  isStar: boolean
+  answerCount: number
+  backgroundImage?: string
+  pageHeaderImage?: string
+  createAt: string
+  componentList?: T
+}
+
+type QuestionComponentDto = Pick<NewComponent, 'type' | 'sort' | 'props'> & {
+  id?: string
+}
+
+export interface QuestionInfoDto {
+  title?: string
+  backgroundImage?: string | null
+  pageHeaderImage?: string | null
+  components?: QuestionComponentDto[]
+}
+
+export interface UpdateQuestionInfo extends QuestionInfoDto {
+  id: string
+}
 
 /**
  * 获取问卷列表

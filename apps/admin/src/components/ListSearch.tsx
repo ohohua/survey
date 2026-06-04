@@ -24,7 +24,7 @@ function ListSearch() {
   }
   return (
     <>
-      <Search style={{ width: '200px' }} allowClear value={keyword} onChange={onChange} onSearch={onSearch}></Search>
+      <Search placeholder="搜索问卷" style={{ width: '260px' }} allowClear value={keyword} onChange={onChange} onSearch={onSearch}></Search>
     </>
   )
 }

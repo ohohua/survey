@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react'
 import { copyQuestion, deleteQuestion, starQuestion } from '@/api'
-import { CopyOutlined, DeleteOutlined, FormOutlined, FundOutlined, StarFilled, StarOutlined } from '@ant-design/icons'
+import { CalendarOutlined, CopyOutlined, DeleteOutlined, FileTextOutlined, FormOutlined, FundOutlined, StarFilled, StarOutlined } from '@ant-design/icons'
 import { Button, message, Tag, Tooltip } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import s from './AnswerSheet.module.scss'
@@ -46,24 +46,33 @@ function AnswerSheet(props: PropsWithChildren<AnswerSheetProps>) {
   return (
     <div className={s['answer-sheet']}>
       <div className={s['answer-sheet__question']}>
-        <h3 className={s['answer-sheet__question--title']}>{title}</h3>
-        <span className={s['answer-sheet__question--published']}>{isPublished ? <Tag color="blue">已发布</Tag> : <Tag>未发布</Tag>}</span>
-        <span className={s['answer-sheet__question--number']}>
-          答卷：
-          {answerCount}
-        </span>
-        <div className={s['answer-sheet__question--create-at']}>{createAt}</div>
+        <div className={s['answer-sheet__question--main']}>
+          <h3 className={s['answer-sheet__question--title']}>{title}</h3>
+          <div className={s['answer-sheet__question--meta']}>
+            {isPublished ? <Tag color="processing">已发布</Tag> : <Tag>未发布</Tag>}
+            <span>
+              <FileTextOutlined />
+              答卷
+              {' '}
+              {answerCount}
+            </span>
+            <span>
+              <CalendarOutlined />
+              {createAt}
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className={s['answer-sheet__control']}>
         <Tooltip title="编辑问卷">
-          <Button type="text" shape="circle" icon={<FormOutlined />} onClick={handleEdit} />
+          <Button icon={<FormOutlined />} onClick={handleEdit}>编辑</Button>
         </Tooltip>
         <Tooltip title="数据统计">
-          <Button type="text" shape="circle" icon={<FundOutlined />} onClick={handleStat} disabled={!isPublished} />
+          <Button icon={<FundOutlined />} onClick={handleStat} disabled={!isPublished}>统计</Button>
         </Tooltip>
 
-        <div style={{ marginLeft: 'auto' }}>
+        <div className={s['answer-sheet__minor-control']}>
           <Tooltip title="标星">
             <Button type="text" shape="circle" style={starStyle} icon={isStar ? <StarFilled /> : <StarOutlined />} onClick={handleStar} />
           </Tooltip>

@@ -1,5 +1,5 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { useAuthStore } from '@/store/useAuthStore'
+import { getToken, useAuthStore } from '@/store/useAuthStore'
 import { message } from 'antd'
 import axios from 'axios'
 
@@ -27,6 +27,8 @@ export interface ListTime {
   updateTime: Date
 }
 
+let isRedirectingToLogin = false
+
 export class Request {
   service: AxiosInstance
 
@@ -36,11 +38,11 @@ export class Request {
     this.service.interceptors.request.use(
       (config) => {
         const { token } = useAuthStore.getState()
-        config.headers.Authorization = token || localStorage.getItem('token') || ''
+        config.headers.Authorization = token || getToken() || ''
         return config
       },
       (error: AxiosError) => {
-        Promise.reject(error)
+        return Promise.reject(error)
       },
     )
 
@@ -65,6 +67,7 @@ export class Request {
         if (!window.navigator.onLine) {
           message.error('网络连接失败')
         }
+        return Promise.reject(error)
       },
     )
   }
@@ -72,12 +75,29 @@ export class Request {
   handleCode({ code, msg }: { code: number, msg: string }): void {
     switch (code) {
       case 401:
-        console.error('登录失败，请重新登录')
+        this.redirectToLogin(msg || '登录状态已失效，请重新登录')
         break
       default:
-        message.error(msg)
+        message.error(msg || '请求失败')
         break
     }
+  }
+
+  redirectToLogin(msg: string): void {
+    const { pathname, search } = window.location
+    if (pathname === '/login' || isRedirectingToLogin) {
+      return
+    }
+
+    isRedirectingToLogin = true
+    useAuthStore.getState().setToken('')
+    localStorage.removeItem('token')
+    message.warning(msg)
+
+    const from = `${pathname}${search}`
+    window.setTimeout(() => {
+      window.location.assign(`/login?from=${encodeURIComponent(from)}`)
+    }, 300)
   }
 
   get<T>(url: string, params?: object): Promise<Result<T>> {

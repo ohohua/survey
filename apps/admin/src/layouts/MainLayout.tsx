@@ -7,7 +7,7 @@ import s from './MainLayout.module.scss'
 
 function MainLayout() {
   return (
-    <Layout style={{ backgroundColor: '#fff' }}>
+    <Layout className={s.shell}>
       <Header className={s.header}>
         <Logo />
         <UserInfo />

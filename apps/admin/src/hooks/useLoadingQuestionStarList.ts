@@ -1,4 +1,4 @@
-import type { QuestionInfo } from '@/api/question.d'
+import type { QuestionInfo } from '@/api/question'
 import { loadQuestionStarList } from '@/api'
 import { SEARCH_KEYWORD } from '@/constant'
 import { useRequest } from 'ahooks'

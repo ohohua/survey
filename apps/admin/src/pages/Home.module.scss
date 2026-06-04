@@ -1,7 +1,145 @@
 .home {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  min-height: calc(100vh - 68px);
+  place-items: center;
+  padding: 48px 24px;
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 48px;
   align-items: center;
-  height: calc(100vh - 64px - 65px);
-  background-image: linear-gradient(to right, #DECAF7, #DECAF7);
+  width: min(1080px, 100%);
+}
+
+.copy {
+  .logo {
+    width: 58px;
+    height: 58px;
+    margin-bottom: 22px;
+  }
+
+  h1 {
+    margin: 0;
+    color: #172033;
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  p {
+    max-width: 520px;
+    margin: 18px 0 0;
+    color: #475569;
+    font-size: 18px;
+  }
+}
+
+.actions {
+  display: flex;
+  margin-top: 30px;
+
+  :global(.ant-btn) {
+    height: 46px;
+    padding-inline: 22px;
+    font-weight: 800;
+  }
+}
+
+.preview {
+  padding: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.1);
+}
+
+.previewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 700;
+
+  strong {
+    color: #0f9f6e;
+    font-size: 28px;
+  }
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 22px;
+
+  div {
+    display: grid;
+    gap: 8px;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+  }
+
+  :global(.anticon) {
+    color: #2563eb;
+    font-size: 20px;
+  }
+
+  span {
+    color: #64748b;
+    font-size: 13px;
+  }
+
+  strong {
+    color: #172033;
+    font-size: 26px;
+    line-height: 1;
+  }
+}
+
+.bars {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+
+  span {
+    height: 10px;
+    border-radius: 999px;
+    background: #dbeafe;
+  }
+
+  span:nth-child(1) {
+    width: 74%;
+    background: #2563eb;
+  }
+
+  span:nth-child(2) {
+    width: 92%;
+  }
+
+  span:nth-child(3) {
+    width: 58%;
+    background: #b8eadc;
+  }
+
+  span:nth-child(4) {
+    width: 82%;
+    background: #fde68a;
+  }
+}
+
+@media (max-width: 820px) {
+  .panel {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .copy h1 {
+    font-size: 44px;
+  }
 }

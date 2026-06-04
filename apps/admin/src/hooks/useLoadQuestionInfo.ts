@@ -23,21 +23,27 @@ export function useLoadQuestionData() {
     if (!data) {
       return
     }
-    if (data.componentList?.length) {
-      setSelectId(data.componentList![0].id)
+    const componentList = data.componentList ?? []
+
+    if (componentList.length > 0) {
+      setSelectId(componentList[0].id)
     }
 
-    const { title, backgroundImage, pageHeaderImage, componentList } = data
+    const { title, backgroundImage, pageHeaderImage } = data
 
-    const components = componentList?.map((item) => {
+    const components = componentList.map((item) => {
       return {
         ...item,
         props: JSON.parse(item.props as string || '{}') as ComponentPropsType,
       }
     })
 
-    setQuestionInfo({ title, backgroundImage, pageHeaderImage })
-    resetComponent(components!)
+    setQuestionInfo({
+      title,
+      backgroundImage: backgroundImage ?? undefined,
+      pageHeaderImage: pageHeaderImage ?? undefined,
+    })
+    resetComponent(components)
   }, [data])
 
   useEffect(() => {
