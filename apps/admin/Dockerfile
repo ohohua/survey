@@ -17,7 +17,7 @@ COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm run depend:init && pnpm run build:admin
 
-FROM nginx:1.27-alpine
+FROM nginx:alpine
 
 COPY apps/admin/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/apps/admin/dist /usr/share/nginx/html
