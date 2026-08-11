@@ -1,0 +1,14 @@
+.git
+.DS_Store
+.vscode
+node_modules
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+docker/mysql
+docker/redis
+docker/minio
+.pnpm-store
+npm-debug.log*
+pnpm-debug.log*

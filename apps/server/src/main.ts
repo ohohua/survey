@@ -6,6 +6,19 @@ import { HttpExceptionsFilter } from './common/filter/http-exception.filter'
 import { FormatResponseInterceptor } from './common/interceptor/format-response.interceptor'
 import { swaggerSetup } from './common/swagger'
 
+function getCorsOrigins() {
+  const configuredOrigins = process.env.CORS_ORIGINS
+    ?.split(',')
+    .map(origin => origin.trim())
+    .filter(Boolean)
+
+  if (configuredOrigins?.length) {
+    return configuredOrigins
+  }
+
+  return [/^http:\/\/localhost(:\d+)?$/, /^http:\/\/xxx\.xxx\.com(:81)?$/]
+}
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
@@ -14,7 +27,7 @@ async function bootstrap() {
   // 设置前缀
   app.setGlobalPrefix('api')
   // 允许跨域
-  app.enableCors({ origin: [/^http:\/\/localhost(:\d+)?$/, /^http:\/\/xxx\.xxx\.com(:81)?$/] })
+  app.enableCors({ origin: getCorsOrigins() })
   // 启用管道校验
   app.useGlobalPipes(new ValidationPipe({ transform: true })) // transform: true 将参数转化为Dto实例
   // 启用修改响应格式拦截器

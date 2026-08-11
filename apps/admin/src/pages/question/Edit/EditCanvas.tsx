@@ -22,7 +22,7 @@ function EditCanvas() {
         questionInfo.pageHeaderImage && (<img src={questionInfo.pageHeaderImage} alt="header" />)
       }
       {
-        componentList.map((c) => {
+        componentList.filter(c => !c.props.isHidden).map((c) => {
           const { id, props } = c
           const classNameWrapper = clsx({
             [s.component]: true,

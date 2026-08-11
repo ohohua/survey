@@ -1,5 +1,6 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common'
+import { Body, Controller, Get, HttpStatus, Param, Post, Req } from '@nestjs/common'
 import { ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { Request } from 'express'
 import { Auth } from 'src/common/decorators/auth.decorator'
 import { ApiResponseVo } from 'src/common/swagger/api-response.vo'
 import { ComponentService } from './component.service'
@@ -15,8 +16,8 @@ export class ComponentController {
   @ApiOkResponse({ type: ApiResponseVo, description: '请求成功' })
   @Auth()
   @Post()
-  create(@Body() dto: CreateComponentDto) {
-    return this.service.create(dto)
+  create(@Body() dto: CreateComponentDto, @Req() req: Request) {
+    return this.service.create(dto, req.user.id)
   }
 
   @ApiOperation({ summary: '查询组件列表' })
@@ -24,7 +25,7 @@ export class ComponentController {
   @ApiResponse({ type: ApiResponseVo, status: HttpStatus.OK, description: '请求成功' })
   @Auth()
   @Get(':id')
-  getComponentList(@Param('id') id: string) {
-    return this.service.getComponentListByQuestionId(id)
+  getComponentList(@Param('id') id: string, @Req() req: Request) {
+    return this.service.getComponentListByQuestionId(id, req.user.id)
   }
 }

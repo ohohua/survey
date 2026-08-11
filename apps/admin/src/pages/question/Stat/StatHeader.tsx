@@ -4,7 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import useClipboard from 'react-use-clipboard'
 import s from './StatHeader.module.scss'
 
-function StatHeader() {
+interface StatHeaderProps {
+  answerCount?: number
+  loading?: boolean
+}
+
+function StatHeader(props: StatHeaderProps) {
+  const { answerCount = 0, loading = false } = props
   const nav = useNavigate()
   const { id = '' } = useParams()
 
@@ -22,6 +28,10 @@ function StatHeader() {
   }
 
   function handleEdit() {
+    if (answerCount > 0) {
+      message.warning('该问卷已有答卷，不能编辑')
+      return
+    }
     nav({ pathname: `/question/edit/${id}` })
   }
 
@@ -40,7 +50,7 @@ function StatHeader() {
           <Button style={{ flexShrink: 0 }} icon={<QrcodeOutlined />} />
         </Popover>
       </Flex>
-      <Button type="default" onClick={handleEdit}>编辑</Button>
+      <Button type="default" onClick={handleEdit} disabled={loading}>编辑</Button>
     </Flex>
   )
 }

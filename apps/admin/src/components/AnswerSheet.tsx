@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react'
 import { copyQuestion, deleteQuestion, starQuestion } from '@/api'
-import { CalendarOutlined, CopyOutlined, DeleteOutlined, FileTextOutlined, FormOutlined, FundOutlined, StarFilled, StarOutlined } from '@ant-design/icons'
+import { CalendarOutlined, CopyOutlined, DeleteOutlined, EyeOutlined, FileTextOutlined, FormOutlined, FundOutlined, StarFilled, StarOutlined } from '@ant-design/icons'
 import { Button, message, Tag, Tooltip } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import s from './AnswerSheet.module.scss'
@@ -25,6 +25,9 @@ function AnswerSheet(props: PropsWithChildren<AnswerSheetProps>) {
     nav({ pathname: `/question/edit/${id}` })
   }
   function handleStat() {
+    nav({ pathname: `/question/stat/${id}` })
+  }
+  function handleView() {
     nav({ pathname: `/question/stat/${id}` })
   }
   async function handleStar() {
@@ -65,9 +68,17 @@ function AnswerSheet(props: PropsWithChildren<AnswerSheetProps>) {
       </div>
 
       <div className={s['answer-sheet__control']}>
-        <Tooltip title="编辑问卷">
-          <Button icon={<FormOutlined />} onClick={handleEdit}>编辑</Button>
-        </Tooltip>
+        {answerCount > 0
+          ? (
+              <Tooltip title={isPublished ? '查看问卷' : '问卷未发布，暂不可查看'}>
+                <Button icon={<EyeOutlined />} onClick={handleView} disabled={!isPublished}>查看</Button>
+              </Tooltip>
+            )
+          : (
+              <Tooltip title="编辑问卷">
+                <Button icon={<FormOutlined />} onClick={handleEdit}>编辑</Button>
+              </Tooltip>
+            )}
         <Tooltip title="数据统计">
           <Button icon={<FundOutlined />} onClick={handleStat} disabled={!isPublished}>统计</Button>
         </Tooltip>

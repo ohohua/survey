@@ -6,6 +6,6 @@ export class LoginVo {
 }
 
 export class RegisterVo {
-  @ApiProperty({ description: '用户名' })
-  username: string
+  @ApiProperty({ description: 'token' })
+  token: string
 }

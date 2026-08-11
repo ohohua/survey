@@ -1,3 +1,4 @@
+import AuthLayout from '@/layouts/AuthLayout'
 import MainLayout from '@/layouts/MainLayout'
 import ManageLayout from '@/layouts/ManageLayout'
 
@@ -42,14 +43,6 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: LOGIN_PATHNAME,
-        element: <Login />,
-      },
-      {
-        path: REGISTER_PATHNAME,
-        element: <Register />,
-      },
-      {
         path: 'manage',
         element: (
           // 路由守卫 方式1
@@ -77,6 +70,19 @@ const router = createBrowserRouter([
       {
         path: '*',
         element: <NotFound />,
+      },
+    ],
+  },
+  {
+    element: <AuthLayout />,
+    children: [
+      {
+        path: LOGIN_PATHNAME,
+        element: <Login />,
+      },
+      {
+        path: REGISTER_PATHNAME,
+        element: <Register />,
       },
     ],
   },

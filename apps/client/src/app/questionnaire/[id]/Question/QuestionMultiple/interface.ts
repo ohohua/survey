@@ -8,7 +8,9 @@ export interface QuestionMultipleProps {
   vertical?: boolean
   checked?: string[]
   options?: OptionsMultipleType[]
+  isRequired?: boolean
   isLock?: boolean
+  isHidden?: boolean
   onChange?: (newProps: QuestionMultipleProps) => void
 }
 
@@ -16,6 +18,7 @@ export const QuestionMultipleDefault: QuestionMultipleProps = {
   title: '多选标题',
   vertical: false,
   checked: [],
+  isRequired: false,
   options: [
     {
       label: '选项1',

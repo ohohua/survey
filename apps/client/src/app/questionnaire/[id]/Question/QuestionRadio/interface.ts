@@ -5,7 +5,9 @@ export interface QuestionRadioProps {
   vertical?: boolean
   value?: string
   options?: OptionsRadioType[]
+  isRequired?: boolean
   isLock?: boolean
+  isHidden?: boolean
   onChange?: (newProps: QuestionRadioProps) => void
 }
 
@@ -13,6 +15,7 @@ export const QuestionRadioDefault: QuestionRadioProps = {
   title: '单选标题',
   vertical: false,
   value: undefined,
+  isRequired: false,
   options: [
     {
       label: '选项1',

@@ -30,7 +30,10 @@ function Prop() {
     updateComponent({
       id,
       type,
-      props: newProps,
+      props: {
+        ...props,
+        ...newProps,
+      },
     })
   }
 

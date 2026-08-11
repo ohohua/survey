@@ -98,7 +98,7 @@ function EditHeader() {
       </div>
       <Space>
         <Tooltip placement="top" title="删除">
-          <Button shape="circle" icon={<DeleteOutlined />} onClick={delComponent} disabled={!selectId} />
+          <Button shape="circle" icon={<DeleteOutlined />} onClick={() => delComponent()} disabled={!selectId} />
         </Tooltip>
         <Tooltip placement="top" title={locked() ? '解锁' : '锁定'}>
           <Button shape="circle" icon={locked() ? <UnlockOutlined /> : <LockOutlined />} type={locked() ? 'primary' : 'default'} onClick={handleLock} disabled={!selectId} />

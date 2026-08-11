@@ -17,6 +17,16 @@ interface Props {
 
 type AnswerValue = string | string[]
 
+const ANSWER_COMPONENT_TYPES = [
+  COMPONENT_TYPE.INPUT,
+  COMPONENT_TYPE.TEXTAREA,
+  COMPONENT_TYPE.RADIO,
+  COMPONENT_TYPE.MULTIPLE,
+]
+const RESPONDENT_ID_KEY = 'survey_respondent_id'
+const submittedKey = (questionId: string) => `survey_submitted_${questionId}`
+const RESPONDENT_ID_LENGTH = 10
+
 function parseProps(component: ComponentInfo) {
   if (typeof component.props === 'string') {
     try {
@@ -39,6 +49,19 @@ const Question: React.FC<Props> = ({ params }) => {
   } | null>(null)
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({})
   const [submitted, setSubmitted] = useState(false)
+  const [respondentId, setRespondentId] = useState('')
+
+  function getRespondentId() {
+    const cachedId = window.localStorage.getItem(RESPONDENT_ID_KEY)
+    if (cachedId && cachedId.length <= RESPONDENT_ID_LENGTH) {
+      return cachedId
+    }
+    const nextId = (cachedId || `${Date.now()}${Math.random().toString(36).slice(2)}`)
+      .replace(/\W/g, '')
+      .slice(0, RESPONDENT_ID_LENGTH)
+    window.localStorage.setItem(RESPONDENT_ID_KEY, nextId)
+    return nextId
+  }
 
   async function fetchData() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/client/question/${id}`)
@@ -60,6 +83,26 @@ const Question: React.FC<Props> = ({ params }) => {
     manual: true,
   })
   const { run: submit, loading: submitLoading } = useRequest(async () => {
+    if (!respondentId) {
+      message.error('答题人信息初始化失败，请刷新后重试')
+      return
+    }
+
+    const missingComponent = data?.componentList.find((component) => {
+      const props = parseProps(component)
+      if (props.isHidden || !props.isRequired || !ANSWER_COMPONENT_TYPES.includes(component.type as any)) {
+        return false
+      }
+      return isEmptyAnswer(answers[component.id])
+    })
+
+    if (missingComponent) {
+      const props = parseProps(missingComponent)
+      message.warning(`请填写「${props.title || '必填题'}」`)
+      document.getElementById(`question-${missingComponent.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      return
+    }
+
     const payload = Object.entries(answers)
       .map(([componentId, value]) => ({
         componentId,
@@ -75,12 +118,18 @@ const Question: React.FC<Props> = ({ params }) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/client/answer/submit`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ questionId: id, answers: payload }),
+      body: JSON.stringify({ questionId: id, respondentId, answers: payload }),
     })
     const result = await res.json()
     if (!res.ok || result.code !== 200) {
+      if (result.msg === '你已经提交过该问卷') {
+        window.localStorage.setItem(submittedKey(id), '1')
+        setSubmitted(true)
+        return
+      }
       throw new Error(result.msg || '提交失败')
     }
+    window.localStorage.setItem(submittedKey(id), '1')
     setSubmitted(true)
     message.success('提交成功')
   }, {
@@ -89,6 +138,8 @@ const Question: React.FC<Props> = ({ params }) => {
   })
 
   useEffect(() => {
+    setRespondentId(getRespondentId())
+    setSubmitted(window.localStorage.getItem(submittedKey(id)) === '1')
     run()
   }, [id])
 
@@ -115,9 +166,28 @@ const Question: React.FC<Props> = ({ params }) => {
     setAnswers(prev => ({ ...prev, [componentId]: value }))
   }
 
+  function isEmptyAnswer(value?: AnswerValue) {
+    if (Array.isArray(value)) {
+      return value.length === 0
+    }
+    return !`${value ?? ''}`.trim()
+  }
+
+  function renderTitle(title?: string, isRequired?: boolean) {
+    if (!title) {
+      return null
+    }
+    return (
+      <Paragraph strong>
+        {isRequired ? <span className="mr-1 text-red-500">*</span> : null}
+        {title}
+      </Paragraph>
+    )
+  }
+
   function renderComponent(c: ComponentInfo) {
     const props = parseProps(c)
-    const commonTitle = props.title ? <Paragraph strong>{props.title}</Paragraph> : null
+    const commonTitle = renderTitle(props.title, props.isRequired)
     const verticalStyle: React.CSSProperties = props.vertical ? { display: 'flex', flexDirection: 'column', gap: 8 } : {}
 
     if (c.type === COMPONENT_TYPE.INPUT) {
@@ -156,8 +226,8 @@ const Question: React.FC<Props> = ({ params }) => {
     return getComponent({ ...c, props })
   }
 
-  const list = data.componentList.map(c => (
-    <div key={c.id} className="mb-5 rounded bg-white/90 p-4 shadow-sm">
+  const list = data.componentList.filter(c => !parseProps(c).isHidden).map(c => (
+    <div key={c.id} id={`question-${c.id}`} className="mb-5 scroll-mt-6 rounded bg-white/90 p-4 shadow-sm">
       {renderComponent(c)}
     </div>
   ))

@@ -3,6 +3,7 @@ export interface QuestionTitleProps {
   level?: 1 | 2 | 3 | 4 | 5
   isCenter?: boolean
   isLock?: boolean
+  isHidden?: boolean
   onChange?: (newProps: QuestionTitleProps) => void
 }
 

@@ -30,6 +30,7 @@ describe('answerService', () => {
 
     await expect(service.submitAnswer({
       questionId: 'q1',
+      respondentId: 'r1',
       answers: [{ componentId: 'c1', content: 'hello' }],
     })).rejects.toThrow(BadRequestException)
   })
@@ -38,13 +39,50 @@ describe('answerService', () => {
     const service = createService({
       select: jest.fn()
         .mockReturnValueOnce(queryResult([{ id: 'q1', isPublished: true, isDeleted: false }]))
+        .mockReturnValueOnce(queryResult([]))
         .mockReturnValueOnce(queryResult([{ id: 'c1', type: COMPONENT_TYPE.INPUT }])),
     })
 
     await expect(service.submitAnswer({
       questionId: 'q1',
+      respondentId: 'r1',
       answers: [{ componentId: 'other', content: 'hello' }],
     })).rejects.toThrow(BadRequestException)
+  })
+
+  it('rejects duplicate submissions from the same respondent', async () => {
+    const db = {
+      select: jest.fn()
+        .mockReturnValueOnce(queryResult([{ id: 'q1', isPublished: true, isDeleted: false }]))
+        .mockReturnValueOnce(queryResult([{ id: 'a1' }])),
+      transaction: jest.fn(),
+    }
+    const service = createService(db)
+
+    await expect(service.submitAnswer({
+      questionId: 'q1',
+      respondentId: 'r1',
+      answers: [{ componentId: 'c1', content: 'hello' }],
+    })).rejects.toThrow('你已经提交过该问卷')
+    expect(db.transaction).not.toHaveBeenCalled()
+  })
+
+  it('rejects submissions with unanswered required components', async () => {
+    const service = createService({
+      select: jest.fn()
+        .mockReturnValueOnce(queryResult([{ id: 'q1', isPublished: true, isDeleted: false }]))
+        .mockReturnValueOnce(queryResult([]))
+        .mockReturnValueOnce(queryResult([
+          { id: 'c1', type: COMPONENT_TYPE.INPUT, props: JSON.stringify({ title: '姓名', isRequired: true }) },
+          { id: 'c2', type: COMPONENT_TYPE.INPUT, props: JSON.stringify({ title: '昵称' }) },
+        ])),
+    })
+
+    await expect(service.submitAnswer({
+      questionId: 'q1',
+      respondentId: 'r1',
+      answers: [{ componentId: 'c2', content: 'Ace' }],
+    })).rejects.toThrow('请填写「姓名」')
   })
 
   it('writes one submit group and increments the questionnaire answer count', async () => {
@@ -57,6 +95,7 @@ describe('answerService', () => {
     const db = {
       select: jest.fn()
         .mockReturnValueOnce(queryResult([{ id: 'q1', isPublished: true, isDeleted: false }]))
+        .mockReturnValueOnce(queryResult([]))
         .mockReturnValueOnce(queryResult([
           { id: 'c1', type: COMPONENT_TYPE.INPUT },
           { id: 'c2', type: COMPONENT_TYPE.MULTIPLE },
@@ -67,6 +106,7 @@ describe('answerService', () => {
 
     const result = await service.submitAnswer({
       questionId: 'q1',
+      respondentId: 'r1',
       answers: [
         { componentId: 'c1', content: 'Alice' },
         { componentId: 'c2', content: '["a","b"]' },
@@ -75,8 +115,8 @@ describe('answerService', () => {
 
     expect(result.submitId).toBeDefined()
     expect(insertValues).toHaveBeenCalledWith(expect.arrayContaining([
-      expect.objectContaining({ questionId: 'q1', componentId: 'c1', content: 'Alice', submitId: result.submitId }),
-      expect.objectContaining({ questionId: 'q1', componentId: 'c2', content: '["a","b"]', submitId: result.submitId }),
+      expect.objectContaining({ userId: 'r1', questionId: 'q1', componentId: 'c1', content: 'Alice', submitId: result.submitId }),
+      expect.objectContaining({ userId: 'r1', questionId: 'q1', componentId: 'c2', content: '["a","b"]', submitId: result.submitId }),
     ]))
     expect(updateWhere).toHaveBeenCalled()
   })

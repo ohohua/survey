@@ -1,6 +1,6 @@
 import { BadRequestException, Inject, Injectable, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { user } from '@survey/schema'
+import { createId, user } from '@survey/schema'
 import { eq } from 'drizzle-orm'
 import { AuthService } from 'src/modules/global/auth/auth.service'
 import { decryptPassword } from 'src/utils/rsa'
@@ -49,7 +49,7 @@ export class UserService {
   }
 
   async register(dto: RegisterDto) {
-    const { username, password } = dto
+    const { username, password, nickname } = dto
     const privateKey = this.authService.getPrivateKey()
     const decryptedPassword = decryptPassword(password, privateKey)
     const hasUser = await this.db.select().from(user).where(eq(user.username, username))
@@ -58,15 +58,21 @@ export class UserService {
     }
 
     try {
+      const id = createId()
       await this.db.insert(user).values({
+        id,
         username,
         password: decryptedPassword,
-        name: '',
+        name: nickname || username,
         age: 0,
-        email: '',
+        email: `${username}@survey.local`,
       })
 
-      return '注册成功'
+      return {
+        token: this.jwtService.sign({ id, username }, {
+          expiresIn: '7d',
+        }),
+      }
     }
     catch (error) {
       throw new BadRequestException(error)

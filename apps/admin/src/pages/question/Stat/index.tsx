@@ -31,7 +31,7 @@ function Stat() {
 
   return (
     <div className={s.container}>
-      <StatHeader />
+      <StatHeader answerCount={data?.data?.answerCount} loading={loading} />
 
       <Splitter className={s.content}>
         <Splitter.Panel collapsible defaultSize="30%" min="20%" max="50%">

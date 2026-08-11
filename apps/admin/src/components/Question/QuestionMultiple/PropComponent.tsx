@@ -6,7 +6,11 @@ import { QuestionMultipleDefault } from './interface'
 
 function PropComponent(props: QuestionMultipleProps) {
   const [form] = Form.useForm()
-  const { title, options = [], vertical, checked, isLock, onChange } = { ...QuestionMultipleDefault, ...props }
+  const { title, options = [], vertical, checked, isRequired, isLock, onChange } = { ...QuestionMultipleDefault, ...props }
+
+  useEffect(() => {
+    form.setFieldsValue({ title, options, vertical, checked, isRequired })
+  }, [title, options, vertical, checked, isRequired])
 
   function handleChange() {
     if (onChange) {
@@ -16,7 +20,7 @@ function PropComponent(props: QuestionMultipleProps) {
 
   return (
     <>
-      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, options, vertical, checked }} form={form} autoComplete="off">
+      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, options, vertical, checked, isRequired }} form={form} autoComplete="off">
         <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
           <Input disabled={isLock} />
         </Form.Item>
@@ -64,6 +68,9 @@ function PropComponent(props: QuestionMultipleProps) {
         </Form.Item>
         <Form.Item label="默认选中" name="checked">
           <Select options={options} disabled={isLock} placeholder="请选择" mode="multiple" />
+        </Form.Item>
+        <Form.Item name="isRequired" valuePropName="checked">
+          <Checkbox disabled={isLock}>必填</Checkbox>
         </Form.Item>
         <Form.Item label="排列方式" name="vertical" valuePropName="checked">
           <Checkbox disabled={isLock}>竖向排列</Checkbox>

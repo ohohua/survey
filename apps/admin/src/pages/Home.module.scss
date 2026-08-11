@@ -70,6 +70,13 @@
   }
 }
 
+.previewSubTitle {
+  margin-top: -4px;
+  color: #94a3b8;
+  font-size: 12px;
+  text-align: right;
+}
+
 .metricGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -99,6 +106,36 @@
     color: #172033;
     font-size: 26px;
     line-height: 1;
+
+    :global(.ant-skeleton-input) {
+      width: 64px !important;
+      min-width: 64px !important;
+      height: 26px !important;
+    }
+  }
+}
+
+.totalGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #64748b;
+    font-size: 13px;
+  }
+
+  strong {
+    color: #172033;
+    font-size: 18px;
   }
 }
 
@@ -113,23 +150,30 @@
     background: #dbeafe;
   }
 
-  span:nth-child(1) {
-    width: 74%;
+  span:nth-child(4n + 1) {
     background: #2563eb;
   }
 
-  span:nth-child(2) {
-    width: 92%;
+  span:nth-child(4n + 2) {
+    background: #dbeafe;
   }
 
-  span:nth-child(3) {
-    width: 58%;
+  span:nth-child(4n + 3) {
     background: #b8eadc;
   }
 
-  span:nth-child(4) {
-    width: 82%;
+  span:nth-child(4n + 4) {
     background: #fde68a;
+  }
+
+  p {
+    margin: 0;
+    padding: 16px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    color: #64748b;
+    font-size: 14px;
+    text-align: center;
   }
 }
 

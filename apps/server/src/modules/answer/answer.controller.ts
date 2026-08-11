@@ -1,5 +1,6 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Query } from '@nestjs/common'
+import { Body, Controller, Get, HttpStatus, Param, Post, Query, Req } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { Request } from 'express'
 import { Auth } from 'src/common/decorators/auth.decorator'
 import { AnswerService } from './answer.service'
 import { SubmitAnswerDto } from './model/answer.dto'
@@ -33,7 +34,8 @@ export class AdminAnswerController {
     @Param('questionId') questionId: string,
     @Query('current') current = 1,
     @Query('pageSize') pageSize = 20,
+    @Req() req: Request,
   ) {
-    return this.service.loadAnswerStat(questionId, Number(current), Number(pageSize))
+    return this.service.loadAnswerStat(questionId, Number(current), Number(pageSize), req.user.id)
   }
 }

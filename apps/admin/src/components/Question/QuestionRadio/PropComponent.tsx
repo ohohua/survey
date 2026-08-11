@@ -6,11 +6,11 @@ import { QuestionRadioDefault } from './interface'
 
 function PropComponent(props: QuestionRadioProps) {
   const [form] = Form.useForm()
-  const { title, options = [], vertical, isLock, value, onChange } = { ...QuestionRadioDefault, ...props }
+  const { title, options = [], vertical, isRequired, isLock, value, onChange } = { ...QuestionRadioDefault, ...props }
 
   useEffect(() => {
-    form.setFieldsValue({ title })
-  }, [title])
+    form.setFieldsValue({ title, options, vertical, value, isRequired })
+  }, [title, options, vertical, value, isRequired])
 
   function handleChange() {
     if (onChange) {
@@ -19,7 +19,7 @@ function PropComponent(props: QuestionRadioProps) {
   }
   return (
     <>
-      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, options, vertical, value }} form={form} autoComplete="off">
+      <Form layout="vertical" onValuesChange={handleChange} initialValues={{ title, options, vertical, value, isRequired }} form={form} autoComplete="off">
         <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
           <Input disabled={isLock} />
         </Form.Item>
@@ -68,6 +68,9 @@ function PropComponent(props: QuestionRadioProps) {
         </Form.Item>
         <Form.Item label="默认选中" name="value">
           <Select options={options} disabled={isLock} placeholder="请选择" />
+        </Form.Item>
+        <Form.Item name="isRequired" valuePropName="checked">
+          <Checkbox disabled={isLock}>必填</Checkbox>
         </Form.Item>
         <Form.Item label="排列方式" name="vertical" valuePropName="checked">
           <Checkbox disabled={isLock}>竖向排列</Checkbox>

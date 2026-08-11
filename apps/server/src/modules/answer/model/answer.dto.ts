@@ -19,6 +19,11 @@ export class SubmitAnswerDto {
   @IsNotEmpty({ message: '问卷 id 不能为空' })
   questionId: string
 
+  @ApiProperty({ description: '匿名答题人 id' })
+  @IsString()
+  @IsNotEmpty({ message: '匿名答题人 id 不能为空' })
+  respondentId: string
+
   @ApiProperty({ type: [SubmitAnswerItemDto], description: '答案列表' })
   @IsArray()
   @ValidateNested({ each: true })

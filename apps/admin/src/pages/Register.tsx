@@ -2,11 +2,13 @@ import type { FormProps } from 'antd'
 import { getPublicKey, register } from '@/api'
 import logo from '@/assets/star.png'
 import { LOGIN_PATHNAME } from '@/router'
+import { useAuthStore } from '@/store/useAuthStore'
 import { encryptWithPublicKey } from '@/utils/encrypt'
+import { BarChartOutlined, CheckSquareOutlined, FileTextOutlined, LockOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons'
 import { useRequest } from 'ahooks'
 import { Button, Flex, Form, Input, message } from 'antd'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import s from './Register.module.scss'
 
 interface FieldType {
@@ -21,15 +23,27 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (_errorInfo) => {
 }
 
 const Register: React.FC = () => {
+  const navigate = useNavigate()
+  const { setToken } = useAuthStore()
   const { run, loading } = useRequest(async (values) => {
     try {
       const resp = await getPublicKey()
-      const payload = {
-        ...values,
-        password: encryptWithPublicKey(values.password!, resp.data.publicKey),
+      const encryptedPassword = encryptWithPublicKey(values.password!, resp.data.publicKey)
+      if (!encryptedPassword) {
+        throw new Error('密码加密失败')
       }
-      const respLogin = await register(payload as any)
-      message.success('注册成功，请登录')
+      const payload = {
+        username: values.username,
+        nickname: values.nickname,
+        password: encryptedPassword,
+      }
+      const respLogin = await register(payload)
+      const token = respLogin.data.token
+      if (token) {
+        setToken(token)
+        message.success('注册成功')
+        navigate('/')
+      }
       return respLogin
     }
     catch (error: any) {
@@ -41,11 +55,37 @@ const Register: React.FC = () => {
   })
 
   return (
-    <div className={s.container}>
+    <div className={`${s.container} ${s.loginContainer}`}>
+      <section className={s.loginShowcase}>
+        <div className={s.showcaseBrand}>
+          <img src={logo} alt="Survey" />
+          <span>Survey</span>
+        </div>
+        <div className={s.surveyVisual} aria-hidden="true">
+          <div className={s.visualDocument}>
+            <FileTextOutlined className={s.visualMainIcon} />
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className={s.visualBadge}>
+            <CheckSquareOutlined />
+          </div>
+          <div className={s.visualChart}>
+            <BarChartOutlined />
+          </div>
+        </div>
+        <div className={s.showcaseNotes}>
+          <span>快速创建</span>
+          <span>统一管理</span>
+          <span>结果追踪</span>
+        </div>
+      </section>
       <div className={s.authCard}>
         <div className={s.authHeader}>
           <img src={logo} alt="Survey" />
-          <h1>注册 Survey</h1>
+          <h1>注册</h1>
+          <p>填写基础信息，创建你的管理账号。</p>
         </div>
         <Form
           layout="vertical"
@@ -62,7 +102,7 @@ const Register: React.FC = () => {
               { pattern: /^\w+$/, message: '只能包含字母、数字、下划线' },
             ]}
           >
-            <Input />
+            <Input prefix={<UserOutlined />} placeholder="请输入账号" size="large" />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -70,7 +110,7 @@ const Register: React.FC = () => {
             name="password"
             rules={[{ required: true, message: '请输入密码' }]}
           >
-            <Input.Password />
+            <Input.Password prefix={<LockOutlined />} placeholder="请输入密码" size="large" />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -92,7 +132,7 @@ const Register: React.FC = () => {
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password prefix={<LockOutlined />} placeholder="请再次输入密码" size="large" />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -100,12 +140,12 @@ const Register: React.FC = () => {
             name="nickname"
             rules={[{ required: true, message: '请输入昵称' }]}
           >
-            <Input />
+            <Input prefix={<SmileOutlined />} placeholder="请输入昵称" size="large" />
           </Form.Item>
 
           <Form.Item label={null}>
-            <Flex justify="space-between" align="center">
-              <Button type="primary" htmlType="submit" loading={loading}>
+            <Flex className={s.formFooter} justify="space-between" align="center">
+              <Button type="primary" htmlType="submit" loading={loading} size="large">
                 注册
               </Button>
               <Link to={`/${LOGIN_PATHNAME}`}>已有账号，去登录</Link>

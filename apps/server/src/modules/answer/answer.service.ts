@@ -14,8 +14,12 @@ const ANSWER_COMPONENT_TYPES: ComponentType[] = [
 
 interface ComponentProps {
   title?: string
+  isRequired?: boolean
+  isHidden?: boolean
   options?: Array<{ label: string, value: string }>
 }
+
+const RESPONDENT_ID_LENGTH = 10
 
 @Injectable()
 export class AnswerService {
@@ -25,7 +29,12 @@ export class AnswerService {
   private db: DbType
 
   async submitAnswer(dto: SubmitAnswerDto) {
-    const { questionId, answers } = dto
+    const { questionId, respondentId, answers } = dto
+    const userId = this.normalizeRespondentId(respondentId)
+    if (!userId) {
+      throw new BadRequestException('匿名答题人 id 不能为空')
+    }
+
     const questionList = await this.db
       .select({
         id: question.id,
@@ -42,18 +51,31 @@ export class AnswerService {
       throw new BadRequestException('问卷未发布')
     }
 
+    const submittedAnswer = await this.db
+      .select({ id: answer.id })
+      .from(answer)
+      .where(and(eq(answer.questionId, questionId), eq(answer.userId, userId)))
+      .limit(1)
+
+    if (submittedAnswer.length) {
+      throw new BadRequestException('你已经提交过该问卷')
+    }
+
     const componentList = await this.db
       .select({
         id: component.id,
         type: component.type,
+        props: component.props,
       })
       .from(component)
       .where(and(eq(component.questionId, questionId), eq(component.isDeleted, false)))
 
+    const answerableComponents = componentList.filter((item) => {
+      const props = this.parseProps(item.props) as ComponentProps
+      return ANSWER_COMPONENT_TYPES.includes(item.type as ComponentType) && !props.isHidden
+    })
     const answerableComponentIds = new Set(
-      componentList
-        .filter(item => ANSWER_COMPONENT_TYPES.includes(item.type as ComponentType))
-        .map(item => item.id),
+      answerableComponents.map(item => item.id),
     )
 
     const normalizedAnswers = answers
@@ -67,8 +89,21 @@ export class AnswerService {
       throw new BadRequestException('请至少填写一道题')
     }
 
+    const answerMap = normalizedAnswers.reduce<Record<string, string>>((map, item) => {
+      map[item.componentId] = item.content
+      return map
+    }, {})
+    const missingRequired = answerableComponents.find((item) => {
+      const props = this.parseProps(item.props) as ComponentProps
+      return props.isRequired && this.isEmptyContent(answerMap[item.id])
+    })
+
+    if (missingRequired) {
+      const props = this.parseProps(missingRequired.props) as ComponentProps
+      throw new BadRequestException(`请填写「${props.title || '必填题'}」`)
+    }
+
     const submitId = createId()
-    const userId = submitId
 
     await this.db.transaction(async (tx) => {
       await tx.insert(answer).values(normalizedAnswers.map(item => ({
@@ -88,7 +123,7 @@ export class AnswerService {
     return { submitId }
   }
 
-  async loadAnswerStat(questionId: string, current = 1, pageSize = 20) {
+  async loadAnswerStat(questionId: string, current = 1, pageSize = 20, userId?: string) {
     const safeCurrent = Number.isFinite(current) && current > 0 ? current : 1
     const safePageSize = Number.isFinite(pageSize) && pageSize > 0 ? pageSize : 20
     const offset = (safeCurrent - 1) * safePageSize
@@ -96,7 +131,7 @@ export class AnswerService {
     const questionList = await this.db
       .select({ id: question.id })
       .from(question)
-      .where(and(eq(question.id, questionId), eq(question.isDeleted, false)))
+      .where(and(eq(question.id, questionId), userId ? eq(question.userId, userId) : undefined, eq(question.isDeleted, false)))
 
     if (!questionList.length) {
       throw new BadRequestException('问卷不存在')
@@ -210,6 +245,23 @@ export class AnswerService {
 
   private normalizeContent(content: string) {
     return `${content ?? ''}`.trim()
+  }
+
+  private normalizeRespondentId(respondentId: string) {
+    return this.normalizeContent(respondentId).replace(/\W/g, '').slice(0, RESPONDENT_ID_LENGTH)
+  }
+
+  private isEmptyContent(content?: string) {
+    if (!content) {
+      return true
+    }
+    try {
+      const value = JSON.parse(content)
+      return Array.isArray(value) ? value.length === 0 : !`${value ?? ''}`.trim()
+    }
+    catch {
+      return !content.trim()
+    }
   }
 
   private parseProps(props: unknown) {

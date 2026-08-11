@@ -4,6 +4,7 @@ import logo from '@/assets/star.png'
 import { REGISTER_PATHNAME } from '@/router'
 import { useAuthStore } from '@/store/useAuthStore'
 import { encryptWithPublicKey } from '@/utils/encrypt'
+import { BarChartOutlined, CheckSquareOutlined, FileTextOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
 import { useRequest } from 'ahooks'
 import { Button, Flex, Form, Input, message } from 'antd'
 import React from 'react'
@@ -47,42 +48,31 @@ const Login: React.FC = () => {
       <section className={s.loginShowcase}>
         <div className={s.showcaseBrand}>
           <img src={logo} alt="Survey" />
-          <span>Survey Admin</span>
+          <span>Survey</span>
         </div>
-        <div className={s.showcaseCopy}>
-          <h1>把问卷管理变成一件清楚的事</h1>
-          <p>创建、投放、回收、统计都收在同一个工作台里。</p>
+        <div className={s.surveyVisual} aria-hidden="true">
+          <div className={s.visualDocument}>
+            <FileTextOutlined className={s.visualMainIcon} />
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className={s.visualBadge}>
+            <CheckSquareOutlined />
+          </div>
+          <div className={s.visualChart}>
+            <BarChartOutlined />
+          </div>
         </div>
-        <div className={s.showcaseBoard}>
-          <div className={s.boardHeader}>
-            <span>本周数据</span>
-            <strong>+18.6%</strong>
-          </div>
-          <div className={s.boardRows}>
-            <span />
-            <span />
-            <span />
-          </div>
-          <div className={s.boardMetrics}>
-            <div>
-              <span>问卷</span>
-              <strong>32</strong>
-            </div>
-            <div>
-              <span>答卷</span>
-              <strong>2,418</strong>
-            </div>
-            <div>
-              <span>完成率</span>
-              <strong>86%</strong>
-            </div>
-          </div>
+        <div className={s.showcaseNotes}>
+          <span>可视化编辑</span>
+          <span>答卷统计</span>
         </div>
       </section>
       <div className={s.authCard}>
         <div className={s.authHeader}>
           <img src={logo} alt="Survey" />
-          <h1>登录 Survey</h1>
+          <h1>登录</h1>
           <p>欢迎回来，请登录后继续管理你的问卷。</p>
         </div>
         <Form
@@ -100,7 +90,7 @@ const Login: React.FC = () => {
               { pattern: /^\w+$/, message: '只能包含字母、数字、下划线' },
             ]}
           >
-            <Input placeholder="请输入账号" />
+            <Input prefix={<UserOutlined />} placeholder="请输入账号" size="large" />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -108,12 +98,12 @@ const Login: React.FC = () => {
             name="password"
             rules={[{ required: true, message: '请输入密码' }]}
           >
-            <Input.Password placeholder="请输入密码" />
+            <Input.Password prefix={<LockOutlined />} placeholder="请输入密码" size="large" />
           </Form.Item>
 
           <Form.Item label={null}>
-            <Flex justify="space-between" align="center">
-              <Button type="primary" htmlType="submit" loading={loading}>
+            <Flex className={s.formFooter} justify="space-between" align="center">
+              <Button type="primary" htmlType="submit" loading={loading} size="large">
                 登录
               </Button>
               <Link to={`/${REGISTER_PATHNAME}`}>没有账号，去注册</Link>

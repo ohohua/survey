@@ -5,6 +5,7 @@ export const question = mysqlTable('question', {
   id: varchar('id', { length: 10 })
     .primaryKey()
     .$defaultFn(() => createId()),
+  userId: varchar('user_id', { length: 10 }).notNull(),
   title: varchar({ length: 255 }).notNull(),
   backgroundImage: varchar('background_image', { length: 255 }),
   pageHeaderImage: varchar('page_header_image', { length: 255 }),

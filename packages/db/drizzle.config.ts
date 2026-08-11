@@ -4,7 +4,8 @@ import process from 'node:process'
 import * as dotenv from 'dotenv'
 import { defineConfig } from 'drizzle-kit'
 
-dotenv.config({ path: path.resolve(__dirname, '../../apps/server/.env.dev') })
+const envFileName = process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev'
+dotenv.config({ path: path.resolve(__dirname, `../../apps/server/${envFileName}`) })
 
 console.log('process.env.DATABASE_URL: ', process.env.DATABASE_URL)
 

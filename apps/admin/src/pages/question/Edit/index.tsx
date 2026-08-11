@@ -5,6 +5,7 @@ import { Spin, Tabs } from 'antd'
 import EditCanvas from './EditCanvas'
 import EditHeader from './EditHeader'
 import s from './index.module.scss'
+import Layer from './Layer'
 import Lib from './Lib'
 import Prop from './Prop'
 import Setting from './Setting'
@@ -19,7 +20,7 @@ const tabItems = [
   {
     key: 'layer',
     label: '图层',
-    children: <></>,
+    children: <Layer />,
     icon: <OrderedListOutlined />,
   },
 ]
@@ -73,7 +74,7 @@ function Edit() {
             ? <Spin style={{ marginTop: '60px' }} />
             : (
                 <div className={s.center} onClick={handleClickOutside}>
-                  <div className={s.canvas} style={{ backgroundImage: `url(${questionInfo.backgroundImage}`, backgroundSize: 'cover' }}>
+                  <div className={s.canvas} style={{ backgroundImage: questionInfo.backgroundImage ? `url(${questionInfo.backgroundImage})` : undefined, backgroundSize: 'cover' }}>
                     <EditCanvas />
                   </div>
                 </div>

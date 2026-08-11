@@ -11,7 +11,7 @@ function Logo() {
       </span>
       <span className={s.text}>
         <span className={s.name}>Survey</span>
-        <span className={s.caption}>Admin</span>
+        <span className={s.caption}></span>
       </span>
     </Link>
   )

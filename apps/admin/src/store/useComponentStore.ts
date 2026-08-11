@@ -24,8 +24,9 @@ interface ComponentListState {
   resetStore: () => void
   resetComponent: (componentList: ComponentInfo[]) => void
   addComponent: (component: ComponentInfo, position?: number) => void
-  delComponent: () => void
+  delComponent: (id?: string) => void
   updateComponent: (component: ComponentInfo) => void
+  moveComponent: (sourceIndex: number, targetIndex: number) => void
 
   setSelectId: (id: string) => void
   setSelectIdTurnUp: () => void
@@ -73,23 +74,29 @@ export const useComponentStore = create<ComponentListState>(set => ({
     newComponentList.splice(position, 0, component)
     return { componentList: newComponentList }
   }),
-  delComponent: () => set((state) => {
-    if (!state.selectId) {
+  delComponent: id => set((state) => {
+    const deleteId = id || state.selectId
+    if (!deleteId) {
       return state
     }
-    const pos = state.componentList.findIndex(component => component.id === state.selectId)
+    const pos = state.componentList.findIndex(component => component.id === deleteId)
+    if (pos < 0) {
+      return state
+    }
     // 处理删除后的选中 selectId
-    if (state.componentList.length > 1) {
+    let nextSelectId = state.selectId
+    if (state.selectId === deleteId && state.componentList.length > 1) {
       const list = state.componentList
-      const id = pos < list.length - 1 ? list[pos + 1].id : list[pos - 1].id
-      if (id) {
-        state.setSelectId(id)
-      }
+      nextSelectId = pos < list.length - 1 ? list[pos + 1].id : list[pos - 1].id
+    }
+    else if (state.selectId === deleteId) {
+      nextSelectId = ''
     }
     const newComponentList = [...state.componentList]
     newComponentList.splice(pos, 1)
     return {
       componentList: newComponentList,
+      selectId: nextSelectId,
     }
   }),
   updateComponent: component => set((state) => {
@@ -101,6 +108,23 @@ export const useComponentStore = create<ComponentListState>(set => ({
         return item
       }),
     }
+  }),
+  moveComponent: (sourceIndex, targetIndex) => set((state) => {
+    const { componentList } = state
+    if (
+      sourceIndex === targetIndex
+      || sourceIndex < 0
+      || targetIndex < 0
+      || sourceIndex >= componentList.length
+      || targetIndex >= componentList.length
+    ) {
+      return state
+    }
+
+    const newComponentList = cloneDeep(componentList)
+    const [sourceComponent] = newComponentList.splice(sourceIndex, 1)
+    newComponentList.splice(targetIndex, 0, sourceComponent)
+    return { componentList: newComponentList }
   }),
 
   // selectId 相关

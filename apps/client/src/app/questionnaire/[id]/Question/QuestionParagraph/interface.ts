@@ -2,6 +2,7 @@ export interface QuestionParagraphProps {
   content?: string
   isCenter?: boolean
   isLock?: boolean
+  isHidden?: boolean
   onChange?: (newProps: QuestionParagraphProps) => void
 }
 

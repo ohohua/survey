@@ -33,12 +33,31 @@ export interface UpdateQuestionInfo extends QuestionInfoDto {
   id: string
 }
 
+export interface QuestionOverviewTrendItem {
+  date: string
+  count: number
+}
+
+export interface QuestionOverview {
+  totalQuestionCount: number
+  publishedQuestionCount: number
+  todayQuestionCount: number
+  totalAnswerCount: number
+  todayAnswerCount: number
+  publishedRate: number
+  recentAnswerTrend: QuestionOverviewTrendItem[]
+}
+
 /**
  * 获取问卷列表
  * @param data 分页参数
  * @returns 问卷分页列表
  */
 export const loadQuestionList = (data: ListDto) => http.get<ListVo<QuestionInfo>>(`${PREFIX}/question`, data)
+/**
+ * 获取首页概览
+ */
+export const loadQuestionOverview = () => http.get<QuestionOverview>(`${PREFIX}/question/overview`)
 /**
  * 获取星标问卷列表
  * @param data 分页参数

@@ -4,10 +4,13 @@ import Paragraph from 'antd/es/typography/Paragraph'
 import { QuestionTextareaDefault } from './interface'
 
 function QuestionInput(props: QuestionTextareaProps) {
-  const { title, placeholder } = { ...QuestionTextareaDefault, ...props }
+  const { title, placeholder, isRequired } = { ...QuestionTextareaDefault, ...props }
   return (
     <div style={{ pointerEvents: 'none' }}>
-      <Paragraph strong>{title}</Paragraph>
+      <Paragraph strong>
+        {isRequired ? <span style={{ color: '#ff4d4f', marginRight: 4 }}>*</span> : null}
+        {title}
+      </Paragraph>
       <TextArea placeholder={placeholder} autoSize={{ minRows: 3, maxRows: 6 }} />
     </div>
   )
