@@ -1,13 +1,18 @@
 services:
   mysql:
-    image: mysql
+    image: mysql:8.0
     ports:
       - '3306:3306'
     volumes:
       - ./docker/mysql:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: survey
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-survey}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-123456}
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h localhost -p"$${MYSQL_ROOT_PASSWORD}"']
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - common-network
   redis:
@@ -16,6 +21,11 @@ services:
       - '6379:6379'
     volumes:
       - ./docker/redis:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - common-network
   minio:
@@ -25,7 +35,7 @@ services:
       - '9001:9001' # 控制台端口
     environment:
       MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: 123456more8
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-123456more8}
     volumes:
       - ./docker/minio:/data
     networks:
@@ -39,19 +49,22 @@ services:
     environment:
       NODE_ENV: production
       PORT: 8888
-      DATABASE_URL: mysql://root:123456@mysql:3306/survey
+      DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD:-123456}@mysql:3306/${MYSQL_DATABASE:-survey}
       REDIS_HOST: redis
       REDIS_PORT: 6379
       END_POINT: minio
       MINIO_PORT: 9000
       ACCESS_KEY: admin
-      SECRET_KEY: 123456more8
-      JWT_SECRET: change-me-in-production
-      CORS_ORIGINS: http://localhost:8080,http://localhost:3000
+      SECRET_KEY: ${MINIO_ROOT_PASSWORD:-123456more8}
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080,http://localhost:3000}
     depends_on:
-      - mysql
-      - redis
-      - minio
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_started
     networks:
       - common-network
   client:
@@ -59,7 +72,7 @@ services:
       context: .
       dockerfile: apps/client/Dockerfile
       args:
-        NEXT_PUBLIC_URL: http://localhost:8888
+        NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL:-http://localhost:8888}
     ports:
       - '3000:3000'
     depends_on:
@@ -71,8 +84,8 @@ services:
       context: .
       dockerfile: apps/admin/Dockerfile
       args:
-        VITE_SERVICE_BASE_URL: ''
-        VITE_SERVICE_MOBILE_URL: http://localhost:3000
+        VITE_SERVICE_BASE_URL: ${VITE_SERVICE_BASE_URL:-}
+        VITE_SERVICE_MOBILE_URL: ${VITE_SERVICE_MOBILE_URL:-http://localhost:3000}
     ports:
       - '8080:80'
     depends_on:
