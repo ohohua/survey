@@ -1,4 +1,5 @@
-FROM node:20-bookworm-slim AS builder
+ARG NODE_IMAGE=node:20-bookworm-slim
+FROM ${NODE_IMAGE} AS builder
 
 WORKDIR /app
 
@@ -17,7 +18,8 @@ COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm run depend:init && pnpm run build:admin
 
-FROM nginx:alpine
+ARG NGINX_IMAGE=nginx:alpine
+FROM ${NGINX_IMAGE}
 
 COPY apps/admin/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/apps/admin/dist /usr/share/nginx/html

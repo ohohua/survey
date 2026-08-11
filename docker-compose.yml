@@ -44,6 +44,8 @@ services:
     build:
       context: .
       dockerfile: apps/server/Dockerfile
+      args:
+        NODE_IMAGE: ${NODE_IMAGE:-node:20-bookworm-slim}
     ports:
       - '8888:8888'
     environment:
@@ -72,6 +74,7 @@ services:
       context: .
       dockerfile: apps/client/Dockerfile
       args:
+        NODE_IMAGE: ${NODE_IMAGE:-node:20-bookworm-slim}
         NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL:-http://localhost:8888}
     ports:
       - '3000:3000'
@@ -84,6 +87,8 @@ services:
       context: .
       dockerfile: apps/admin/Dockerfile
       args:
+        NODE_IMAGE: ${NODE_IMAGE:-node:20-bookworm-slim}
+        NGINX_IMAGE: ${NGINX_IMAGE:-nginx:alpine}
         VITE_SERVICE_BASE_URL: ${VITE_SERVICE_BASE_URL:-}
         VITE_SERVICE_MOBILE_URL: ${VITE_SERVICE_MOBILE_URL:-http://localhost:3000}
     ports:
