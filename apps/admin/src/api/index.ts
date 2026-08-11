@@ -7,6 +7,7 @@ export const http = new Request({
 
 export const PREFIX = '/api/admin'
 
+export * from './answer'
 export * from './component'
 export * from './question'
 export * from './upload'

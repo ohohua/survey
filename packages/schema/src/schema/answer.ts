@@ -7,6 +7,7 @@ export const answer = mysqlTable('answer', {
     .$defaultFn(() => createId()),
 
   userId: varchar('user_id', { length: 10 }).notNull(),
+  submitId: varchar('submit_id', { length: 10 }).notNull(),
   questionId: varchar('question_id', { length: 10 }).notNull(),
   componentId: varchar('component_id', { length: 10 }).notNull(),
   content: varchar('content', { length: 255 }),

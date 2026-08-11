@@ -1,6 +1,6 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common'
-import { component, createId, question } from '@survey/schema'
-import { and, asc, eq, getTableColumns, like, sql } from 'drizzle-orm'
+import { answer, component, createId, question } from '@survey/schema'
+import { and, asc, eq, getTableColumns, inArray, like, sql } from 'drizzle-orm'
 import { DB, DbType } from '../global/providers/db.provider'
 import { CreateQuestionDto, UpdateQuestionDto } from './model/question.dto'
 
@@ -130,22 +130,21 @@ export class QuestionService {
     }
   }
 
-  deleteQuestionTrash(ids: string) {
+  async deleteQuestionTrash(ids: string) {
     const idList = ids.split(',')
     if (!idList || !idList.length) {
       throw new BadRequestException('id 错误')
     }
     // 物理删除
-    this.db.transaction(async (tx) => {
+    await this.db.transaction(async (tx) => {
       for (const id of idList) {
+        await tx.delete(answer).where(eq(answer.questionId, id))
         await tx.delete(component).where(eq(component.questionId, id))
         await tx.delete(question).where(eq(question.id, id))
       }
-    }).then(() => {
-      return '删除成功'
-    }).catch((e) => {
-      throw new BadRequestException(e)
     })
+
+    return '删除成功'
   }
 
   async loadDetail(questionId: string) {
@@ -165,6 +164,30 @@ export class QuestionService {
       .select(restComponent)
       .from(component)
       .where(eq(component.questionId, id))
+      .orderBy(asc(component.sort))
+
+    return {
+      ...questionInfo[0],
+      componentList,
+    }
+  }
+
+  async loadPublishedDetail(questionId: string) {
+    const { isDeleted, createAt, updatedAt, ...rest } = getTableColumns(question)
+    const questionInfo = await this.db
+      .select({ ...rest })
+      .from(question)
+      .where(and(eq(question.id, questionId), eq(question.isPublished, true), eq(question.isDeleted, false)))
+
+    if (questionInfo.length === 0) {
+      throw new BadRequestException('问卷不存在或未发布')
+    }
+
+    const { isDeleted: del, createAt: cAt, updatedAt: uAt, ...restComponent } = getTableColumns(component)
+    const componentList = await this.db
+      .select(restComponent)
+      .from(component)
+      .where(and(eq(component.questionId, questionId), eq(component.isDeleted, false)))
       .orderBy(asc(component.sort))
 
     return {
@@ -196,7 +219,10 @@ export class QuestionService {
       throw new BadRequestException('问卷不存在')
     }
 
-    await this.db.update(question).set({ isDeleted: true }).where(eq(question.id, id))
+    await this.db.transaction(async (tx) => {
+      await tx.update(question).set({ isDeleted: true, answerCount: 0 }).where(eq(question.id, id))
+      await tx.delete(answer).where(eq(answer.questionId, id))
+    })
 
     return '删除成功'
   }
@@ -210,22 +236,54 @@ export class QuestionService {
       throw new BadRequestException('问卷不存在')
     }
 
-    await this.db.insert(question).values({ ...hasQuestion[0], id: createId() })
+    const questionId = createId()
+    const hasComponents = await this.db.select()
+      .from(component)
+      .where(eq(component.questionId, id))
+
+    await this.db.transaction(async (tx) => {
+      const { id: sourceId, createAt, updatedAt, ...sourceQuestion } = hasQuestion[0]
+      await tx.insert(question).values({
+        ...sourceQuestion,
+        id: questionId,
+        title: `${hasQuestion[0].title} 副本`,
+        isPublished: false,
+        answerCount: 0,
+      })
+
+      if (hasComponents.length) {
+        await tx.insert(component).values(hasComponents.map((item) => {
+          const { id: componentId, createAt, updatedAt, ...rest } = item
+          return {
+            ...rest,
+            id: createId(),
+            questionId,
+          }
+        }))
+      }
+    })
 
     return '复制成功'
   }
 
   async restoreQuestionnaire(ids: string) {
-    const idList = ids.split(',')
-    idList.forEach(async (id) => {
-      const hasQuestion = await this.db.select()
-        .from(question)
-        .where(and(eq(question.id, id), eq(question.isDeleted, true)))
+    const idList = ids.split(',').filter(Boolean)
+    if (!idList.length) {
+      throw new BadRequestException('id 错误')
+    }
 
-      if (!hasQuestion || !hasQuestion.length) {
-        throw new BadRequestException('问卷不存在或未被删除')
+    const deletedQuestions = await this.db.select({ id: question.id })
+      .from(question)
+      .where(and(inArray(question.id, idList), eq(question.isDeleted, true)))
+
+    if (deletedQuestions.length !== idList.length) {
+      throw new BadRequestException('问卷不存在或未被删除')
+    }
+
+    await this.db.transaction(async (tx) => {
+      for (const id of idList) {
+        await tx.update(question).set({ isDeleted: false }).where(eq(question.id, id))
       }
-      await this.db.update(question).set({ isDeleted: false }).where(eq(question.id, id))
     })
 
     return '恢复成功'
