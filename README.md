@@ -79,3 +79,12 @@
 ## 操作说明
 
 修改了 schema 结构后需要执行 `pnpm run db:init`
+
+## 部署
+
+```bash
+cp .env.docker.example .env
+
+# 查看
+vim .env
+```
